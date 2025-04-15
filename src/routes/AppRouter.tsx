@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Layout } from "../views/Layout"
 import { Test } from "../views/Test"
 
-export const RoutesOutlet = () => {
+export const AppRouter = () => {
   return (
     <>
   <BrowserRouter>

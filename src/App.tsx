@@ -1,4 +1,4 @@
-import { RoutesOutlet } from "./routes/RoutesOutlet"
+import { AppRouter } from "./routes/AppRouter"
 
 
 function App() {
@@ -6,8 +6,8 @@ function App() {
 
   return (
     <>
-   <RoutesOutlet />
-    </>
+   <AppRouter />
+    </> 
   )
 }
 
