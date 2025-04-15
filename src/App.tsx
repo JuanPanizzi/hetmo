@@ -15,10 +15,10 @@ function App() {
 
   return (
     <>
-    <div className="card flex justify-content-center">
+    <div className="p-3 flex justify-evenly">
     <Button  label="click me" />
             <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
-                placeholder="Select a City" className="w-full md:w-14rem" />
+                placeholder="Select a City" className=" md:w-14rem" />
         </div>
     </>
   )
