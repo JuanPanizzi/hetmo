@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Layout } from "../views/Layout"
-import { Test } from "../views/Test"
+import { Wallets } from "../views/Wallets"
 
 export const AppRouter = () => {
   return (
@@ -9,7 +9,7 @@ export const AppRouter = () => {
     <Routes>
     <Route path="/" element={<Layout />}>
 
-    <Route index element={<Test />} />
+    <Route index element={<Wallets />} />
 
 
     </Route>
