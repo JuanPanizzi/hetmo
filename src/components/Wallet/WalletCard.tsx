@@ -6,7 +6,7 @@ export default function WalletCard() {
     const header = (
         <div className='border border-t-gray-200'>
 
-      <h1>Wallet</h1>
+      <h1>My Wallets </h1>
         </div>
         // <img alt="Card" src="https://primefaces.org/cdn/primereact/images/usercard.png" />
     );
@@ -16,6 +16,8 @@ export default function WalletCard() {
             <Button label="Cancel" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} />
         </>
     );
+
+
 
     return (
         <div className="card flex justify-content-center xl:max-w-xl">
