@@ -17,6 +17,8 @@ export const WalletDetail = () => {
     const { wallets, addTransaction } = useContext(WalletContext);
     const { id } = useParams();
 
+
+    
     const wallet = wallets.find(w => w.id === id);
 
     if (!wallet) {
@@ -25,9 +27,9 @@ export const WalletDetail = () => {
     const [visible, setVisible] = useState<boolean>(false)
     const [newTransaction, setNewTransaction] = useState<Transaction>({
         type: 'compra',
-        cryptocurrency: '',
+        crypto: '',
         amount: 0,
-        value: 0,
+        price: 0,
         date: '',
         id: ''
     })
@@ -38,9 +40,9 @@ export const WalletDetail = () => {
         setVisible(false);
         setNewTransaction({
             type: 'compra',
-            cryptocurrency: '',
+            crypto: '',
             amount: 0,
-            value: 0,
+            price: 0,
             date: '',
             id: ''
         });
@@ -52,8 +54,8 @@ export const WalletDetail = () => {
                 <div>
                     <InputText 
                         placeholder="Nombre" 
-                        value={newTransaction.cryptocurrency}
-                        onChange={(e) => setNewTransaction(prevState => ({...prevState, cryptocurrency: e.target.value}))}
+                        value={newTransaction.crypto}
+                        onChange={(e) => setNewTransaction(prevState => ({...prevState, crypto: e.target.value}))}
                     />
                     <InputNumber 
                         placeholder="Cantidad" 
@@ -62,7 +64,7 @@ export const WalletDetail = () => {
                     />
                     <InputNumber 
                         placeholder="Precio" 
-                        value={newTransaction.value}
+                        value={newTransaction.price}
                         onValueChange={(e) => setNewTransaction(prevState => ({...prevState, value: e.value || 0}))}
                     />
                     <Calendar 
@@ -102,14 +104,14 @@ export const WalletDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card title="Criptomonedas" className="shadow-lg">
                         {wallet.cryptocurrencies?.length ? (
-                            <div className="space-y-2">
-                                {wallet.cryptocurrencies.map(crypto => (
-                                    <div key={crypto.id} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                        <span className="font-medium">{crypto.name}</span>
-                                        <span>{crypto.amount}</span>
-                                    </div>
-                                ))}
-                            </div>
+                        <DataTable value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }}>
+                            <Column field="name" header="Criptomoneda"  />
+                            <Column field="amount" header="Cantidad"  />
+                            <Column field="value" header="Valor"  />
+                        </DataTable>
+                        
+                        
+                           
                         ) : (
                             <p className="text-gray-500">No hay criptomonedas en esta cartera</p>
                         )}

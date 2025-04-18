@@ -11,42 +11,33 @@ function updateLocalStorage(wallets: Wallet[]): boolean {
       console.error("Error guardando en localStorage", e);
       return false;
     }
-  }
+}
 
 export function useWalletsReducer() { 
-
-    //importo el estado global
     const [wallets, dispatch] = useReducer(walletsReducer, initialWallets);
 
     const addWallet = (wallet: Wallet): boolean => {
-
         const updatedWallets = [...wallets, wallet];
         if (!updateLocalStorage(updatedWallets)) return false;
         dispatch({ type: "ADD_WALLET", payload: wallet });
         return true;
-      };
+    };
     
-      const deleteWallet = (id: string): boolean => {
+    const deleteWallet = (id: string): boolean => {
         const updatedWallets = wallets.filter((wallet: Wallet) => wallet.id !== id);
-    
         if (!updateLocalStorage(updatedWallets)) return false;
         dispatch({ type: "DELETE_WALLET", payload: id });
         return true;
-      
     };
 
-
     const addTransaction = (walletId: string, transaction: Transaction): boolean => {
-
-        const updatedWallets = wallets.map((wallet: Wallet) => wallet.id === walletId ? { ...wallet, transactions: [...wallet.transactions, transaction] } : wallet);
-      
-        if (!updateLocalStorage(updatedWallets)) return false;
+        // Primero actualizamos el estado con el reducer para obtener el nuevo estado
+        const newState = walletsReducer(wallets, { type: "ADD_TRANSACTION", payload: { walletId, transaction } });
+        if (!updateLocalStorage(newState)) return false;
         dispatch({ type: "ADD_TRANSACTION", payload: { walletId, transaction } });
         return true;
     }
 
     return { wallets, addWallet, deleteWallet, addTransaction }
-
-
 }
 
