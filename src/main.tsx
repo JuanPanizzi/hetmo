@@ -9,11 +9,9 @@ import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import { WalletProvider } from './context/walletContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      <PrimeReactProvider>
+  <PrimeReactProvider>
     <WalletProvider>
-    <App />
+      <App />
     </WalletProvider>
-      </PrimeReactProvider>
-  </StrictMode>,
+  </PrimeReactProvider>
 )
