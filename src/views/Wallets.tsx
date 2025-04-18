@@ -67,7 +67,7 @@ export const Wallets = () => {
 
     <>
       <ConfirmDialog
-        acceptLabel="Eliminar"    // ← aquí cambias “Yes” por “Sí”
+        acceptLabel="Eliminar"    
         rejectLabel="Cancelar"
         pt={{ rejectButton: { className: 'mr-2' } }} />
       <Toast ref={toast} />

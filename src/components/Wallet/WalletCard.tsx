@@ -34,8 +34,9 @@ export default function WalletCard({ wallet, handleDeleteWallet }: { wallet: Wal
     );
     const footer = (
         <>
-            <Button icon="pi pi-check" />
-            <Button severity="danger" icon="pi pi-trash" style={{ marginLeft: '0.5em' }} onClick={confirmDelete} />
+            <Button icon="pi pi-sign-in" label='Ingresar' />
+            <Button icon="pi pi-pencil" className='mx-2'/>
+            <Button severity="danger" icon="pi pi-trash"  onClick={confirmDelete} />
 
         </>
     );
