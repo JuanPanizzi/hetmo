@@ -12,11 +12,11 @@ export const Layout = () => {
       icon: 'pi pi-home',
       command: () => navigate('/')
     },
-    // {
-    //   label: 'Contacto',
-    //   icon: 'pi pi-users',
-    //   command: ()=> navigate('/contacto')
-    // },
+    {
+      label: 'Criptomonedas',
+      icon: 'pi pi-users',
+      command: ()=> navigate('/cryptos')
+    },
 
   ];
   
