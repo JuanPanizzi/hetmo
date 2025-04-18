@@ -6,13 +6,14 @@ export const initialWallets = JSON.parse(
   ) as Wallet[];
 
   
-
+//Habria que actualizar el localStorage
 export const walletsReducer = (state: any, action: any) => {
     const {type, payload} = action;
     switch (type) {
         case 'ADD_WALLET':
             return [...state, payload];
-        case 'DELETE_WALLET':
+        case 'DELETE_WALLET': 
+
             return state.filter((wallet: Wallet) => wallet.id !== payload);
     }
 }

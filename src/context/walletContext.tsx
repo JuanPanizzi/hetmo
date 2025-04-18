@@ -6,9 +6,9 @@ import { Wallet } from "../types/wallets";
 
 export const WalletContext = createContext<{
     wallets: Wallet[];
-    addWallet: (wallet: Wallet) => void;
-    deleteWallet: (id: number) => void;
-}>({wallets: [], addWallet: () => {}, deleteWallet: () => {}});
+    addWallet: (wallet: Wallet) => boolean;
+    deleteWallet: (id: number) => boolean;
+}>({wallets: [], addWallet: () => false, deleteWallet: () => false});
 
 export const WalletProvider: FC<{children: ReactNode}> = ({ children }) => { 
 

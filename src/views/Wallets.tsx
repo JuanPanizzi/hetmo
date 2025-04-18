@@ -1,12 +1,14 @@
 import { Button } from "primereact/button"
 import WalletCard from "../components/Wallet/WalletCard"
 import { WalletContext } from "../context/walletContext"
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { Toast } from "primereact/toast";
+import { ConfirmDialog } from "primereact/confirmdialog";
 
 export const Wallets = () => {
-  const { wallets, addWallet } = useContext(WalletContext);
+  const { wallets, addWallet, deleteWallet } = useContext(WalletContext);
   const [visible, setVisible] = useState<boolean>(false);
   const [newWallet, setNewWallet] = useState({
     name: '',
@@ -28,11 +30,38 @@ export const Wallets = () => {
     setNewWallet({ name: '', id: Date.now() });
   };
   
-  // useEffect(() => {
-  //   setNewWallet({ name: '', id: Date.now() });
-  // }, [visible])
 
+  const toast = useRef<Toast>(null);
+
+
+  const handleDeleteWallet = async (id: number) => {
+
+    const success = await deleteWallet(id);
+
+    if (success) {
+      toast.current?.show({
+        severity: "success",
+        summary: "Operación exitosa",
+        detail: "Cartera eliminada correctamente",
+        life: 3000,
+      });
+    } else {
+      toast.current?.show({
+        severity: "error",
+        summary: "Error",
+        detail: "No se pudo eliminar la cartera",
+        life: 3000,
+      });
+    }
+  }
   return (
+
+    <>
+     <ConfirmDialog
+            acceptLabel="Eliminar"    // ← aquí cambias “Yes” por “Sí”
+            rejectLabel="Cancelar"  
+            pt={{rejectButton: {className: 'mr-2'}}} />
+    <Toast ref={toast} />
     <section>
       <div className="flex w-full items-center justify-between p-2">
         <h1 className="text-4xl ">Carteras</h1>
@@ -41,7 +70,7 @@ export const Wallets = () => {
 
       <div className="grid grid-cols-4 gap-4 place-items-center ">
         {wallets.map((wallet) => (
-          <WalletCard key={wallet.id} wallet={wallet} />
+          <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} />
         ))}
       </div>
 
@@ -70,5 +99,6 @@ export const Wallets = () => {
         </div>
       </Dialog>
     </section>
+    </>
   )
 }
