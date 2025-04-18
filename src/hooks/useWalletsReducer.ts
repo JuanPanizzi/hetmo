@@ -27,7 +27,7 @@ export function useWalletsReducer() {
         return true;
       };
     
-      const deleteWallet = (id: number): boolean => {
+      const deleteWallet = (id: string): boolean => {
         const updatedWallets = wallets.filter((w: Wallet) => w.id !== id);
     
         if (!updateLocalStorage(updatedWallets)) return false;

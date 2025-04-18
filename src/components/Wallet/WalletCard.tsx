@@ -5,12 +5,12 @@ import { Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
 
 
-export default function WalletCard({ wallet, handleDeleteWallet }: { wallet: Wallet, handleDeleteWallet: (id: number) => void }) {
+export default function WalletCard({ wallet, handleDeleteWallet }: { wallet: Wallet, handleDeleteWallet: (id: string) => void }) {
 
   
 
     const accept = () => {
-        handleDeleteWallet(Number(wallet.id))
+        handleDeleteWallet(wallet.id)
     }
    
     const confirmDelete = () => {

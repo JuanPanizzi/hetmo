@@ -1,18 +1,20 @@
 import { Button } from "primereact/button"
 import WalletCard from "../components/Wallet/WalletCard"
 import { WalletContext } from "../context/walletContext"
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext,  useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
 export const Wallets = () => {
+
+  
   const { wallets, addWallet, deleteWallet } = useContext(WalletContext);
   const [visible, setVisible] = useState<boolean>(false);
   const [newWallet, setNewWallet] = useState({
     name: '',
-    id: Date.now()
+    id: crypto.randomUUID()
   });
 
   const handleCreateWallet = () => {
@@ -31,19 +33,19 @@ export const Wallets = () => {
       transactions: []
     });
     setVisible(false);
-    setNewWallet({ name: '', id: Date.now() });
+    setNewWallet({ name: '', id: crypto.randomUUID() });
   };
 
   const handleCancel = () => {
     setVisible(false);
-    setNewWallet({ name: '', id: Date.now() });
+    setNewWallet({ name: '', id: crypto.randomUUID() });
   };
 
 
   const toast = useRef<Toast>(null);
 
 
-  const handleDeleteWallet = async (id: number) => {
+  const handleDeleteWallet = async (id: string) => {
 
     const success = await deleteWallet(id);
 
