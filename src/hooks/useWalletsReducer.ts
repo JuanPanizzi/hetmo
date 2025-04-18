@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { walletsReducer } from "../reducers/walletsReducer";
 import { initialWallets } from "../reducers/walletsReducer";
-import { Wallet } from "../types/wallets";
+import { Transaction, Wallet } from "../types/wallets";
 
 function updateLocalStorage(wallets: Wallet[]): boolean {
     try {
@@ -21,14 +21,13 @@ export function useWalletsReducer() {
     const addWallet = (wallet: Wallet): boolean => {
 
         const updatedWallets = [...wallets, wallet];
-        
         if (!updateLocalStorage(updatedWallets)) return false;
         dispatch({ type: "ADD_WALLET", payload: wallet });
         return true;
       };
     
       const deleteWallet = (id: string): boolean => {
-        const updatedWallets = wallets.filter((w: Wallet) => w.id !== id);
+        const updatedWallets = wallets.filter((wallet: Wallet) => wallet.id !== id);
     
         if (!updateLocalStorage(updatedWallets)) return false;
         dispatch({ type: "DELETE_WALLET", payload: id });
@@ -36,7 +35,17 @@ export function useWalletsReducer() {
       
     };
 
-    return { wallets, addWallet, deleteWallet }
+
+    const addTransaction = (walletId: string, transaction: Transaction): boolean => {
+
+        const updatedWallets = wallets.map((wallet: Wallet) => wallet.id === walletId ? { ...wallet, transactions: [...wallet.transactions, transaction] } : wallet);
+      
+        if (!updateLocalStorage(updatedWallets)) return false;
+        dispatch({ type: "ADD_TRANSACTION", payload: { walletId, transaction } });
+        return true;
+    }
+
+    return { wallets, addWallet, deleteWallet, addTransaction }
 
 
 }

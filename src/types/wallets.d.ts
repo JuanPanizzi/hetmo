@@ -11,11 +11,12 @@ export interface Cryptocurrency extends Crypto {
 }
 
 export type Transaction = {
-    type: 'buy' | 'sell';
+    type: 'compra' | 'venta';
     cryptocurrency: string;
     amount: number;
     value: number;
     date: string;
+    id: string;
 }
 
 export type Wallet = {
