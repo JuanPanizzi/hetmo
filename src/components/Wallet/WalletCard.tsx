@@ -3,11 +3,12 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function WalletCard({ wallet, handleDeleteWallet }: { wallet: Wallet, handleDeleteWallet: (id: string) => void }) {
 
-  
+  const navigate = useNavigate();
 
     const accept = () => {
         handleDeleteWallet(wallet.id)
@@ -34,7 +35,7 @@ export default function WalletCard({ wallet, handleDeleteWallet }: { wallet: Wal
     );
     const footer = (
         <>
-            <Button icon="pi pi-sign-in" label='Ingresar' />
+            <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} />
             <Button icon="pi pi-pencil" className='mx-2'/>
             <Button severity="danger" icon="pi pi-trash"  onClick={confirmDelete} />
 
