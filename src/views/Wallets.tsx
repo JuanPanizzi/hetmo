@@ -4,14 +4,14 @@ import { WalletContext } from "../context/walletContext"
 import { useContext } from "react";
 export const Wallets = () => {
 
-    const { wallets } = useContext(WalletContext);
+    const { wallets, addWallet } = useContext(WalletContext);
 
-    console.log('wallets', wallets)
+    
   return (
     <section>
       <div className="flex w-full items-center justify-between p-2">
       <h1 className="text-4xl ">Carteras</h1>
-      <Button label="Crear Cartera" icon="pi pi-plus"/>
+      <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => addWallet({id: '1', name: 'Cartera 1'})}/>
       </div>
 
       {wallets.map((wallet) => (

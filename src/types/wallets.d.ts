@@ -23,7 +23,7 @@ export type Transaction = {
 export type Wallet = {
     id: string | number;
     name: string;
-    cryptocurrencies: Cryptocurrency[]; // Criptomonedas y valores que almacena la waller
-    transactions: Transaction[];
+    cryptocurrencies?: Cryptocurrency[]; // Criptomonedas y valores que almacena la waller
+    transactions?: Transaction[];
 }
 

@@ -5,7 +5,6 @@ export const initialWallets = JSON.parse(
     localStorage.getItem('wallets') ?? '[]'
   ) as Wallet[];
 
-  console.log('initialWallets', initialWallets)
   
 
 export const walletsReducer = (state: any, action: any) => {

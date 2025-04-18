@@ -24,13 +24,13 @@ export async function fetchCoinsList() {
 
 export const Cryptos = () => {
   
-  useEffect(() => {
-    const fetchData = async () => {
-      const coins = await fetchCoinsList();
-      console.log('COINS', coins)
-    };
-    fetchData();
-  }, [])
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const coins = await fetchCoinsList();
+  //     console.log('COINS', coins)
+  //   };
+  //   fetchData();
+  // }, [])
 
 
   return (
