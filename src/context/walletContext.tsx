@@ -1,17 +1,14 @@
-import { createContext, FC, ReactNode,  } from "react";
-import { useState } from "react";
+import { createContext, FC, ReactNode } from "react";
+import { useWalletsReducer } from "../hooks/useWalletsReducer";
+import { Wallet } from "../types/wallets";
 
-
-export const WalletContext = createContext<{wallets: string}>({wallets: ''});
+export const WalletContext = createContext<{wallets: Wallet[]}>({wallets: []});
 
 export const WalletProvider: FC<{children: ReactNode}> = ({ children }) => { 
-
-const [wallets, setWallets] = useState('holaa');
-
-return (
-    <WalletContext.Provider value={{wallets}}>
-        {children}
-    </WalletContext.Provider>
-);
-
+    const { wallets, dispatch } = useWalletsReducer();
+    return (
+        <WalletContext.Provider value={{wallets: wallets || []}}>
+            {children}
+        </WalletContext.Provider>
+    );
 }
