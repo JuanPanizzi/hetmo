@@ -6,12 +6,14 @@ import App from './App.tsx'
 import 'primeicons/primeicons.css';
         
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
-        
+import { WalletProvider } from './context/walletContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <PrimeReactProvider>
+    <WalletProvider>
     <App />
+    </WalletProvider>
       </PrimeReactProvider>
   </StrictMode>,
 )
