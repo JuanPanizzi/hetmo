@@ -1,7 +1,7 @@
 import { Button } from "primereact/button"
 import WalletCard from "../components/Wallet/WalletCard"
 import { WalletContext } from "../context/walletContext"
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
@@ -27,6 +27,10 @@ export const Wallets = () => {
     setVisible(false);
     setNewWallet({ name: '', id: Date.now() });
   };
+  
+  // useEffect(() => {
+  //   setNewWallet({ name: '', id: Date.now() });
+  // }, [visible])
 
   return (
     <section>

@@ -2,8 +2,13 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Wallet } from '../../types/wallets';
+import { useContext } from 'react';
+import { WalletContext } from '../../context/walletContext';
 
 export default function WalletCard({wallet}: {wallet: Wallet}) {
+
+    const {deleteWallet} = useContext(WalletContext);
+
     const header = (
         <div className='p-1'>
 
@@ -13,8 +18,8 @@ export default function WalletCard({wallet}: {wallet: Wallet}) {
     );
     const footer = (
         <>
-            <Button label="Save" icon="pi pi-check" />
-            <Button label="Cancel" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} />
+            <Button  icon="pi pi-check" />
+            <Button  severity="danger" icon="pi pi-trash" style={{ marginLeft: '0.5em' }} onClick={() => deleteWallet(Number(wallet.id))} />
         </>
     );
 

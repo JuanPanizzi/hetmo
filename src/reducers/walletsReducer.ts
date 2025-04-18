@@ -8,10 +8,11 @@ export const initialWallets = JSON.parse(
   
 
 export const walletsReducer = (state: any, action: any) => {
-    switch (action.type) {
+    const {type, payload} = action;
+    switch (type) {
         case 'ADD_WALLET':
-            console.log('action.payload', action.payload)
-
-            return [...state, action.payload];
+            return [...state, payload];
+        case 'DELETE_WALLET':
+            return state.filter((wallet: Wallet) => wallet.id !== payload);
     }
 }

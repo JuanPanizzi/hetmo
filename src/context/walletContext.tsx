@@ -7,14 +7,15 @@ import { Wallet } from "../types/wallets";
 export const WalletContext = createContext<{
     wallets: Wallet[];
     addWallet: (wallet: Wallet) => void;
-}>({wallets: [], addWallet: () => {}});
+    deleteWallet: (id: number) => void;
+}>({wallets: [], addWallet: () => {}, deleteWallet: () => {}});
 
 export const WalletProvider: FC<{children: ReactNode}> = ({ children }) => { 
 
-    const { wallets, addWallet } = useWalletsReducer();
+    const { wallets, addWallet, deleteWallet } = useWalletsReducer();
 
     return (
-        <WalletContext.Provider value={ {wallets: wallets || [], addWallet}}>
+        <WalletContext.Provider value={ {wallets: wallets || [], addWallet, deleteWallet}}>
             {children}
         </WalletContext.Provider>
     );

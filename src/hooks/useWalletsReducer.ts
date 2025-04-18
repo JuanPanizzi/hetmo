@@ -9,9 +9,9 @@ export function useWalletsReducer() {
     const [wallets, dispatch] = useReducer(walletsReducer, initialWallets);
 
     const addWallet = (wallet: Wallet) => dispatch({type: 'ADD_WALLET', payload: wallet});
+    const deleteWallet = (id: number) => dispatch({type: 'DELETE_WALLET', payload: id});
 
-
-    return { wallets, addWallet }
+    return { wallets, addWallet, deleteWallet }
 
 
 }
