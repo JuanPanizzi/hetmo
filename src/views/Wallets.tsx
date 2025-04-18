@@ -35,7 +35,7 @@ export const Wallets = () => {
         <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => setVisible(true)} />
       </div>
 
-      <div>
+      <div className="grid grid-cols-4 gap-4 place-items-center ">
         {wallets.map((wallet) => (
           <WalletCard key={wallet.id} wallet={wallet} />
         ))}
@@ -48,7 +48,7 @@ export const Wallets = () => {
         onHide={() => setVisible(false)}
         footer={
           <div>
-            <Button label="Cancelar" icon="pi pi-times" onClick={() => handleCancel() } className="p-button-text" />
+            <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text" />
             <Button label="Crear" icon="pi pi-check" onClick={handleCreateWallet} autoFocus />
           </div>
         }

@@ -11,6 +11,7 @@ export const walletsReducer = (state: any, action: any) => {
     switch (action.type) {
         case 'ADD_WALLET':
             console.log('action.payload', action.payload)
+
             return [...state, action.payload];
     }
 }

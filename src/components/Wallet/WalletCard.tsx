@@ -22,7 +22,7 @@ export default function WalletCard({wallet}: {wallet: Wallet}) {
 
     return (
         <div className="card flex justify-content-center xl:max-w-xl">
-            <Card title="" subTitle="Card subtitle" footer={footer} header={header} className="">
+            <Card title="" subTitle="" footer={footer} header={header} className="">
                 <p className="m-0">
                     {/* Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae 
                     numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas! */}
