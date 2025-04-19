@@ -35,7 +35,7 @@ export interface Cryptocurrency extends Crypto {
 }
 
 export type Transaction = {
-    type: 'compra' | 'venta';
+    type: string;
     crypto: string;
     amount: number;
     price: number;
