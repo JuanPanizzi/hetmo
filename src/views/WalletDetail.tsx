@@ -86,6 +86,24 @@ export const WalletDetail = () => {
         
     }, [])
 
+    // const onAmountChange = (e: any) => {
+    //     setNewTransaction(prev => ({
+    //       ...prev,
+    //       amount: e.value || 0
+    //     }));
+    //   };
+
+    // useEffect(() => {
+    //     if (newTransaction.crypto && newTransaction.amount > 0) {
+    //       const derivedPrice =
+    //         (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
+    //       setNewTransaction(prev => ({
+    //         ...prev,
+    //         price: derivedPrice
+    //       }));
+    //     }
+    //   }, [newTransaction.crypto, newTransaction.amount]); 
+
     return (
         <>
         {JSON.stringify(newTransaction)}
@@ -102,7 +120,8 @@ export const WalletDetail = () => {
                     <div className="flex flex-col gap-2">
                         <label htmlFor="crypto">Criptomoneda</label>
                         <Dropdown
-                            options={cryptos.map(crypto => crypto.name)}
+                            options={cryptos}
+                            optionLabel="name"
                             placeholder="Selecciona la criptomoneda"
                             value={newTransaction.crypto}
                             disabled={!newTransaction.type}
@@ -115,8 +134,9 @@ export const WalletDetail = () => {
                         id="cantidad"
                         placeholder="Cantidad"
                         value={newTransaction.amount}
+                        min={0}
                         disabled={!newTransaction.type}
-                        onValueChange={(e) => setNewTransaction((prevState) => ({ ...prevState, amount: e.value || 0 }))}
+                        onChange={(e) => setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
                         />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -125,10 +145,11 @@ export const WalletDetail = () => {
                         id="precio"
                         placeholder="Precio"
                         mode="currency" currency="USD" locale="en-US"
-                        value={newTransaction.price * newTransaction.amount}
-                        disabled
-                        onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, price: e.value || 0 }))}
-                        />
+                        value={ newTransaction.crypto && typeof newTransaction.crypto === 'object' && 'current_price' in newTransaction.crypto ? newTransaction.crypto.current_price * newTransaction.amount : 0 }
+                        disabled={!newTransaction.type}
+                        readOnly    
+                        // onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, price: e.value || 0 }))}
+                    />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="fecha">Fecha</label>
