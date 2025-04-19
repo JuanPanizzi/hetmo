@@ -98,7 +98,7 @@ export const WalletDetail = () => {
                         placeholder="Cantidad"
                         value={newTransaction.amount}
                         disabled={!newTransaction.type}
-                        onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
+                        onValueChange={(e) => setNewTransaction((prevState) => ({ ...prevState, amount: e.value || 0 }))}
                         />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -109,7 +109,7 @@ export const WalletDetail = () => {
                         mode="currency" currency="USD" locale="en-US"
                         value={newTransaction.price}
                         disabled={!newTransaction.type}
-                        onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, value: e.value || 0 }))}
+                        onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, price: e.value || 0 }))}
                         />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -154,11 +154,12 @@ export const WalletDetail = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* {JSON.stringify(wallet.cryptocurrencies)} */}
                     <Card title="Criptomonedas" className="shadow-lg">
                         <DataTable value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
                             <Column field="name" header="Criptomoneda" />
                             <Column field="amount" header="Cantidad" />
-                            <Column field="value" header="Valor" />
+                            <Column field="price" header="Valor" />
                         </DataTable>
 
 
