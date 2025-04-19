@@ -16,29 +16,29 @@ export const walletsReducer = (state: any, action: any) => {
 
             return state.filter((wallet: Wallet) => wallet.id !== payload);
         case 'ADD_TRANSACTION':
+            const newState = [...state];
             
-            
-            //1. Encontrar la wallet que coincide con el id
-            const walletIndex = state.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             if (walletIndex === -1) {
                 return state;
             }
-            //2. Buscar si ya existe la criptomoneda en la wallet
-            const cryptoIndex = state[walletIndex].cryptocurrencies.findIndex((crypto: Cryptocurrency) => crypto.name === payload.transaction.crypto);
-            
 
-
+            const cryptoIndex = newState[walletIndex].cryptocurrencies.findIndex(
+                (crypto: Cryptocurrency) => crypto.name === payload.transaction.crypto
+            );
             
             if (cryptoIndex !== -1) {
                 if (payload.transaction.type === 'compra') {
-                    state[walletIndex].cryptocurrencies[cryptoIndex].amount += payload.transaction.amount;
+                    newState[walletIndex].cryptocurrencies[cryptoIndex].amount += payload.transaction.amount;
                 } else if (payload.transaction.type === 'venta') {
-                    state[walletIndex].cryptocurrencies[cryptoIndex].amount -= payload.transaction.amount;
+                    if (newState[walletIndex].cryptocurrencies[cryptoIndex].amount >= payload.transaction.amount) {
+                        newState[walletIndex].cryptocurrencies[cryptoIndex].amount -= payload.transaction.amount;
+                    } else {
+                        return state; // No se puede vender más de lo que se tiene
+                    }
                 }
-            }
-
-            else {
-                state[walletIndex].cryptocurrencies.push({
+            } else {
+                newState[walletIndex].cryptocurrencies.push({
                     id: crypto.randomUUID(),
                     name: payload.transaction.crypto,
                     amount: payload.transaction.amount,
@@ -46,10 +46,16 @@ export const walletsReducer = (state: any, action: any) => {
                 });
             }
 
-            state[walletIndex].transactions.push(payload.transaction);
+            newState[walletIndex].transactions.push(payload.transaction);
 
-            //5. retornar el nuevo estado actualizado
-            return state;
+            try {
+                localStorage.setItem('wallets', JSON.stringify(newState));
+            } catch (error) {
+                console.error('Error al guardar en localStorage:', error);
+                return state; 
+            }
+
+            return newState;
 
 
     }

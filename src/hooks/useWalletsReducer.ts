@@ -32,10 +32,12 @@ export function useWalletsReducer() {
 
     const addTransaction = (walletId: string, transaction: Transaction): boolean => {
         
-        console.log('wallets before', wallets)
-        if (!updateLocalStorage(wallets)) return false;
+
+        
+
+
         dispatch({ type: "ADD_TRANSACTION", payload: { walletId, transaction } });
-        console.log('wallets after', wallets)
+        
         
         return true;
     }
