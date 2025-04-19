@@ -52,6 +52,22 @@ export const WalletDetail = () => {
     const handleAddTransaction = () => {
 
 
+        if (newTransaction.type === 'venta') {
+            const existingCrypto = wallet.cryptocurrencies.find(
+                crypto => crypto.name === (newTransaction.crypto as Crypto).name
+            );
+            
+            if (!existingCrypto || existingCrypto.amount < newTransaction.amount) {
+                toast.current?.show({ 
+                    severity: "error", 
+                    summary: "Error", 
+                    detail: "No tienes suficientes criptomonedas para realizar esta venta", 
+                    life: 3000 
+                });
+                return;
+            }
+        }
+
         if (!newTransaction.type || !newTransaction.crypto || !newTransaction.amount || !newTransaction.price || !newTransaction.date) {
             toast.current?.show({ severity: "error", summary: "Error", detail: "Todos los campos son obligatorios", life: 3000 });
             return;
@@ -133,11 +149,11 @@ export const WalletDetail = () => {
                         />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="precio">Precio (USD)</label>
+                            <label htmlFor="precio">Precio</label>
                     <InputNumber
                         id="precio"
                         placeholder="Precio"
-                        mode="currency" currency="USD" locale="en-US"
+                        mode="currency" currency="USD" locale="es-ES"
                         value={newTransaction.price}
                         disabled={!newTransaction.type}
                         readOnly    
@@ -188,13 +204,15 @@ export const WalletDetail = () => {
                     {/* {JSON.stringify(wallet.cryptocurrencies)} */}
                     <Card title="Criptomonedas" className="shadow-lg">
                         <DataTable value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
-                            <Column field="name" header="Criptomoneda" />
+                            <Column field="name" header="Criptomoneda" body={(rowData) => {
+                                return <div className="flex items-center gap-2">
+                                    <img src={rowData.image} alt={rowData.name} className="w-6 h-6 rounded-full" />
+                                    {rowData.name}
+                                </div>
+                            }} />
                             <Column field="amount" header="Cantidad" />
                             <Column field="price" header="Valor" />
                         </DataTable>
-
-
-
                     </Card>
 
                     <Card title="Historial de Transacciones" className="shadow-lg">
@@ -215,7 +233,12 @@ export const WalletDetail = () => {
                             <Column field="type" header="Tipo" sortable />
                             <Column field="cryptocurrency" header="Criptomoneda" sortable />
                             <Column field="amount" header="Cantidad" sortable />
-                            <Column field="price" header="Precio" sortable />
+                            <Column field="price" header="Precio" sortable body={(rowData) => {
+                                return parseInt(rowData.price).toLocaleString('es-ES', {
+                                    style: 'currency',
+                                    currency: 'USD'
+                                });
+                            }} />
                         </DataTable>
                     </Card>
                 </div>

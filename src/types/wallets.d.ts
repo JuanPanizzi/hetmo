@@ -32,6 +32,7 @@ export interface Cryptocurrency extends Crypto {
     id_crypto_currency?: string | number;
     amount: number;
     value?: number;
+    image?: string;
   
 }
 

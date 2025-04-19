@@ -16,6 +16,9 @@ export const walletsReducer = (state: any, action: any) => {
             return state.filter((wallet: Wallet) => wallet.id !== payload);
         case 'ADD_TRANSACTION':
 
+
+        //La transaccion tiene que guardar por un lado la transaccion y por otro lado la criptomoneda
+
             const newState = [...state];
             
             const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
@@ -24,7 +27,7 @@ export const walletsReducer = (state: any, action: any) => {
             }
 
             const cryptoIndex = newState[walletIndex].cryptocurrencies.findIndex(
-                (crypto: Cryptocurrency) => crypto.name === payload.transaction.crypto
+                (crypto: Cryptocurrency) => crypto.name === payload.transaction.crypto.name
             );
             
             if (cryptoIndex !== -1) {
@@ -39,10 +42,12 @@ export const walletsReducer = (state: any, action: any) => {
                 }
             } else {
                 newState[walletIndex].cryptocurrencies.push({
-                    id: crypto.randomUUID(),
-                    name: payload.transaction.crypto,
+                    id_crypto_currency: crypto.randomUUID(),
+                    name: payload.transaction.crypto.name,
                     amount: payload.transaction.amount,
-                    symbol: '',
+                    image: payload.transaction.crypto.image,
+                    symbol: payload.transaction.crypto.symbol,
+                  
                 });
             }
 
