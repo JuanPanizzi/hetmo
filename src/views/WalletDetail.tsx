@@ -86,13 +86,6 @@ export const WalletDetail = () => {
         
     }, [])
 
-    const handleAmountAndPrice = (e: any) => {
-        const amount = e.value || 0;
-        setNewTransaction(prev => ({
-            ...prev,
-            amount
-        }));
-    };
 
     useEffect(() => {
         if (newTransaction.crypto && newTransaction.amount > 0) {
@@ -136,7 +129,7 @@ export const WalletDetail = () => {
                         value={newTransaction.amount}
                         min={0}
                         disabled={!newTransaction.type}
-                        onChange={handleAmountAndPrice}
+                        onChange={ (e)=> setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
                         />
                         </div>
                         <div className="flex flex-col gap-2">
