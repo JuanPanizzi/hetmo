@@ -1,7 +1,7 @@
 import { Button } from "primereact/button"
 import WalletCard from "../components/Wallet/WalletCard"
 import { WalletContext } from "../context/walletContext"
-import { useContext,  useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
@@ -9,29 +9,22 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 
 export const Wallets = () => {
 
-  
+
   const { wallets, addWallet, deleteWallet } = useContext(WalletContext);
   const [visible, setVisible] = useState<boolean>(false);
   const [newWallet, setNewWallet] = useState({
     name: '',
     id: crypto.randomUUID()
   });
+  const toast = useRef<Toast>(null);
 
   const handleCreateWallet = () => {
-    
+
     if (newWallet.name === '') {
-      toast.current?.show({
-        severity: "error",
-        summary: "Error",
-        detail: "El nombre de la cartera es obligatorio",
-      });
-    return;
+      toast.current?.show({ severity: "error", summary: "Error", detail: "El nombre de la cartera es obligatorio" });
+      return;
     }
-    addWallet({
-      ...newWallet,
-      cryptocurrencies: [],
-      transactions: []
-    });
+    addWallet({ ...newWallet, cryptocurrencies: [], transactions: [] });
     setVisible(false);
     setNewWallet({ name: '', id: crypto.randomUUID() });
   };
@@ -41,35 +34,17 @@ export const Wallets = () => {
     setNewWallet({ name: '', id: crypto.randomUUID() });
   };
 
+  const handleDeleteWallet = (id: string) => {
 
-  const toast = useRef<Toast>(null);
+    deleteWallet(id);
+    toast.current?.show({ severity: "success", summary: "Operación exitosa", detail: "Cartera eliminada correctamente", life: 3000 });
 
-
-  const handleDeleteWallet = async (id: string) => {
-
-    const success = await deleteWallet(id);
-
-    if (success) {
-      toast.current?.show({
-        severity: "success",
-        summary: "Operación exitosa",
-        detail: "Cartera eliminada correctamente",
-        life: 3000,
-      });
-    } else {
-      toast.current?.show({
-        severity: "error",
-        summary: "Error",
-        detail: "No se pudo eliminar la cartera",
-        life: 3000,
-      });
-    }
   }
   return (
 
     <>
       <ConfirmDialog
-        acceptLabel="Eliminar"    
+        acceptLabel="Eliminar"
         rejectLabel="Cancelar"
         pt={{ rejectButton: { className: 'mr-2' } }} />
       <Toast ref={toast} />

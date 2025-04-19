@@ -6,16 +6,16 @@ export const initialWallets = JSON.parse(
 ) as Wallet[];
 
 
-//Habria que actualizar el localStorage
+
 export const walletsReducer = (state: any, action: any) => {
     const { type, payload } = action;
     switch (type) {
         case 'ADD_WALLET':
             return [...state, payload];
         case 'DELETE_WALLET':
-
             return state.filter((wallet: Wallet) => wallet.id !== payload);
         case 'ADD_TRANSACTION':
+
             const newState = [...state];
             
             const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
@@ -48,12 +48,6 @@ export const walletsReducer = (state: any, action: any) => {
 
             newState[walletIndex].transactions.push(payload.transaction);
 
-            try {
-                localStorage.setItem('wallets', JSON.stringify(newState));
-            } catch (error) {
-                console.error('Error al guardar en localStorage:', error);
-                return state; 
-            }
 
             return newState;
 
