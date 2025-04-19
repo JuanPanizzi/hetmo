@@ -14,7 +14,7 @@ export const Layout = () => {
     },
     {
       label: 'Criptomonedas',
-      icon: 'pi pi-users',
+      icon: 'pi pi-bitcoin',
       command: ()=> navigate('/cryptos')
     },
 

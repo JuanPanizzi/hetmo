@@ -3,6 +3,7 @@ import { DataTable } from 'primereact/datatable'
 import { useEffect, useRef, useState } from 'react'
 import { getCryptos } from '../services/API';
 import { Toast } from 'primereact/toast';
+import { Crypto } from '../types/wallets';
 
 
 
@@ -15,6 +16,13 @@ export const Cryptos = () => {
   const toast = useRef<Toast>(null);
 
   
+  const formatCurrency = (value: number) => {
+    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+};
+
+  const priceBodyTemplate = (crypto: Crypto) => {
+      return formatCurrency(crypto.current_price);
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +68,7 @@ export const Cryptos = () => {
             )}
           />
           <Column field="symbol" header="Símbolo" />
-          <Column field="current_price" header="Precio" />
+          <Column field="current_price" header="Precio (USD)" body={priceBodyTemplate} />
 
 
         </DataTable>
