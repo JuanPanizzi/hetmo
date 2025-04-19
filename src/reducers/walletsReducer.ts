@@ -16,39 +16,41 @@ export const walletsReducer = (state: any, action: any) => {
 
             return state.filter((wallet: Wallet) => wallet.id !== payload);
         case 'ADD_TRANSACTION':
-            return state.map((wallet: Wallet) => {
-                if (wallet.id === payload.walletId) {
-                    // Buscar si ya existe la criptomoneda en la wallet
-                    const existingCrypto = wallet.cryptocurrencies.find(
-                        crypto => crypto.name === payload.transaction.crypto
-                    );
+            
+            
+            //1. Encontrar la wallet que coincide con el id
+            const walletIndex = state.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+            if (walletIndex === -1) {
+                return state;
+            }
+            //2. Buscar si ya existe la criptomoneda en la wallet
+            const cryptoIndex = state[walletIndex].cryptocurrencies.findIndex((crypto: Cryptocurrency) => crypto.name === payload.transaction.crypto);
+            
 
-                    if (existingCrypto) {
-                        // Si existe, actualizar la cantidad según el tipo de transacción
-                        if (payload.transaction.type === 'compra') {
-                            existingCrypto.amount += payload.transaction.amount;
-                        } else if (payload.transaction.type === 'venta') {
-                            if (existingCrypto.amount >= payload.transaction.amount) {
-                                existingCrypto.amount -= payload.transaction.amount;
-                            } else {
-                                return wallet; // No se puede vender más de lo que se tiene
-                            }
-                        }
-                    } else {
-                        // Si no existe, agregar la nueva criptomoneda
-                        wallet.cryptocurrencies.push({
-                            id: '',
-                            name: payload.transaction.crypto,
-                            amount: payload.transaction.amount,
-                            symbol: '',
-                            current_price: 0,
-                        });
-                    }
 
-                    // Agregar la transacción al historial
-                    wallet.transactions.push(payload.transaction);
+            
+            if (cryptoIndex !== -1) {
+                if (payload.transaction.type === 'compra') {
+                    state[walletIndex].cryptocurrencies[cryptoIndex].amount += payload.transaction.amount;
+                } else if (payload.transaction.type === 'venta') {
+                    state[walletIndex].cryptocurrencies[cryptoIndex].amount -= payload.transaction.amount;
                 }
-                return wallet;
-            });
+            }
+
+            else {
+                state[walletIndex].cryptocurrencies.push({
+                    id: crypto.randomUUID(),
+                    name: payload.transaction.crypto,
+                    amount: payload.transaction.amount,
+                    symbol: '',
+                });
+            }
+
+            state[walletIndex].transactions.push(payload.transaction);
+
+            //5. retornar el nuevo estado actualizado
+            return state;
+
+
     }
 }
