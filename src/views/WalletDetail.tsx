@@ -51,27 +51,34 @@ export const WalletDetail = () => {
 
     const handleAddTransaction = () => {
 
+        if (!newTransaction.type || !newTransaction.crypto || !newTransaction.date) {
+            toast.current?.show({ severity: "error", summary: "Campos Incompletos", detail: "Todos los campos son obligatorios", life: 3000 });
+            return;
+        }
+        if (newTransaction.amount <= 0) {
+            toast.current?.show({ severity: "error", summary: "Cantidad Inválida", detail: "La cantidad debe ser mayor que 0", life: 3000 });
+            return;
+        }
 
         if (newTransaction.type === 'venta') {
             const existingCrypto = wallet.cryptocurrencies.find(
                 crypto => crypto.name === (newTransaction.crypto as Crypto).name
             );
-            
-            if (!existingCrypto || existingCrypto.amount < newTransaction.amount) {
-                toast.current?.show({ 
-                    severity: "error", 
-                    summary: "Error", 
-                    detail: "No tienes suficientes criptomonedas para realizar esta venta", 
-                    life: 3000 
+
+            if (!existingCrypto) {
+                toast.current?.show({
+                    severity: "error", summary: "Error", detail: "No posee en su cartera criptomonedas de este tipo para realizar la venta", life: 5000
                 });
+                return;
+            } else if (existingCrypto.amount < newTransaction.amount) {
+                toast.current?.show(
+                    {
+                        severity: "error", summary: "Criptomonedas insuficientes", detail: "No posee suficientes criptomonedas para realizar la venta", life: 5000
+                    });
                 return;
             }
         }
 
-        if (!newTransaction.type || !newTransaction.crypto || !newTransaction.amount || !newTransaction.price || !newTransaction.date) {
-            toast.current?.show({ severity: "error", summary: "Error", detail: "Todos los campos son obligatorios", life: 3000 });
-            return;
-        }
 
         newTransaction.id = crypto.randomUUID();
         addTransaction(wallet.id, newTransaction);
@@ -84,6 +91,7 @@ export const WalletDetail = () => {
             date: '',
             id: ''
         });
+        toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción realizada correctamente", life: 3000 });
     }
 
 
@@ -91,7 +99,7 @@ export const WalletDetail = () => {
         const cryptos = sessionStorage.getItem('cryptos');
         if (cryptos) {
             setCryptos(JSON.parse(cryptos));
-        }else{
+        } else {
             const fetchCryptos = async () => {
                 const response = await getCryptos();
                 setCryptos(response.data);
@@ -99,12 +107,12 @@ export const WalletDetail = () => {
             }
             fetchCryptos();
         }
-        
+
     }, [])
 
 
     useEffect(() => {
-        if (newTransaction.crypto && newTransaction.amount > 0) {
+        if (newTransaction.crypto && newTransaction.amount >= 0) {
             const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
             setNewTransaction(prev => ({
                 ...prev,
@@ -115,7 +123,7 @@ export const WalletDetail = () => {
 
     return (
         <>
-        {JSON.stringify(newTransaction)}
+            {JSON.stringify(newTransaction)}
             <Toast ref={toast} />
             <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -139,36 +147,36 @@ export const WalletDetail = () => {
                     </div>
                     <div className="flex flex-col gap-2">
                         <label htmlFor="cantidad">Cantidad</label>
-                    <InputNumber
-                        id="cantidad"
-                        placeholder="Cantidad"
-                        value={newTransaction.amount}
-                        min={0}
-                        disabled={!newTransaction.type}
-                        onChange={ (e)=> setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
+                        <InputNumber
+                            id="cantidad"
+                            placeholder="Cantidad"
+                            value={newTransaction.amount}
+                            min={0}
+                            disabled={!newTransaction.type}
+                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
                         />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="precio">Precio</label>
-                    <InputNumber
-                        id="precio"
-                        placeholder="Precio"
-                        mode="currency" currency="USD" locale="es-ES"
-                        value={newTransaction.price}
-                        disabled={!newTransaction.type}
-                        readOnly    
-                    />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="fecha">Fecha</label>
-                            <Calendar
-                                id="fecha"
-                                placeholder="DD/MM/YYYY"
-                                disabled={!newTransaction.type}
-                                value={newTransaction.date ? new Date(newTransaction.date) : null}
-                                onChange={(e) => setNewTransaction(prevState => ({ ...prevState, date: e.value?.toISOString() || '' }))}
-                            />
-                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="precio">Precio</label>
+                        <InputNumber
+                            id="precio"
+                            placeholder="Precio"
+                            mode="currency" currency="USD" locale="es-ES"
+                            value={newTransaction.price}
+                            disabled={!newTransaction.type}
+                            readOnly
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="fecha">Fecha</label>
+                        <Calendar
+                            id="fecha"
+                            placeholder="DD/MM/YYYY"
+                            disabled={!newTransaction.type}
+                            value={newTransaction.date ? new Date(newTransaction.date) : null}
+                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, date: e.value?.toISOString() || '' }))}
+                        />
+                    </div>
                     <Button
                         label="Cancelar"
                         severity="secondary"
@@ -217,10 +225,10 @@ export const WalletDetail = () => {
 
                     <Card title="Historial de Transacciones" className="shadow-lg">
                         <DataTable value={wallet.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
-                            <Column 
-                                field="date" 
-                                header="Fecha" 
-                                sortable 
+                            <Column
+                                field="date"
+                                header="Fecha"
+                                sortable
                                 body={(rowData) => {
                                     const date = new Date(rowData.date);
                                     return date.toLocaleDateString('es-ES', {
