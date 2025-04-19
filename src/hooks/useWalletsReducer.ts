@@ -31,9 +31,7 @@ export function useWalletsReducer() {
     };
 
     const addTransaction = (walletId: string, transaction: Transaction): boolean => {
-        // Primero actualizamos el estado con el reducer para obtener el nuevo estado
-        const newState = walletsReducer(wallets, { type: "ADD_TRANSACTION", payload: { walletId, transaction } });
-        if (!updateLocalStorage(newState)) return false;
+        
         dispatch({ type: "ADD_TRANSACTION", payload: { walletId, transaction } });
         return true;
     }
