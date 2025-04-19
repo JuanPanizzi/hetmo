@@ -46,7 +46,7 @@ export const Wallets = () => {
 
 useEffect(() => {
 
-  const cryptos = localStorage.getItem('cryptos');
+  const cryptos = sessionStorage.getItem('cryptos');
   if (cryptos) {
     setCryptos(JSON.parse(cryptos));
   } else {
@@ -55,7 +55,7 @@ useEffect(() => {
       const response = await getCryptos();
       if (response.success) {
       setCryptos(response.data);
-      localStorage.setItem('cryptos', JSON.stringify(response.data));
+      sessionStorage.setItem('cryptos', JSON.stringify(response.data));
       }
       setLoading(false);
     }

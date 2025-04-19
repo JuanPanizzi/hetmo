@@ -72,37 +72,37 @@ export const WalletDetail = () => {
 
 
     useEffect(() => {
-        const cryptos = localStorage.getItem('cryptos');
+        const cryptos = sessionStorage.getItem('cryptos');
         if (cryptos) {
             setCryptos(JSON.parse(cryptos));
         }else{
             const fetchCryptos = async () => {
                 const response = await getCryptos();
                 setCryptos(response.data);
-                localStorage.setItem('cryptos', JSON.stringify(response.data));
+                sessionStorage.setItem('cryptos', JSON.stringify(response.data));
             }
             fetchCryptos();
         }
         
     }, [])
 
-    // const onAmountChange = (e: any) => {
-    //     setNewTransaction(prev => ({
-    //       ...prev,
-    //       amount: e.value || 0
-    //     }));
-    //   };
+    const handleAmountAndPrice = (e: any) => {
+        const amount = e.value || 0;
+        setNewTransaction(prev => ({
+            ...prev,
+            amount
+        }));
+    };
 
-    // useEffect(() => {
-    //     if (newTransaction.crypto && newTransaction.amount > 0) {
-    //       const derivedPrice =
-    //         (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
-    //       setNewTransaction(prev => ({
-    //         ...prev,
-    //         price: derivedPrice
-    //       }));
-    //     }
-    //   }, [newTransaction.crypto, newTransaction.amount]); 
+    useEffect(() => {
+        if (newTransaction.crypto && newTransaction.amount > 0) {
+            const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
+            setNewTransaction(prev => ({
+                ...prev,
+                price: derivedPrice
+            }));
+        }
+    }, [newTransaction.crypto, newTransaction.amount]);
 
     return (
         <>
@@ -136,7 +136,7 @@ export const WalletDetail = () => {
                         value={newTransaction.amount}
                         min={0}
                         disabled={!newTransaction.type}
-                        onChange={(e) => setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
+                        onChange={handleAmountAndPrice}
                         />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -145,10 +145,9 @@ export const WalletDetail = () => {
                         id="precio"
                         placeholder="Precio"
                         mode="currency" currency="USD" locale="en-US"
-                        value={ newTransaction.crypto && typeof newTransaction.crypto === 'object' && 'current_price' in newTransaction.crypto ? newTransaction.crypto.current_price * newTransaction.amount : 0 }
+                        value={newTransaction.price}
                         disabled={!newTransaction.type}
                         readOnly    
-                        // onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, price: e.value || 0 }))}
                     />
                         </div>
                         <div className="flex flex-col gap-2">

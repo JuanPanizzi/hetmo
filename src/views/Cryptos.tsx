@@ -25,6 +25,11 @@ export const Cryptos = () => {
 };
 
   useEffect(() => {
+
+    const cryptos = sessionStorage.getItem('cryptos');
+    if (cryptos) {
+      setCoins(JSON.parse(cryptos));
+    } else {
     const fetchData = async () => {
       setLoading(true);
 
@@ -32,15 +37,15 @@ export const Cryptos = () => {
 
       if (response.success) {
         setCoins(response.data);
-
+        sessionStorage.setItem('cryptos', JSON.stringify(response.data));
       } else {
       toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
-
       }
       setLoading(false);
     };
 
     fetchData();
+  }
   }, []);
 
 
