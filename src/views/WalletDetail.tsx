@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { WalletContext } from "../context/walletContext";
 import { useParams } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
@@ -9,9 +9,10 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
-import { Transaction } from "../types/wallets";
+import { Transaction, Crypto } from "../types/wallets";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
+import { getCryptos } from "../services/API";
 
 export const WalletDetail = () => {
 
@@ -34,6 +35,7 @@ export const WalletDetail = () => {
         date: '',
         id: ''
     })
+    const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
     const handleCancel = () => {
         setVisible(false);
@@ -68,6 +70,22 @@ export const WalletDetail = () => {
         });
     }
 
+
+    useEffect(() => {
+        const cryptos = localStorage.getItem('cryptos');
+        if (cryptos) {
+            setCryptos(JSON.parse(cryptos));
+        }else{
+            const fetchCryptos = async () => {
+                const response = await getCryptos();
+                setCryptos(response.data);
+                localStorage.setItem('cryptos', JSON.stringify(response.data));
+            }
+            fetchCryptos();
+        }
+        
+    }, [])
+
     return (
         <>
         {JSON.stringify(newTransaction)}
@@ -83,12 +101,12 @@ export const WalletDetail = () => {
                     />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="crypto">Criptomoneda</label>
-                        <InputText
-                            id="crypto"
-                            placeholder="Nombre"
+                        <Dropdown
+                            options={cryptos.map(crypto => crypto.name)}
+                            placeholder="Selecciona la criptomoneda"
                             value={newTransaction.crypto}
                             disabled={!newTransaction.type}
-                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, crypto: e.target.value }))}
+                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, crypto: e.value }))}
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -107,8 +125,8 @@ export const WalletDetail = () => {
                         id="precio"
                         placeholder="Precio"
                         mode="currency" currency="USD" locale="en-US"
-                        value={newTransaction.price}
-                        disabled={!newTransaction.type}
+                        value={newTransaction.price * newTransaction.amount}
+                        disabled
                         onValueChange={(e) => setNewTransaction(prevState => ({ ...prevState, price: e.value || 0 }))}
                         />
                         </div>
@@ -168,7 +186,19 @@ export const WalletDetail = () => {
 
                     <Card title="Historial de Transacciones" className="shadow-lg">
                         <DataTable value={wallet.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
-                            <Column field="date" header="Fecha" sortable />
+                            <Column 
+                                field="date" 
+                                header="Fecha" 
+                                sortable 
+                                body={(rowData) => {
+                                    const date = new Date(rowData.date);
+                                    return date.toLocaleDateString('es-ES', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    });
+                                }}
+                            />
                             <Column field="type" header="Tipo" sortable />
                             <Column field="cryptocurrency" header="Criptomoneda" sortable />
                             <Column field="amount" header="Cantidad" sortable />

@@ -1,17 +1,20 @@
 import { Button } from "primereact/button"
 import WalletCard from "../components/Wallet/WalletCard"
 import { WalletContext } from "../context/walletContext"
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog } from "primereact/confirmdialog";
-
+import { getCryptos } from "../services/API";
+import { ProgressSpinner } from "primereact/progressspinner";
 export const Wallets = () => {
 
 
   const { wallets, addWallet, deleteWallet } = useContext(WalletContext);
   const [visible, setVisible] = useState<boolean>(false);
+  const [cryptos, setCryptos] = useState<Crypto[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [newWallet, setNewWallet] = useState({
     name: '',
     id: crypto.randomUUID()
@@ -40,6 +43,27 @@ export const Wallets = () => {
     toast.current?.show({ severity: "success", summary: "Operación exitosa", detail: "Cartera eliminada correctamente", life: 3000 });
 
   }
+
+useEffect(() => {
+
+  const cryptos = localStorage.getItem('cryptos');
+  if (cryptos) {
+    setCryptos(JSON.parse(cryptos));
+  } else {
+    const fetchCryptos = async () => {
+      setLoading(true);
+      const response = await getCryptos();
+      if (response.success) {
+      setCryptos(response.data);
+      localStorage.setItem('cryptos', JSON.stringify(response.data));
+      }
+      setLoading(false);
+    }
+    fetchCryptos();
+  }
+}, [])
+
+
   return (
 
     <>
@@ -48,18 +72,6 @@ export const Wallets = () => {
         rejectLabel="Cancelar"
         pt={{ rejectButton: { className: 'mr-2' } }} />
       <Toast ref={toast} />
-      <section>
-        <div className="flex w-full items-center justify-between p-2">
-          <h1 className="text-4xl ">Carteras</h1>
-          <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => setVisible(true)} />
-        </div>
-
-        <div className="grid grid-cols-4 gap-4 place-items-center ">
-          {wallets.map((wallet) => (
-            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} />
-          ))}
-        </div>
-
         <Dialog
           header="Crear Nueva Cartera"
           visible={visible}
@@ -84,7 +96,27 @@ export const Wallets = () => {
             </div>
           </div>
         </Dialog>
-      </section>
+      
+      {loading && <div className="flex justify-center items-center h-screen">
+          <ProgressSpinner />
+      </div>}
+      {!loading && cryptos.length > 0 && <section>
+        <div className="flex w-full items-center justify-between p-2">
+          <h1 className="text-4xl ">Carteras</h1>
+          <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => setVisible(true)} />
+        </div>
+
+        <div className="grid grid-cols-4 gap-4 place-items-center ">
+          {wallets.map((wallet) => (
+            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} />
+          ))}
+        </div>
+
+      </section>}
+      {!loading && wallets.length === 0 && <div className="flex justify-center items-center h-screen">
+        <h1 className="text-4xl ">No se registran carteras en este momento, crea una para empezar a operar</h1>
+      </div>}
+    
     </>
   )
 }

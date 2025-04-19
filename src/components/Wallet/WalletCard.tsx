@@ -6,7 +6,7 @@ import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function WalletCard({ wallet, handleDeleteWallet }: { wallet: Wallet, handleDeleteWallet: (id: string) => void }) {
+export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wallet: Wallet, handleDeleteWallet: (id: string) => void, cryptos: Crypto[] }) {
 
   const navigate = useNavigate();
 
