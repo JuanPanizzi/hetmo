@@ -103,22 +103,18 @@ export const WalletDetail = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card title="Criptomonedas" className="shadow-lg">
-                        {wallet.cryptocurrencies?.length ? (
-                        <DataTable value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }}>
+                        <DataTable value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
                             <Column field="name" header="Criptomoneda"  />
                             <Column field="amount" header="Cantidad"  />
                             <Column field="value" header="Valor"  />
                         </DataTable>
                         
-                        
                            
-                        ) : (
-                            <p className="text-gray-500">No hay criptomonedas en esta cartera</p>
-                        )}
+                     
                     </Card>
 
                     <Card title="Historial de Transacciones" className="shadow-lg">
-                        <DataTable value={wallet.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }}>
+                        <DataTable value={wallet.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
                             <Column field="date" header="Fecha" sortable />
                             <Column field="type" header="Tipo" sortable />
                             <Column field="cryptocurrency" header="Criptomoneda" sortable />

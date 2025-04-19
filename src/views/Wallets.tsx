@@ -88,7 +88,7 @@ export const Wallets = () => {
         <Dialog
           header="Crear Nueva Cartera"
           visible={visible}
-          style={{ width: '50vw' }}
+          className="w-[90vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw]"
           onHide={() => setVisible(false)}
           footer={
             <div>
