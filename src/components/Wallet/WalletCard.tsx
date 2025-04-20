@@ -4,8 +4,19 @@ import { Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 
+interface WalletModalOptions {
+    isEditing: boolean;
+    selectedWallet?: Wallet;
+  }
 
-export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wallet: Wallet, handleDeleteWallet: (id: string) => void, cryptos: Crypto[] }) {
+type Props = {
+    wallet: Wallet;
+    handleDeleteWallet: (id: string) => void;
+    cryptos: Crypto[];
+    handleWalletModal: (showWalletModal: boolean, options?: WalletModalOptions) => void;
+}
+
+export default function WalletCard({ wallet, handleDeleteWallet, cryptos, handleWalletModal }: Props) {
 
   const navigate = useNavigate();
 
@@ -35,7 +46,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wa
     const footer = (
         <>
             <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} />
-            <Button icon="pi pi-pencil" className='mx-2 h-full' />
+            <Button icon="pi pi-pencil" className='mx-2 h-full' onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: {...wallet} })} />
             <Button severity="danger"  icon="pi pi-trash" className='!h-full' style={{height: '100%'}}  onClick={confirmDelete} />
 
         </>
@@ -43,6 +54,8 @@ export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wa
 
     return (
         <>
+        
+     
                 <Card title="" subTitle="" footer={footer} header={header} className="p-4 w-full xl:max-w-xl">
                     {
                         !wallet.cryptocurrencies?.length ? (
@@ -50,8 +63,8 @@ export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wa
                         ) : (
                             <div className="space-y-4 ">
                                 {
-                                    wallet.cryptocurrencies.map((crypto) => (
-                                        <div key={crypto.id} className="flex justify-between items-center">
+                                    wallet.cryptocurrencies.map((crypto, index) => (
+                                        <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
                                             <div className="flex items-center gap-2">
                                                 <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
                                                 <span className="text-gray-200">{crypto.symbol?.toUpperCase()}</span>

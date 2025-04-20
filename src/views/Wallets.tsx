@@ -12,7 +12,7 @@ import { WalletModal } from "../components/Wallet/walletModal";
 export const Wallets = () => {
 
 
-  const { wallets, deleteWallet, handleVisible, handleCryptos, handleNewWallet, handleLoading, createWallet, visible, newWallet, loading, cryptos } = useWallet();
+  const { wallets, deleteWallet, handleWalletModal, handleCryptos, handleNewWallet, handleLoading, handleIsEditing, createWallet, isEditing, showWalletModal, newWallet, loading, cryptos, selectedWallet } = useWallet();
 
 
   const toast = useRef<Toast>(null);
@@ -26,7 +26,7 @@ export const Wallets = () => {
   }
 
   const handleCancel = () => {
-    handleVisible(false);
+    handleWalletModal(false);
     handleNewWallet({ name: '', id: crypto.randomUUID() });
   };
 
@@ -59,13 +59,18 @@ export const Wallets = () => {
   return (
 
     <>
+    {JSON.stringify(wallets)}
+    <h1>NNEW</h1>
+    {JSON.stringify(newWallet)}
+    <h1>SELECTED WALLET</h1>
+    {JSON.stringify(selectedWallet)}
       <ConfirmDialog
         acceptLabel="Eliminar"
         rejectLabel="Cancelar"
         pt={{ rejectButton: { className: 'mr-2' } }} />
       <Toast ref={toast} />
-      
-      <WalletModal visible={visible} handleVisible={handleVisible} handleCancel={handleCancel} handleCreateWallet={handleCreateWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} />
+
+      <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleCreateWallet={handleCreateWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
 
       {loading && <div className="flex justify-center items-center h-screen">
         <ProgressSpinner />
@@ -73,12 +78,12 @@ export const Wallets = () => {
       {!loading && cryptos.length > 0 && <section>
         <div className="flex w-full items-center justify-between p-2">
           <h1 className="text-4xl ">Carteras</h1>
-          <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => handleVisible(true)} />
+          <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => handleWalletModal(true, { isEditing: false })} />
         </div>
 
         <div className="flex flex-wrap gap-10 items-start xl:mt-10 mx-5 place-items-center ">
           {wallets.map((wallet) => (
-            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} />
+            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} handleWalletModal={handleWalletModal} />
           ))}
         </div>
 
