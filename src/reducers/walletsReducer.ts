@@ -1,4 +1,4 @@
-import { Cryptocurrency, Transaction, Wallet } from "../types/wallets";
+import {  Transaction, Wallet } from "../types/wallets";
 
 //Estado global
 export const initialWallets = JSON.parse(

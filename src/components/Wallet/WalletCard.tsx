@@ -16,7 +16,7 @@ type Props = {
     handleWalletModal: (showWalletModal: boolean, options?: WalletModalOptions) => void;
 }
 
-export default function WalletCard({ wallet, handleDeleteWallet, cryptos, handleWalletModal }: Props) {
+export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: Props) {
 
   const navigate = useNavigate();
 

@@ -1,8 +1,6 @@
 import { Button } from "primereact/button"
 import WalletCard from "../components/Wallet/WalletCard"
 import { useEffect, useRef } from "react";
-import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { getCryptos } from "../services/API";
@@ -59,11 +57,7 @@ export const Wallets = () => {
   return (
 
     <>
-    {JSON.stringify(wallets)}
-    <h1>NNEW</h1>
-    {JSON.stringify(newWallet)}
-    <h1>SELECTED WALLET</h1>
-    {JSON.stringify(selectedWallet)}
+ 
       <ConfirmDialog
         acceptLabel="Eliminar"
         rejectLabel="Cancelar"
