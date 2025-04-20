@@ -8,9 +8,10 @@ import { Button } from 'primereact/button';
 type Props = {
     wallet: Wallet
     confirmDelete: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
+    handleEditTransaction: (transaction: any) => void
 }
 
-export const TransactionsTable = ({ wallet, confirmDelete }: Props) => {
+export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction }: Props) => {
     return (
         <>
             <Card title="Historial de Transacciones" className="shadow-lg">
@@ -30,7 +31,6 @@ export const TransactionsTable = ({ wallet, confirmDelete }: Props) => {
                     />
                     <Column field="type" header="Tipo" sortable />
                     <Column field="crypto.name" header="Criptomoneda" sortable />
-
                     <Column field="amount" header="Cantidad" sortable />
                     <Column field="price" header="Precio" sortable body={(rowData) => {
                         return parseInt(rowData.price).toLocaleString('es-ES', {
@@ -42,7 +42,7 @@ export const TransactionsTable = ({ wallet, confirmDelete }: Props) => {
                         return (
                             <div className="flex items-center gap-2">
                                 <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
-                                {/* <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />     */}
+                                <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />    
                             </div>
                         )
                     }} />

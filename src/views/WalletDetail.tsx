@@ -13,7 +13,7 @@ import { TransactionsTable } from "../components/WalletDetail/TransactionsTable"
 
 export const WalletDetail = () => {
 
-    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos } = useTransactions();
+    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing } = useTransactions();
 
     if (!wallet) {
         return <Error message="Cartera no encontrada" />;
@@ -78,7 +78,16 @@ export const WalletDetail = () => {
 
             <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
             <Toast ref={toast} />
-            <TransactionModal visible={visible} handleSetVisible={handleSetVisible} newTransaction={newTransaction} handleNewTransaction={handleNewTransaction} cryptos={cryptos} handleCancel={handleCancel} saveNewTransaction={saveNewTransaction} />
+            <TransactionModal 
+                visible={visible} 
+                handleSetVisible={handleSetVisible} 
+                newTransaction={newTransaction} 
+                handleNewTransaction={handleNewTransaction} 
+                cryptos={cryptos} 
+                handleCancel={handleCancel} 
+                saveNewTransaction={saveNewTransaction} 
+                isEditing={isEditing}
+            />
 
             <section className="p-4">
                 <div className="flex justify-between items-center mb-6">
@@ -90,7 +99,7 @@ export const WalletDetail = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <CryptoTable wallet={wallet} />
-                    <TransactionsTable wallet={wallet} confirmDelete={confirmDelete} />
+                    <TransactionsTable wallet={wallet} confirmDelete={confirmDelete} handleEditTransaction={handleEditTransaction} />
                 </div>
             </section>
         </>

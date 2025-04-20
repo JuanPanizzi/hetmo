@@ -3,12 +3,8 @@ import { WalletContext } from '../context/walletContext';
 import { Transaction, Crypto } from '../types/wallets';
 import { useParams } from 'react-router-dom';
 
-
-
 export const useTransactions = () => {
-
-
-    const { wallets, addTransaction, deleteTransaction } = useContext(WalletContext);
+    const { wallets, addTransaction, deleteTransaction, editTransaction } = useContext(WalletContext);
 
     const [newTransaction, setNewTransaction] = useState<Transaction>({
         type: '',
@@ -21,6 +17,7 @@ export const useTransactions = () => {
     const [visible, setVisible] = useState<boolean>(false)
     const { id } = useParams();
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const wallet = wallets.find(w => w.id === id);
 
@@ -32,6 +29,7 @@ export const useTransactions = () => {
 
     const handleCancel = () => {
         setVisible(false);
+        setIsEditing(false);
         setNewTransaction({
             type: '',
             crypto: '',
@@ -42,9 +40,14 @@ export const useTransactions = () => {
         })
     }
 
+    const handleEditTransaction = (transaction: Transaction) => {
+        setNewTransaction(transaction);
+        setIsEditing(true);
+        setVisible(true);
+    }
+
     const handleAddTransaction = () => {
         if (!newTransaction.type || !newTransaction.crypto || !newTransaction.date) {
-
             return { severity: "error", message: "Todos los campos son obligatorios" };
         }
         if (newTransaction.amount <= 0) {
@@ -67,8 +70,15 @@ export const useTransactions = () => {
                 return { severity: "error", message: "No posee suficientes criptomonedas para realizar la transacción." };
             }
         }
-        newTransaction.id = crypto.randomUUID();
-        addTransaction(wallet?.id || '', newTransaction);
+
+        if (isEditing) {
+            editTransaction(wallet?.id || '', newTransaction);
+            setIsEditing(false);
+        } else {
+            newTransaction.id = crypto.randomUUID();
+            addTransaction(wallet?.id || '', newTransaction);
+        }
+        
         setVisible(false);
         handleNewTransaction({
             type: '',
@@ -80,7 +90,6 @@ export const useTransactions = () => {
         });
         return { severity: "success", message: "Transacción realizada correctamente" };
     }
-
 
     return {
         wallets,
@@ -95,6 +104,8 @@ export const useTransactions = () => {
         handleAddTransaction,
         handleSetVisible,
         cryptos,
-        handleSetCryptos
+        handleSetCryptos,
+        handleEditTransaction,
+        isEditing
     }
 }

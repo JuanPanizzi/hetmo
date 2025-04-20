@@ -5,8 +5,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
 import { Transaction, Crypto } from "../../types/wallets";
 
-
-    type Props = {
+type Props = {
     visible: boolean;
     handleSetVisible: (visible: boolean) => void;
     newTransaction: Transaction;
@@ -14,12 +13,13 @@ import { Transaction, Crypto } from "../../types/wallets";
     cryptos: Crypto[];
     handleCancel: () => void;
     saveNewTransaction: () => void;
+    isEditing?: boolean;
 }
 
-export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction }: Props) => {
+export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: Props) => {
   return (
     <>
-    <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
+    <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <Dropdown
                         className="col-span-2"
@@ -82,7 +82,6 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                         label="Aceptar"
                         icon="pi pi-check"
                         onClick={saveNewTransaction}
-
                     />
                 </div>
             </Dialog>

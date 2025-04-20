@@ -29,10 +29,14 @@ export function useWalletsReducer() {
         dispatch({ type: "ADD_TRANSACTION", payload: { walletId, transaction } });
     }
 
+    const editTransaction = (walletId: string, transaction: Transaction): void => {
+        dispatch({ type: "EDIT_TRANSACTION", payload: { walletId, transaction } });
+    }
+
     const deleteTransaction = (walletId: string, id: string): void => {
         dispatch({ type: "DELETE_TRANSACTION", payload: { walletId, id } });
     }
 
-    return { wallets, addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet }
+    return { wallets, addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction }
 }
 
