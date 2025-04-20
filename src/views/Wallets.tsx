@@ -8,6 +8,7 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import { getCryptos } from "../services/API";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useWallet } from "../hooks/useWallet";
+import { WalletModal } from "../components/Wallet/walletModal";
 export const Wallets = () => {
 
 
@@ -17,8 +18,7 @@ export const Wallets = () => {
   const toast = useRef<Toast>(null);
 
   const handleCreateWallet = () => {
-    const success = createWallet();
-    if (!success) {
+    if (!createWallet()) {
       toast.current?.show({ severity: "error", summary: "Error", detail: "El nombre de la cartera es obligatorio" });
       return
     }
@@ -64,30 +64,8 @@ export const Wallets = () => {
         rejectLabel="Cancelar"
         pt={{ rejectButton: { className: 'mr-2' } }} />
       <Toast ref={toast} />
-      <Dialog
-        header="Crear Nueva Cartera"
-        visible={visible}
-        className="w-[90vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw]"
-        onHide={() => handleVisible(false)}
-        footer={
-          <div>
-            <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text" />
-            <Button label="Crear" icon="pi pi-check" onClick={handleCreateWallet} autoFocus />
-          </div>
-        }
-      >
-        <div className="p-fluid">
-          <div className="field">
-            <label htmlFor="name">Nombre de la Cartera</label>
-            <InputText
-              id="name"
-              value={newWallet.name}
-              onChange={(e) => handleNewWallet({ ...newWallet, name: e.target.value })}
-              placeholder="Ingresa el nombre de la cartera"
-            />
-          </div>
-        </div>
-      </Dialog>
+      
+      <WalletModal visible={visible} handleVisible={handleVisible} handleCancel={handleCancel} handleCreateWallet={handleCreateWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} />
 
       {loading && <div className="flex justify-center items-center h-screen">
         <ProgressSpinner />
