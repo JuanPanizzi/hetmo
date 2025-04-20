@@ -6,21 +6,21 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import { getCryptos } from "../services/API";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useWallet } from "../hooks/useWallet";
-import { WalletModal } from "../components/Wallet/walletModal";
+import { WalletModal } from "../components/Wallet/WalletModal";
 export const Wallets = () => {
 
 
-  const { wallets, deleteWallet, handleWalletModal, handleCryptos, handleNewWallet, handleLoading,  createWallet, isEditing, showWalletModal, newWallet, loading, cryptos, selectedWallet } = useWallet();
+  const { wallets, deleteWallet, handleWalletModal, handleCryptos, handleNewWallet, handleLoading,  saveWallet, isEditing, showWalletModal, newWallet, loading, cryptos, selectedWallet } = useWallet();
 
 
   const toast = useRef<Toast>(null);
 
-  const handleCreateWallet = () => {
-    if (!createWallet()) {
+  const handleSaveWallet = () => {
+    if (!saveWallet()) {
       toast.current?.show({ severity: "error", summary: "Error", detail: "El nombre de la cartera es obligatorio" });
       return
     }
-    toast.current?.show({ severity: "success", summary: "Operación exitosa", detail: "Cartera creada correctamente", life: 3000 });
+    toast.current?.show({ severity: "success", summary: "Operación exitosa", detail: isEditing ? "Cartera editada correctamente" : "Cartera creada correctamente", life: 3000 });
   }
 
   const handleCancel = () => {
@@ -64,7 +64,7 @@ export const Wallets = () => {
         pt={{ rejectButton: { className: 'mr-2' } }} />
       <Toast ref={toast} />
 
-      <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleCreateWallet={handleCreateWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
+      <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleSaveWallet={handleSaveWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
 
       {loading && <div className="flex justify-center items-center h-screen">
         <ProgressSpinner />

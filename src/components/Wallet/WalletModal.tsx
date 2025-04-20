@@ -8,13 +8,13 @@ type Props = {
     showWalletModal: boolean;
     handleWalletModal: (showWalletModal: boolean, options?: { isEditing: boolean, selectedWallet?: Wallet }) => void;
     handleCancel: () => void;
-    handleCreateWallet: () => void;
+    handleSaveWallet: () => void;
     newWallet: { name: string; id: string };
     handleNewWallet: (wallet: { name: string; id: string } | Wallet) => void;
     selectedWallet?: Wallet;
 }
 
-export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleCreateWallet, newWallet, handleNewWallet, selectedWallet }: Props) => {
+export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleSaveWallet, newWallet, handleNewWallet, selectedWallet }: Props) => {
  
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -41,7 +41,7 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
         footer={
           <div>
             <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text" />
-            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleCreateWallet} autoFocus />
+            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus />
           </div>
         }
       >

@@ -39,7 +39,7 @@ const handleNewWallet = (wallet: { name: string; id: string } | Wallet) => {
 
 const handleIsEditing = (isEditing: boolean) => setIsEditing(isEditing);
 
-const createWallet = () => {
+const saveWallet = () => {
     if (isEditing && selectedWallet) {
         if (selectedWallet.name === '') {
             return false;
@@ -72,7 +72,7 @@ return {
     handleCryptos,
     handleLoading,
     handleNewWallet,
-    createWallet,
+    saveWallet,
     isEditing,
     handleIsEditing,
     selectedWallet
