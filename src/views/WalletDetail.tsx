@@ -10,6 +10,7 @@ import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 import { useTransactions } from "../hooks/useTransactions";
 import { Error } from "./Error";
 import { TransactionModal } from "../components/WalletDetail/TransactionModal";
+import { CryptoTable } from "../components/WalletDetail/CryptoTable";
 
 
 export const WalletDetail = () => {
@@ -24,15 +25,9 @@ export const WalletDetail = () => {
 
 
     const saveNewTransaction = () => {
-
         const result = handleAddTransaction();
         if (result.message) {
-            toast.current?.show({
-                severity: result.severity as 'error' | 'success',
-                summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa',
-                detail: result.message,
-                life: 3000
-            });
+            toast.current?.show({ severity: result.severity as 'error' | 'success', summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa', detail: result.message, life: 3000 });
         }
     }
 
@@ -104,23 +99,7 @@ export const WalletDetail = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card title="Criptomonedas" className="shadow-lg">
-                        <DataTable title="Criptomonedas" value={wallet?.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
-                            <Column field="name" header="Criptomoneda" body={(rowData) => {
-                                return <div className="flex items-center gap-2">
-                                    <img src={rowData.image} alt={rowData.name} className="w-6 h-6 rounded-full" />
-                                    {rowData.name}
-                                </div>
-                            }} />
-                            <Column field="amount" header="Cantidad" />
-                            <Column field="price" header="Valor" body={(rowData) => {
-                                return (rowData.amount * rowData.current_price).toLocaleString('es-ES', {
-                                    style: 'currency',
-                                    currency: 'USD'
-                                });
-                            }} />
-                        </DataTable>
-                    </Card>
+                    <CryptoTable wallet={wallet} />
 
                     <Card title="Historial de Transacciones" className="shadow-lg">
                         <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
