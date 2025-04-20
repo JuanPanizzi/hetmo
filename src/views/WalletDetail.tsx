@@ -16,13 +16,11 @@ import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 import { useTransactions } from "../hooks/useTransactions";
 
 
-        
+
 export const WalletDetail = () => {
 
-    const { wallets, addTransaction, deleteTransaction, newTransaction, handleNewTransaction, handleCancel } = useTransactions();
+    const { wallets, wallet, addTransaction, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, setVisible } = useTransactions();
 
-    const { id } = useParams();
-    const wallet = wallets.find(w => w.id === id);
 
     const toast = useRef<Toast>(null);
 
@@ -30,62 +28,23 @@ export const WalletDetail = () => {
     if (!wallet) {
         return <div>Cartera no encontrada</div>;
     }
-    const [visible, setVisible] = useState<boolean>(false)
-   
+
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
+    const saveNewTransaction = () => {
 
-
-    const handleAddTransaction = () => {
-        if (!newTransaction.type || !newTransaction.crypto || !newTransaction.date) {
-            toast.current?.show({ severity: "error", summary: "Campos Incompletos", detail: "Todos los campos son obligatorios", life: 3000 });
-            return;
+        const result = handleAddTransaction();
+        if (result.message) {
+            toast.current?.show({
+                severity: result.severity as 'error' | 'success',
+                summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa',
+                detail: result.message,
+                life: 3000
+            });
         }
-        if (newTransaction.amount <= 0) {
-            toast.current?.show({ severity: "error", summary: "Cantidad Inválida", detail: "La cantidad debe ser mayor que 0", life: 3000 });
-            return;
-        }
-
-        if (newTransaction.type === 'venta') {
-            const crypto = newTransaction.crypto as Crypto;
-            const existingCrypto = wallet.cryptocurrencies.find(c => c.name === crypto.name);
-
-            if (!existingCrypto) {
-                toast.current?.show({
-                    severity: "error", 
-                    summary: "Error", 
-                    detail: "No posee en su cartera criptomonedas de este tipo para realizar la venta", 
-                    life: 5000
-                });
-                return;
-            }
-
-            if (existingCrypto.amount < newTransaction.amount) {
-                toast.current?.show({
-                    severity: "error", 
-                    summary: "Criptomonedas insuficientes", 
-                    detail: `No posee suficientes criptomonedas para realizar la transacción.`, 
-                    life: 5000
-                });
-                return;
-            }
-        }
-
-        newTransaction.id = crypto.randomUUID();
-        addTransaction(wallet.id, newTransaction);
-        setVisible(false);
-        handleNewTransaction({
-            type: '',
-            crypto: '',
-            amount: 0,
-            price: 0,
-            date: '',
-            id: ''
-        });
-        toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción realizada correctamente", life: 3000 });
     }
 
-   
+
     const confirmDelete = (event: any, id: string) => {
         confirmPopup({
             target: event.currentTarget,
@@ -96,15 +55,15 @@ export const WalletDetail = () => {
             rejectLabel: 'Cancelar',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                    deleteTransaction(wallet.id, id);
+                deleteTransaction(wallet.id, id);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
             }
-            
+
         });
     };
 
 
-   
+
 
 
 
@@ -127,13 +86,13 @@ export const WalletDetail = () => {
     useEffect(() => {
         if (newTransaction.crypto && newTransaction.amount >= 0) {
             const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
-            handleNewTransaction({price: derivedPrice});
+            handleNewTransaction({ price: derivedPrice });
         }
     }, [newTransaction.crypto, newTransaction.amount]);
 
     return (
         <>
-        
+
             <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
             <Toast ref={toast} />
             <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
@@ -143,7 +102,7 @@ export const WalletDetail = () => {
                         options={['compra', 'venta']}
                         placeholder="Selecciona el tipo de transacción"
                         value={newTransaction.type}
-                        onChange={(e) => handleNewTransaction({  type: e.value as 'compra' | 'venta' })}
+                        onChange={(e) => handleNewTransaction({ type: e.value as 'compra' | 'venta' })}
                     />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="crypto">Criptomoneda</label>
@@ -198,7 +157,7 @@ export const WalletDetail = () => {
                     <Button
                         label="Aceptar"
                         icon="pi pi-check"
-                        onClick={handleAddTransaction}
+                        onClick={saveNewTransaction}
 
                     />
                 </div>
@@ -264,8 +223,8 @@ export const WalletDetail = () => {
                                     currency: 'USD'
                                 });
                             }} />
-                            <Column  body={(rowData) => {
-                                return (    
+                            <Column body={(rowData) => {
+                                return (
                                     <div className="flex items-center gap-2">
                                         <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
                                         {/* <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />     */}
