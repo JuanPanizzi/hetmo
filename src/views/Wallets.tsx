@@ -106,7 +106,7 @@ useEffect(() => {
           <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => setVisible(true)} />
         </div>
 
-        <div className="grid grid-cols-4 gap-4 place-items-center ">
+        <div className="flex flex-wrap gap-10 items-start xl:mt-10 mx-5 place-items-center ">
           {wallets.map((wallet) => (
             <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} />
           ))}

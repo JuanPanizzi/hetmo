@@ -7,7 +7,7 @@ export const initialWallets = JSON.parse(
 
 // Función para calcular las criptomonedas de una wallet
 const calculateWalletCryptocurrencies = (transactions: any[]) => {
-    const cryptos: { [key: string]: { name: string; amount: number; image: string; current_price: number } } = {};
+    const cryptos: { [key: string]: { name: string; amount: number; image: string; current_price: number; symbol: string } } = {};
     
     transactions?.forEach((transaction) => {
         const crypto = transaction.crypto;
@@ -16,7 +16,8 @@ const calculateWalletCryptocurrencies = (transactions: any[]) => {
                 name: crypto.name,
                 amount: 0,
                 image: crypto.image || '',
-                current_price: crypto.current_price
+                current_price: crypto.current_price,
+                symbol: crypto.symbol
             };
         }
         
@@ -31,7 +32,8 @@ const calculateWalletCryptocurrencies = (transactions: any[]) => {
             name: crypto.name,
             amount: crypto.amount,
             image: crypto.image,
-            current_price: crypto.current_price
+            current_price: crypto.current_price,
+            symbol: crypto.symbol
         }));
 };
 
@@ -59,6 +61,7 @@ export const walletsReducer = (state: any, action: any) => {
                 amount: payload.transaction.amount,
                 price: payload.transaction.price,
                 date: payload.transaction.date,
+                symbol: payload.transaction.crypto.symbol
             });
 
             // Actualizar las criptomonedas de la wallet

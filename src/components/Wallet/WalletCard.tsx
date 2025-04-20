@@ -1,4 +1,3 @@
-
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Wallet } from '../../types/wallets';
@@ -28,7 +27,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wa
 
 
     const header = (
-        <div className='p-1'>
+        <div className='p-4'>
 
             <h1 className='text-2xl font-bold'>{wallet.name}</h1>
         </div>
@@ -36,34 +35,48 @@ export default function WalletCard({ wallet, handleDeleteWallet, cryptos }: { wa
     const footer = (
         <>
             <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} />
-            <Button icon="pi pi-pencil" className='mx-2'/>
-            <Button severity="danger" icon="pi pi-trash"  onClick={confirmDelete} />
+            <Button icon="pi pi-pencil" className='mx-2 h-full' />
+            <Button severity="danger"  icon="pi pi-trash" className='!h-full' style={{height: '100%'}}  onClick={confirmDelete} />
 
         </>
     );
 
     return (
         <>
-           
-            <div className="card flex justify-content-center xl:max-w-xl">
-                <Card title="" subTitle="" footer={footer} header={header} className="">
+                <Card title="" subTitle="" footer={footer} header={header} className="p-4 w-full xl:max-w-xl">
                     {
                         !wallet.cryptocurrencies?.length ? (
                             <p>No hay criptomonedas en esta cartera</p>
                         ) : (
-                            <div>
+                            <div className="space-y-4 ">
                                 {
                                     wallet.cryptocurrencies.map((crypto) => (
-                                        <div key={crypto.id}>
-                                            <p>{crypto.name}</p>
+                                        <div key={crypto.id} className="flex justify-between items-center">
+                                            <div className="flex items-center gap-2">
+                                                <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
+                                                <span className="text-gray-200">{crypto.symbol?.toUpperCase()}</span>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-gray-200">{crypto.amount} {crypto.symbol?.toUpperCase()}</p>
+                                                <p className="text-gray-400">US$ {(crypto.current_price * crypto.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                                            </div>
                                         </div>
                                     ))
                                 }
+                                <div className="pt-4 mt-4 border-t border-gray-700">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-200">Total</span>
+                                        <span className="text-purple-500 text-xl font-semibold">
+                                            US$ {wallet.cryptocurrencies.reduce((total, crypto) => total + (crypto.current_price * crypto.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         )
                     }
+                    
                 </Card>
-            </div>
+           {/* {JSON.stringify(wallet)} */}
         </>
     )
 }
