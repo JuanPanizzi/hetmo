@@ -1,4 +1,4 @@
-import { Cryptocurrency, Wallet } from "../types/wallets";
+import { Cryptocurrency, Transaction, Wallet } from "../types/wallets";
 
 //Estado global
 export const initialWallets = JSON.parse(
@@ -65,5 +65,23 @@ export const walletsReducer = (state: any, action: any) => {
             newState[walletIndex].cryptocurrencies = calculateWalletCryptocurrencies(newState[walletIndex].transactions);
           
             return newState;
+
+        case 'DELETE_TRANSACTION':
+            const deleteState = [...state];
+            const deleteWalletIndex = deleteState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+            
+            if (deleteWalletIndex === -1) {
+                return state;
+            }
+
+            // Eliminar la transacción
+            deleteState[deleteWalletIndex].transactions = deleteState[deleteWalletIndex].transactions.filter(
+                (transaction: Transaction) => transaction.id !== payload.id
+            );
+
+            // Recalcular las criptomonedas después de eliminar la transacción
+            deleteState[deleteWalletIndex].cryptocurrencies = calculateWalletCryptocurrencies(deleteState[deleteWalletIndex].transactions);
+
+            return deleteState;
     }
 }

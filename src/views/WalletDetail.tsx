@@ -17,7 +17,7 @@ import { getCryptos } from "../services/API";
         
 export const WalletDetail = () => {
 
-    const { wallets, addTransaction } = useContext(WalletContext);
+    const { wallets, addTransaction, deleteTransaction } = useContext(WalletContext);
     const { id } = useParams();
 
     const toast = useRef<Toast>(null);
@@ -79,7 +79,7 @@ export const WalletDetail = () => {
                 toast.current?.show({
                     severity: "error", 
                     summary: "Criptomonedas insuficientes", 
-                    detail: `No posee suficientes ${crypto.name}. Cantidad disponible: ${existingCrypto.amount}`, 
+                    detail: `No posee suficientes criptomonedas para realizar la transacción.`, 
                     life: 5000
                 });
                 return;
@@ -100,6 +100,9 @@ export const WalletDetail = () => {
         toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción realizada correctamente", life: 3000 });
     }
 
+    const handleDeleteTransaction = (id: string) => {
+        deleteTransaction(wallet.id, id);
+    }
 
     useEffect(() => {
         const cryptos = sessionStorage.getItem('cryptos');
@@ -258,6 +261,14 @@ export const WalletDetail = () => {
                                     style: 'currency',
                                     currency: 'USD'
                                 });
+                            }} />
+                            <Column header="Acciones" body={(rowData) => {
+                                return (    
+                                    <div className="flex items-center gap-2">
+                                        <Button icon="pi pi-trash" severity="danger" onClick={() => handleDeleteTransaction(rowData.id)} />
+                                        {/* <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />     */}
+                                    </div>
+                                )
                             }} />
                         </DataTable>
                     </Card>
