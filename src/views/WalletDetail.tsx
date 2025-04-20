@@ -108,6 +108,9 @@ export const WalletDetail = () => {
             message: '¿Está seguro de que desea eliminar esta transacción?',
             icon: 'pi pi-exclamation-triangle',
             defaultFocus: 'accept',
+            acceptLabel: 'Eliminar',
+            rejectLabel: 'Cancelar',
+            acceptClassName: 'p-button-danger',
             accept: () => {
                     deleteTransaction(wallet.id, id);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
