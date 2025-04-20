@@ -13,44 +13,28 @@ import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
 import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
+import { useTransactions } from "../hooks/useTransactions";
 
 
         
 export const WalletDetail = () => {
 
-    const { wallets, addTransaction, deleteTransaction } = useContext(WalletContext);
+    const { wallets, addTransaction, deleteTransaction, newTransaction, handleNewTransaction, handleCancel } = useTransactions();
+
     const { id } = useParams();
+    const wallet = wallets.find(w => w.id === id);
 
     const toast = useRef<Toast>(null);
 
-    const wallet = wallets.find(w => w.id === id);
 
     if (!wallet) {
         return <div>Cartera no encontrada</div>;
     }
     const [visible, setVisible] = useState<boolean>(false)
-    const [newTransaction, setNewTransaction] = useState<Transaction>({
-        type: '',
-        crypto: '',
-        amount: 0,
-        price: 0,
-        date: '',
-        id: ''
-    })
+   
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
 
-    const handleCancel = () => {
-        setVisible(false);
-        setNewTransaction({
-            type: '',
-            crypto: '',
-            amount: 0,
-            price: 0,
-            date: '',
-            id: ''
-        })
-    }
 
     const handleAddTransaction = () => {
         if (!newTransaction.type || !newTransaction.crypto || !newTransaction.date) {
@@ -90,7 +74,7 @@ export const WalletDetail = () => {
         newTransaction.id = crypto.randomUUID();
         addTransaction(wallet.id, newTransaction);
         setVisible(false);
-        setNewTransaction({
+        handleNewTransaction({
             type: '',
             crypto: '',
             amount: 0,
@@ -143,16 +127,13 @@ export const WalletDetail = () => {
     useEffect(() => {
         if (newTransaction.crypto && newTransaction.amount >= 0) {
             const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
-            setNewTransaction(prev => ({
-                ...prev,
-                price: derivedPrice
-            }));
+            handleNewTransaction({price: derivedPrice});
         }
     }, [newTransaction.crypto, newTransaction.amount]);
 
     return (
         <>
-            {JSON.stringify(wallet)}
+        
             <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
             <Toast ref={toast} />
             <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
@@ -162,7 +143,7 @@ export const WalletDetail = () => {
                         options={['compra', 'venta']}
                         placeholder="Selecciona el tipo de transacción"
                         value={newTransaction.type}
-                        onChange={(e) => setNewTransaction(prevState => ({ ...prevState, type: e.value as 'compra' | 'venta' }))}
+                        onChange={(e) => handleNewTransaction({  type: e.value as 'compra' | 'venta' })}
                     />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="crypto">Criptomoneda</label>
@@ -172,7 +153,7 @@ export const WalletDetail = () => {
                             placeholder="Selecciona la criptomoneda"
                             value={newTransaction.crypto}
                             disabled={!newTransaction.type}
-                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, crypto: e.value }))}
+                            onChange={(e) => handleNewTransaction({ crypto: e.value })}
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -183,7 +164,7 @@ export const WalletDetail = () => {
                             value={newTransaction.amount}
                             min={0}
                             disabled={!newTransaction.type}
-                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, amount: e.value || 0 }))}
+                            onChange={(e) => handleNewTransaction({ amount: e.value || 0 })}
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -204,7 +185,7 @@ export const WalletDetail = () => {
                             placeholder="DD/MM/YYYY"
                             disabled={!newTransaction.type}
                             value={newTransaction.date ? new Date(newTransaction.date) : null}
-                            onChange={(e) => setNewTransaction(prevState => ({ ...prevState, date: e.value?.toISOString() || '' }))}
+                            onChange={(e) => handleNewTransaction({ date: e.value?.toISOString() || '' })}
                             locale={'es'}
                         />
                     </div>
