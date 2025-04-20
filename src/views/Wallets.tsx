@@ -12,7 +12,7 @@ import { WalletModal } from "../components/Wallet/walletModal";
 export const Wallets = () => {
 
 
-  const { wallets, deleteWallet, handleWalletModal, handleCryptos, handleNewWallet, handleLoading, handleIsEditing, createWallet, isEditing, showWalletModal, newWallet, loading, cryptos, selectedWallet } = useWallet();
+  const { wallets, deleteWallet, handleWalletModal, handleCryptos, handleNewWallet, handleLoading,  createWallet, isEditing, showWalletModal, newWallet, loading, cryptos, selectedWallet } = useWallet();
 
 
   const toast = useRef<Toast>(null);

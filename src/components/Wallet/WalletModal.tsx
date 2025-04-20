@@ -4,20 +4,33 @@ import { InputText } from 'primereact/inputtext';
 import { Wallet } from '../../types/wallets';
 
 type Props = {
-    // isEditing: boolean;
-    isEditing?: any;
+    isEditing?: boolean;
     showWalletModal: boolean;
-    handleWalletModal: (showWalletModal: boolean, options?: { isEditing: any, selectedWallet?: any }) => void;
+    handleWalletModal: (showWalletModal: boolean, options?: { isEditing: boolean, selectedWallet?: Wallet }) => void;
     handleCancel: () => void;
     handleCreateWallet: () => void;
     newWallet: { name: string; id: string };
-    handleNewWallet: (newWallet: { name: string; id: string }) => void;
-    selectedWallet?: Wallet | any;
+    handleNewWallet: (wallet: { name: string; id: string } | Wallet) => void;
+    selectedWallet?: Wallet;
 }
 
 export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleCreateWallet, newWallet, handleNewWallet, selectedWallet }: Props) => {
  
- console.log(selectedWallet)
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (isEditing && selectedWallet) {
+            handleNewWallet({
+                ...selectedWallet,
+                name: value
+            });
+        } else {
+            handleNewWallet({
+                ...newWallet,
+                name: value
+            });
+        }
+    };
+
     return (
     <>
     <Dialog
@@ -28,7 +41,7 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
         footer={
           <div>
             <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text" />
-            <Button label="Crear" icon="pi pi-check" onClick={handleCreateWallet} autoFocus />
+            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleCreateWallet} autoFocus />
           </div>
         }
       >
@@ -38,10 +51,8 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
             <InputText
               id="name"
               value={isEditing ? selectedWallet?.name : newWallet.name}
-              onChange={(e) => !isEditing ? handleNewWallet({ ...newWallet, name: e.target.value }) : handleNewWallet({ ...selectedWallet, name: e.target.value })}
-
-            //   placeholder="Ingresa el nombre de la cartera"
-              placeholder={isEditing ? selectedWallet?.name : "Ingresa el nombre de la cartera"}
+              onChange={handleInputChange}
+              placeholder="Ingresa el nombre de la cartera"
             />
           </div>
         </div>

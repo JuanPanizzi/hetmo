@@ -44,6 +44,10 @@ export const walletsReducer = (state: any, action: any) => {
             return [...state, payload];
         case 'DELETE_WALLET':
             return state.filter((wallet: Wallet) => wallet.id !== payload);
+        case 'UPDATE_WALLET':
+            return state.map((wallet: Wallet) => 
+                wallet.id === payload.id ? payload : wallet
+            );
         case 'ADD_TRANSACTION':
             const newState = [...state];
             const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);

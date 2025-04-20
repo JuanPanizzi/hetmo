@@ -4,12 +4,12 @@ import { Wallet } from "../types/wallets";
 
 export const useWallet = () => { 
 
-    const { wallets, addWallet, deleteWallet } = useContext(WalletContext);
+    const { wallets, addWallet, deleteWallet, updateWallet } = useContext(WalletContext);
     const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
+    const [selectedWallet, setSelectedWallet] = useState<Wallet | undefined>(undefined);
     const [newWallet, setNewWallet] = useState({
       name: '',
       id: `${crypto.randomUUID()}`
@@ -21,34 +21,46 @@ const handleWalletModal = (showWalletModal: boolean, options?: { isEditing: bool
     setShowWalletModal(showWalletModal);
     setIsEditing(options?.isEditing || false);
     if (options?.selectedWallet) {
-        console.log('selectedWallet', options.selectedWallet)
         setSelectedWallet(options.selectedWallet);
     } else {
-        setSelectedWallet(null);
+        setSelectedWallet(undefined);
     }
 }
 
 const handleCryptos = (cryptos: Crypto[]) => setCryptos(cryptos);
 
-const handleNewWallet = (newWallet: { name: string; id: string }) => setNewWallet(newWallet);
+const handleNewWallet = (wallet: { name: string; id: string } | Wallet) => {
+    if (isEditing && selectedWallet) {
+        setSelectedWallet(wallet as Wallet);
+    } else {
+        setNewWallet(wallet as { name: string; id: string });
+    }
+}
 
 const handleIsEditing = (isEditing: boolean) => setIsEditing(isEditing);
 
 const createWallet = () => {
-
-    if (newWallet.name === '') {
-      return false;
+    if (isEditing && selectedWallet) {
+        if (selectedWallet.name === '') {
+            return false;
+        }
+        updateWallet(selectedWallet);
+        setShowWalletModal(false);
+        setSelectedWallet(undefined);
+        setIsEditing(false);
+        return true;
+    } else {
+        if (newWallet.name === '') {
+            return false;
+        }
+        addWallet({ ...newWallet, cryptocurrencies: [], transactions: [] });
+        setShowWalletModal(false);
+        setNewWallet({ name: '', id: crypto.randomUUID() });
+        return true;
     }
-    addWallet({ ...newWallet, cryptocurrencies: [], transactions: [] });
-    setShowWalletModal(false);
-    setNewWallet({ name: '', id: crypto.randomUUID() });
-    return true;
-  };
+};
 
-
-  
 return {
-
     wallets,
     showWalletModal,
     cryptos,
