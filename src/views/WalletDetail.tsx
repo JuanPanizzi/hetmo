@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, useMemo } from "react";
 import { WalletContext } from "../context/walletContext";
 import { useParams } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
@@ -6,7 +6,6 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
 import { Transaction, Crypto } from "../types/wallets";
@@ -14,6 +13,8 @@ import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
 
+
+        
 export const WalletDetail = () => {
 
     const { wallets, addTransaction } = useContext(WalletContext);
@@ -37,6 +38,7 @@ export const WalletDetail = () => {
     })
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
+
     const handleCancel = () => {
         setVisible(false);
         setNewTransaction({
@@ -50,7 +52,6 @@ export const WalletDetail = () => {
     }
 
     const handleAddTransaction = () => {
-
         if (!newTransaction.type || !newTransaction.crypto || !newTransaction.date) {
             toast.current?.show({ severity: "error", summary: "Campos Incompletos", detail: "Todos los campos son obligatorios", life: 3000 });
             return;
@@ -61,24 +62,29 @@ export const WalletDetail = () => {
         }
 
         if (newTransaction.type === 'venta') {
-            const existingCrypto = wallet.cryptocurrencies.find(
-                crypto => crypto.name === (newTransaction.crypto as Crypto).name
-            );
+            const crypto = newTransaction.crypto as Crypto;
+            const existingCrypto = wallet.cryptocurrencies.find(c => c.name === crypto.name);
 
             if (!existingCrypto) {
                 toast.current?.show({
-                    severity: "error", summary: "Error", detail: "No posee en su cartera criptomonedas de este tipo para realizar la venta", life: 5000
+                    severity: "error", 
+                    summary: "Error", 
+                    detail: "No posee en su cartera criptomonedas de este tipo para realizar la venta", 
+                    life: 5000
                 });
                 return;
-            } else if (existingCrypto.amount < newTransaction.amount) {
-                toast.current?.show(
-                    {
-                        severity: "error", summary: "Criptomonedas insuficientes", detail: "No posee suficientes criptomonedas para realizar la venta", life: 5000
-                    });
+            }
+
+            if (existingCrypto.amount < newTransaction.amount) {
+                toast.current?.show({
+                    severity: "error", 
+                    summary: "Criptomonedas insuficientes", 
+                    detail: `No posee suficientes ${crypto.name}. Cantidad disponible: ${existingCrypto.amount}`, 
+                    life: 5000
+                });
                 return;
             }
         }
-
 
         newTransaction.id = crypto.randomUUID();
         addTransaction(wallet.id, newTransaction);
@@ -123,7 +129,7 @@ export const WalletDetail = () => {
 
     return (
         <>
-            {JSON.stringify(newTransaction)}
+            {JSON.stringify(wallet)}
             <Toast ref={toast} />
             <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -175,6 +181,7 @@ export const WalletDetail = () => {
                             disabled={!newTransaction.type}
                             value={newTransaction.date ? new Date(newTransaction.date) : null}
                             onChange={(e) => setNewTransaction(prevState => ({ ...prevState, date: e.value?.toISOString() || '' }))}
+                            locale={'es'}
                         />
                     </div>
                     <Button
@@ -209,9 +216,8 @@ export const WalletDetail = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* {JSON.stringify(wallet.cryptocurrencies)} */}
                     <Card title="Criptomonedas" className="shadow-lg">
-                        <DataTable value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
+                        <DataTable title="Criptomonedas" value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
                             <Column field="name" header="Criptomoneda" body={(rowData) => {
                                 return <div className="flex items-center gap-2">
                                     <img src={rowData.image} alt={rowData.name} className="w-6 h-6 rounded-full" />
@@ -219,7 +225,12 @@ export const WalletDetail = () => {
                                 </div>
                             }} />
                             <Column field="amount" header="Cantidad" />
-                            <Column field="price" header="Valor" />
+                            <Column field="price" header="Valor" body={(rowData) => {
+                                return (rowData.amount * rowData.current_price).toLocaleString('es-ES', {
+                                    style: 'currency',
+                                    currency: 'USD'
+                                });
+                            }} />
                         </DataTable>
                     </Card>
 
@@ -239,7 +250,8 @@ export const WalletDetail = () => {
                                 }}
                             />
                             <Column field="type" header="Tipo" sortable />
-                            <Column field="cryptocurrency" header="Criptomoneda" sortable />
+                            <Column field="crypto.name" header="Criptomoneda" sortable />
+
                             <Column field="amount" header="Cantidad" sortable />
                             <Column field="price" header="Precio" sortable body={(rowData) => {
                                 return parseInt(rowData.price).toLocaleString('es-ES', {
