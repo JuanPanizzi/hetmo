@@ -20,11 +20,15 @@ export const useTransactions = () => {
     })
     const [visible, setVisible] = useState<boolean>(false)
     const { id } = useParams();
+    const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
     const wallet = wallets.find(w => w.id === id);
 
     const handleNewTransaction = (transaction: Transaction | any) => setNewTransaction(prev => ({ ...prev, ...transaction }));
 
+    const handleSetCryptos = (cryptos: Crypto[]) => setCryptos(cryptos);
+
+    const handleSetVisible = (visible: boolean) => setVisible(visible);
 
     const handleCancel = () => {
         setVisible(false);
@@ -89,6 +93,8 @@ export const useTransactions = () => {
         handleNewTransaction,
         wallet,
         handleAddTransaction,
-        setVisible
+        handleSetVisible,
+        cryptos,
+        handleSetCryptos
     }
 }

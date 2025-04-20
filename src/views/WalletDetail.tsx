@@ -1,6 +1,4 @@
-import { useContext, useEffect, useRef, useState, useMemo } from "react";
-import { WalletContext } from "../context/walletContext";
-import { useParams } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -8,7 +6,7 @@ import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
-import { Transaction, Crypto } from "../types/wallets";
+import {  Crypto } from "../types/wallets";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
@@ -19,7 +17,7 @@ import { Error } from "./Error";
 
 export const WalletDetail = () => {
 
-    const { wallets, wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, setVisible } = useTransactions();
+    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos } = useTransactions();
 
     if (!wallet) {
         return <Error message="Cartera no encontrada" />;
@@ -27,7 +25,6 @@ export const WalletDetail = () => {
 
     const toast = useRef<Toast>(null);
 
-    const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
     const saveNewTransaction = () => {
 
@@ -66,11 +63,11 @@ export const WalletDetail = () => {
     useEffect(() => {
         const cryptos = sessionStorage.getItem('cryptos');
         if (cryptos) {
-            setCryptos(JSON.parse(cryptos));
+            handleSetCryptos(JSON.parse(cryptos));
         } else {
             const fetchCryptos = async () => {
                 const response = await getCryptos();
-                setCryptos(response.data);
+                handleSetCryptos(response.data);
                 sessionStorage.setItem('cryptos', JSON.stringify(response.data));
             }
             fetchCryptos();
@@ -91,7 +88,7 @@ export const WalletDetail = () => {
 
             <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
             <Toast ref={toast} />
-            <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
+            <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <Dropdown
                         className="col-span-2"
@@ -169,7 +166,7 @@ export const WalletDetail = () => {
                             label="Nueva Transacción"
                             icon="pi pi-plus"
                             className=""
-                            onClick={() => setVisible(true)}
+                            onClick={() => handleSetVisible(true)}
                         />
 
                     </div>
