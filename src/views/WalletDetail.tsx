@@ -14,20 +14,18 @@ import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
 import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 import { useTransactions } from "../hooks/useTransactions";
-
+import { Error } from "./Error";
 
 
 export const WalletDetail = () => {
 
-    const { wallets, wallet, addTransaction, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, setVisible } = useTransactions();
-
-
-    const toast = useRef<Toast>(null);
-
+    const { wallets, wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, setVisible } = useTransactions();
 
     if (!wallet) {
-        return <div>Cartera no encontrada</div>;
+        return <Error message="Cartera no encontrada" />;
     }
+
+    const toast = useRef<Toast>(null);
 
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
 
@@ -55,17 +53,15 @@ export const WalletDetail = () => {
             rejectLabel: 'Cancelar',
             acceptClassName: 'p-button-danger',
             accept: () => {
+                if (!wallet) {
+                    return;
+                }
                 deleteTransaction(wallet.id, id);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
             }
 
         });
     };
-
-
-
-
-
 
     useEffect(() => {
         const cryptos = sessionStorage.getItem('cryptos');
@@ -166,7 +162,7 @@ export const WalletDetail = () => {
 
             <section className="p-4">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-4xl">{wallet.name}</h1>
+                    <h1 className="text-4xl">{wallet?.name}</h1>
                     <div>
 
                         <Button
@@ -181,7 +177,7 @@ export const WalletDetail = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card title="Criptomonedas" className="shadow-lg">
-                        <DataTable title="Criptomonedas" value={wallet.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
+                        <DataTable title="Criptomonedas" value={wallet?.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas">
                             <Column field="name" header="Criptomoneda" body={(rowData) => {
                                 return <div className="flex items-center gap-2">
                                     <img src={rowData.image} alt={rowData.name} className="w-6 h-6 rounded-full" />
@@ -199,7 +195,7 @@ export const WalletDetail = () => {
                     </Card>
 
                     <Card title="Historial de Transacciones" className="shadow-lg">
-                        <DataTable value={wallet.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
+                        <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
                             <Column
                                 field="date"
                                 header="Fecha"
