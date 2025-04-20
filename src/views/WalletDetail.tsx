@@ -1,8 +1,5 @@
 import { useEffect, useRef } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { Card } from "primereact/card";
 import { Crypto } from "../types/wallets";
 import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
@@ -83,25 +80,16 @@ export const WalletDetail = () => {
             <Toast ref={toast} />
             <TransactionModal visible={visible} handleSetVisible={handleSetVisible} newTransaction={newTransaction} handleNewTransaction={handleNewTransaction} cryptos={cryptos} handleCancel={handleCancel} saveNewTransaction={saveNewTransaction} />
 
-
             <section className="p-4">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-4xl">{wallet?.name}</h1>
                     <div>
-
-                        <Button
-                            label="Nueva Transacción"
-                            icon="pi pi-plus"
-                            className=""
-                            onClick={() => handleSetVisible(true)}
-                        />
-
+                        <Button label="Nueva Transacción" icon="pi pi-plus" onClick={() => handleSetVisible(true)} />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <CryptoTable wallet={wallet} />
-
                     <TransactionsTable wallet={wallet} confirmDelete={confirmDelete} />
                 </div>
             </section>

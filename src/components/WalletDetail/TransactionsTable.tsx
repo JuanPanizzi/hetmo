@@ -11,43 +11,43 @@ type Props = {
 }
 
 export const TransactionsTable = ({ wallet, confirmDelete }: Props) => {
-  return (
-    <>
-    <Card title="Historial de Transacciones" className="shadow-lg">
-                        <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
-                            <Column
-                                field="date"
-                                header="Fecha"
-                                sortable
-                                body={(rowData) => {
-                                    const date = new Date(rowData.date);
-                                    return date.toLocaleDateString('es-ES', {
-                                        day: '2-digit',
-                                        month: '2-digit',
-                                        year: 'numeric'
-                                    });
-                                }}
-                            />
-                            <Column field="type" header="Tipo" sortable />
-                            <Column field="crypto.name" header="Criptomoneda" sortable />
+    return (
+        <>
+            <Card title="Historial de Transacciones" className="shadow-lg">
+                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
+                    <Column
+                        field="date"
+                        header="Fecha"
+                        sortable
+                        body={(rowData) => {
+                            const date = new Date(rowData.date);
+                            return date.toLocaleDateString('es-ES', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+                        }}
+                    />
+                    <Column field="type" header="Tipo" sortable />
+                    <Column field="crypto.name" header="Criptomoneda" sortable />
 
-                            <Column field="amount" header="Cantidad" sortable />
-                            <Column field="price" header="Precio" sortable body={(rowData) => {
-                                return parseInt(rowData.price).toLocaleString('es-ES', {
-                                    style: 'currency',
-                                    currency: 'USD'
-                                });
-                            }} />
-                            <Column body={(rowData) => {
-                                return (
-                                    <div className="flex items-center gap-2">
-                                        <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
-                                        {/* <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />     */}
-                                    </div>
-                                )
-                            }} />
-                        </DataTable>
-                    </Card>
-    </>
-  )
+                    <Column field="amount" header="Cantidad" sortable />
+                    <Column field="price" header="Precio" sortable body={(rowData) => {
+                        return parseInt(rowData.price).toLocaleString('es-ES', {
+                            style: 'currency',
+                            currency: 'USD'
+                        });
+                    }} />
+                    <Column body={(rowData) => {
+                        return (
+                            <div className="flex items-center gap-2">
+                                <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
+                                {/* <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />     */}
+                            </div>
+                        )
+                    }} />
+                </DataTable>
+            </Card>
+        </>
+    )
 }
