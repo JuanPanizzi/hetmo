@@ -14,7 +14,10 @@ addLocale('es', {
     'Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'
   ],
   today: 'Hoy',
-  clear: 'Borrar'
+  clear: 'Borrar',
+  accept: 'Aceptar',
+  reject: 'Rechazar',
+  
 });
 
 locale('es');

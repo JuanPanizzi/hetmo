@@ -12,6 +12,7 @@ import { Transaction, Crypto } from "../types/wallets";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
+import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 
 
         
@@ -100,9 +101,25 @@ export const WalletDetail = () => {
         toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción realizada correctamente", life: 3000 });
     }
 
-    const handleDeleteTransaction = (id: string) => {
-        deleteTransaction(wallet.id, id);
-    }
+   
+    const confirmDelete = (event: any, id: string) => {
+        confirmPopup({
+            target: event.currentTarget,
+            message: '¿Está seguro de que desea eliminar esta transacción?',
+            icon: 'pi pi-exclamation-triangle',
+            defaultFocus: 'accept',
+            accept: () => {
+                    deleteTransaction(wallet.id, id);
+                toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
+            }
+            
+        });
+    };
+
+
+   
+
+
 
     useEffect(() => {
         const cryptos = sessionStorage.getItem('cryptos');
@@ -133,6 +150,7 @@ export const WalletDetail = () => {
     return (
         <>
             {JSON.stringify(wallet)}
+            <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
             <Toast ref={toast} />
             <Dialog header="Nueva Transacción" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -262,10 +280,10 @@ export const WalletDetail = () => {
                                     currency: 'USD'
                                 });
                             }} />
-                            <Column header="Acciones" body={(rowData) => {
+                            <Column  body={(rowData) => {
                                 return (    
                                     <div className="flex items-center gap-2">
-                                        <Button icon="pi pi-trash" severity="danger" onClick={() => handleDeleteTransaction(rowData.id)} />
+                                        <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
                                         {/* <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />     */}
                                     </div>
                                 )
