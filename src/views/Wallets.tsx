@@ -8,6 +8,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { useWallet } from "../hooks/useWallet";
 import { WalletModal } from "../components/Wallet/WalletModal";
 import { HeaderCard } from "../components/UI/HeaderCard";
+import { EmpyWallets } from "../components/Wallet/EmpyWallets";
 
 export const Wallets = () => {
 
@@ -87,15 +88,7 @@ export const Wallets = () => {
         </div>
       </section>}
       {!loading && wallets.length === 0 && 
-        <div className="flex flex-col items-center justify-center py-16 text-center">
-          <i className="pi pi-wallet text-6xl mb-4 text-gray-500"></i>
-          <h1 className="text-2xl text-gray-300 mb-4">No se registran carteras en este momento</h1>
-          <Button 
-            label="Crear mi primera cartera" 
-            icon="pi pi-plus"
-            onClick={() => handleWalletModal(true, { isEditing: false })} 
-          />
-        </div>
+        <EmpyWallets />
       }
 
     </>
