@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useTransactions } from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
 import { getCryptos } from '../services/API';
-import { Crypto as CryptoType } from '../types/wallets';
+import { Crypto as CryptoType, Transaction } from '../types/wallets';
 import { TransactionsTable } from '../components/WalletDetail/TransactionsTable';
 
 
@@ -19,7 +19,7 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
     const toast = useRef<Toast>(null);
 
 
-    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing, loading, handleLoading } = useTransactions();
+      const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing, loading, handleLoading} = useTransactions();
 
 
     if (!wallet) {
@@ -64,10 +64,7 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
     
       }, [])
 
-      const handleConfirmTransaction = (id: string) => {
-        console.log('Confirmar transacción', id);
-      }
-
+     
       const handleDeleteTransaction = (id: string) => {
         console.log('Eliminar transacción', id);
       }
@@ -87,7 +84,7 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
 
                 <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
                     <Card>
-                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} handleConfirmTransaction={handleConfirmTransaction} handleDeleteTransaction={handleDeleteTransaction} handleEditTransaction={handleEditTransaction} />
+                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} handleDeleteTransaction={handleDeleteTransaction} handleEditTransaction={handleEditTransaction} />
                     </Card>
                 </div>
             </section>

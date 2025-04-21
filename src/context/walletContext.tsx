@@ -12,6 +12,7 @@ export const WalletContext = createContext<{
     deleteTransaction: (walletId: string, id: string) => void;
     updateWallet: (wallet: Wallet) => void;
     editTransaction: (walletId: string, transaction: Transaction) => void;
+    updateTransaction: (walletId: string, transaction: Transaction) => void;
 }>({
     wallets: [], 
     addWallet: () => {}, 
@@ -19,15 +20,16 @@ export const WalletContext = createContext<{
     addTransaction: () => {}, 
     deleteTransaction: () => {}, 
     updateWallet: () => {},
-    editTransaction: () => {}
+    editTransaction: () => {},
+    updateTransaction: () => {}
 });
 
 export const WalletProvider: FC<{children: ReactNode}> = ({ children }) => { 
 
-    const { wallets, addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction } = useWalletsReducer();
+    const { wallets, addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction, updateTransaction } = useWalletsReducer();
 
     return (
-        <WalletContext.Provider value={ {wallets: wallets || [], addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction}}>
+        <WalletContext.Provider value={ {wallets: wallets || [], addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction, updateTransaction}}>
             {children}
         </WalletContext.Provider>
     );

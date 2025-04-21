@@ -112,6 +112,7 @@ export const useTransactions = () => {
         handleEditTransaction,
         isEditing,
         loading,
-        handleLoading
+        handleLoading,
+        editTransaction
     }
 }
