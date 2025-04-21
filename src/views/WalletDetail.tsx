@@ -1,19 +1,17 @@
 import { useEffect, useRef } from "react";
-import { Button } from "primereact/button";
 import { Crypto } from "../types/wallets";
 import { Toast } from "primereact/toast";
 import { getCryptos } from "../services/API";
 import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 import { useTransactions } from "../hooks/useTransactions";
 import { Error } from "./Error";
-import { TransactionModal } from "../components/WalletDetail/TransactionModal";
 import { CryptoTable } from "../components/WalletDetail/CryptoTable";
 import { TransactionsTable } from "../components/WalletDetail/TransactionsTable";
 import { HeaderCard } from "../components/UI/HeaderCard";
-
+import { useNavigate } from "react-router-dom";
 
 export const WalletDetail = () => {
-
+    const navigate = useNavigate();
     const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing } = useTransactions();
 
     if (!wallet) {
@@ -21,15 +19,6 @@ export const WalletDetail = () => {
     }
 
     const toast = useRef<Toast>(null);
-
-
-    const saveNewTransaction = () => {
-        const result = handleAddTransaction();
-        if (result.message) {
-            toast.current?.show({ severity: result.severity as 'error' | 'success', summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa', detail: result.message, life: 3000 });
-        }
-    }
-
 
     const confirmDelete = (event: any, id: string) => {
         confirmPopup({
@@ -47,7 +36,6 @@ export const WalletDetail = () => {
                 deleteTransaction(wallet.id, id);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
             }
-
         });
     };
 
@@ -63,9 +51,7 @@ export const WalletDetail = () => {
             }
             fetchCryptos();
         }
-
-    }, [])
-
+    }, []);
 
     useEffect(() => {
         if (newTransaction.crypto && newTransaction.amount >= 0) {
@@ -76,32 +62,24 @@ export const WalletDetail = () => {
 
     return (
         <>
-
-            <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
-            <Toast ref={toast} />
-            <TransactionModal 
-                visible={visible} 
-                handleSetVisible={handleSetVisible} 
-                newTransaction={newTransaction} 
-                handleNewTransaction={handleNewTransaction} 
-                cryptos={cryptos} 
-                handleCancel={handleCancel} 
-                saveNewTransaction={saveNewTransaction} 
-                isEditing={isEditing}
-            />
-
             <section className="">
-                <HeaderCard 
+                <HeaderCard
                     title={wallet?.name || ''}
-                    buttonLabel="Nueva Transacción"
-                    onButtonClick={() => handleSetVisible(true)}
+                    buttonLabel="Ver Transacciones"
+                    onButtonClick={() => navigate(`/wallet/${wallet.id}/transactions`)}
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-5 mt-5">
                     <CryptoTable wallet={wallet} />
-                    <TransactionsTable wallet={wallet} confirmDelete={confirmDelete} handleEditTransaction={handleEditTransaction} />
+                    <TransactionsTable 
+                        wallet={wallet} 
+                        confirmDelete={confirmDelete} 
+                        handleEditTransaction={handleEditTransaction} 
+                    />
                 </div>
             </section>
+            <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
+            <Toast ref={toast} />
         </>
     );
 };
