@@ -1,7 +1,7 @@
 import { ConfirmPopup } from 'primereact/confirmpopup'
 import { HeaderCard } from '../components/UI/HeaderCard'
 import { Toast } from 'primereact/toast'
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -9,6 +9,8 @@ import { TransactionModal } from '../components/WalletDetail/TransactionModal';
 import { useParams } from 'react-router-dom';
 import { useTransactions } from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
+import { getCryptos } from '../services/API';
+import { Crypto as CryptoType } from '../types/wallets';
 
     export const Transactions = () => {
     const navigate = useNavigate();
@@ -22,6 +24,36 @@ import { useNavigate } from 'react-router-dom';
         return <h1>Cartera no encontrada</h1>
     }
 
+
+    const saveNewTransaction = () => {
+        const result = handleAddTransaction();
+        if (result.message) {
+            toast.current?.show({ severity: result.severity as 'error' | 'success', summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa', detail: result.message, life: 3000 });
+        }
+    }
+
+    useEffect(() => {
+        if (newTransaction.crypto && newTransaction.amount >= 0) {
+            const derivedPrice = (newTransaction.crypto as CryptoType).current_price * newTransaction.amount;
+            handleNewTransaction({ price: derivedPrice });
+        }
+    }, [newTransaction.crypto, newTransaction.amount]);
+
+    useEffect(() => {
+        const cryptos = sessionStorage.getItem('cryptos');
+        if (cryptos) {
+            handleSetCryptos(JSON.parse(cryptos));
+        } else {
+            const fetchCryptos = async () => {
+                const response = await getCryptos();
+                handleSetCryptos(response.data);
+                sessionStorage.setItem('cryptos', JSON.stringify(response.data));
+            }
+            fetchCryptos();
+        }
+
+    }, [])
+
     return (
         <>
             <section className="">
@@ -29,7 +61,7 @@ import { useNavigate } from 'react-router-dom';
                     title={'Transacciones'}
                     buttonLabel="Crear"
 
-                    onButtonClick={() => { }}
+                    onButtonClick={() => { handleSetVisible(true) }}
                     secondaryButtonLabel="Regresar"
                     secondaryButtonIcon="pi pi-arrow-left"
                     onSecondaryButtonClick={() => { navigate('/wallet/' + wallet.id) }}
@@ -50,7 +82,7 @@ import { useNavigate } from 'react-router-dom';
             <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
             <Toast ref={toast} />
 
-            {/* <TransactionModal 
+            <TransactionModal 
                     visible={visible} 
                     handleSetVisible={handleSetVisible} 
                     newTransaction={newTransaction} 
@@ -59,7 +91,7 @@ import { useNavigate } from 'react-router-dom';
                     handleCancel={handleCancel}                 
                     saveNewTransaction={saveNewTransaction} 
                     isEditing={isEditing}
-                    /> */}
+                    />
         </>
     )
 }

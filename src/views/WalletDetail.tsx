@@ -39,26 +39,26 @@ export const WalletDetail = () => {
         });
     };
 
-    useEffect(() => {
-        const cryptos = sessionStorage.getItem('cryptos');
-        if (cryptos) {
-            handleSetCryptos(JSON.parse(cryptos));
-        } else {
-            const fetchCryptos = async () => {
-                const response = await getCryptos();
-                handleSetCryptos(response.data);
-                sessionStorage.setItem('cryptos', JSON.stringify(response.data));
-            }
-            fetchCryptos();
-        }
-    }, []);
+    // useEffect(() => {
+    //     const cryptos = sessionStorage.getItem('cryptos');
+    //     if (cryptos) {
+    //         handleSetCryptos(JSON.parse(cryptos));
+    //     } else {
+    //         const fetchCryptos = async () => {
+    //             const response = await getCryptos();
+    //             handleSetCryptos(response.data);
+    //             sessionStorage.setItem('cryptos', JSON.stringify(response.data));
+    //         }
+    //         fetchCryptos();
+    //     }
+    // }, []);
 
-    useEffect(() => {
-        if (newTransaction.crypto && newTransaction.amount >= 0) {
-            const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
-            handleNewTransaction({ price: derivedPrice });
-        }
-    }, [newTransaction.crypto, newTransaction.amount]);
+    // useEffect(() => {
+    //     if (newTransaction.crypto && newTransaction.amount >= 0) {
+    //         const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
+    //         handleNewTransaction({ price: derivedPrice });
+    //     }
+    // }, [newTransaction.crypto, newTransaction.amount]);
 
     return (
         <>
