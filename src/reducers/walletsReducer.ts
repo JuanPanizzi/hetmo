@@ -65,7 +65,8 @@ export const walletsReducer = (state: any, action: any) => {
                 amount: payload.transaction.amount,
                 price: payload.transaction.price,
                 date: payload.transaction.date,
-                symbol: payload.transaction.crypto.symbol
+                symbol: payload.transaction.crypto.symbol,
+                status: payload.transaction.status
             });
 
             

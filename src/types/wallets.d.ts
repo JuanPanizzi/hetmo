@@ -43,6 +43,7 @@ export type Transaction = {
     price: number;
     date: string;
     id: string;
+    status: string;
 }
 
 export type Wallet = {

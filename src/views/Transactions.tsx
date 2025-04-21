@@ -11,6 +11,8 @@ import { useTransactions } from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
 import { getCryptos } from '../services/API';
 import { Crypto as CryptoType } from '../types/wallets';
+import { TransactionsTable } from '../components/WalletDetail/TransactionsTable';
+
 
     export const Transactions = () => {
     const navigate = useNavigate();
@@ -31,7 +33,7 @@ import { Crypto as CryptoType } from '../types/wallets';
             toast.current?.show({ severity: result.severity as 'error' | 'success', summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa', detail: result.message, life: 3000 });
         }
     }
-
+   
     useEffect(() => {
         if (newTransaction.crypto && newTransaction.amount >= 0) {
             const derivedPrice = (newTransaction.crypto as CryptoType).current_price * newTransaction.amount;
@@ -77,13 +79,7 @@ import { Crypto as CryptoType } from '../types/wallets';
 
                 <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
                     <Card>
-                        <DataTable emptyMessage="No hay transacciones pendientes">
-                            <Column field="date" header="Fecha"></Column>
-                            <Column field="type" header="Tipo"></Column>
-                            <Column field="crypto" header="Criptomoneda"></Column>
-                            <Column field="amount" header="Cantidad"></Column>
-                            <Column field="price" header="Precio"></Column>
-                        </DataTable >
+                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} />
                     </Card>
                 </div>
             </section>

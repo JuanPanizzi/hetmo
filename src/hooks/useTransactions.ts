@@ -12,7 +12,8 @@ export const useTransactions = () => {
         amount: 0,
         price: 0,
         date: '',
-        id: ''
+        id: '',
+        status: 'pendiente'
     })
     const [visible, setVisible] = useState<boolean>(false)
     const { id } = useParams();
@@ -36,7 +37,8 @@ export const useTransactions = () => {
             amount: 0,
             price: 0,
             date: '',
-            id: ''
+            id: '',
+            status: 'pendiente'
         })
     }
 

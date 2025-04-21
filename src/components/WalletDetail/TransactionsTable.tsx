@@ -2,16 +2,41 @@ import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import React from 'react'
-import { Wallet } from '../../types/wallets';
+import { Transaction, Wallet } from '../../types/wallets';
 import { Button } from 'primereact/button';
+import { Tag } from 'primereact/tag';
 
 type Props = {
     wallet: Wallet
-    confirmDelete: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
+    confirmDelete?: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
     handleEditTransaction?: (transaction: any) => void
 }
 
+
+
+
 export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction }: Props) => {
+
+    const statusBodyTemplate = (transaction: Transaction) => {
+        return <Tag value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>;
+    };
+
+    const getSeverity = (transaction: Transaction) => {
+        switch (transaction.status) {
+            case 'confirmada':
+                return 'success';
+
+            case 'pendiente':
+                return 'warning';
+
+            case 'cancelada':
+                return 'danger';
+
+            default:
+                return null;
+        }
+    };
+
     return (
         <>
             <Card title="Historial de Transacciones" className="shadow-lg">
@@ -38,10 +63,11 @@ export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction
                             currency: 'USD'
                         });
                     }} />
+                    <Column field='status' header='Estado' body={statusBodyTemplate} />
                     <Column body={(rowData) => {
                         return (
                             <div className="flex items-center gap-2">
-                                <Button icon="pi pi-trash"  severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
+                                {confirmDelete && <Button icon="pi pi-trash"  severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
                                 {handleEditTransaction && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}    
                             </div>
                         )
