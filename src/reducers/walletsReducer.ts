@@ -21,7 +21,7 @@ const calculateWalletCryptocurrencies = (transactions: any[]) => {
             };
         }
         
-        cryptos[crypto.name].amount += transaction.type === 'compra' 
+        cryptos[crypto.name].amount += transaction.type === 'Compra' 
             ? transaction.amount 
             : -transaction.amount;
     });

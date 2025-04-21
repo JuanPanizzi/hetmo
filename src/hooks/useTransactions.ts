@@ -54,7 +54,7 @@ export const useTransactions = () => {
             return { severity: "error", message: "La cantidad debe ser mayor que 0" };
         }
 
-        if (newTransaction.type === 'venta') {
+        if (newTransaction.type === 'Venta') {
             if (!wallet) {
                 return { severity: "error", message: "Cartera no encontrada" };
             }

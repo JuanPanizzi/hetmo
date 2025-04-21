@@ -16,7 +16,7 @@ interface TransactionFormProps {
         date: string;
     };
     cryptos: Crypto[];
-    onTypeChange: (value: 'compra' | 'venta') => void;
+    onTypeChange: (value: 'Compra' | 'Venta') => void;
     onCryptoChange: (value: Crypto) => void;
     onAmountChange: (value: number) => void;
     onDateChange: (value: string) => void;
@@ -50,10 +50,10 @@ export const TransactionForm = ({
                         <label className="block text-sm font-medium mb-2">Tipo de Transacción</label>
                         <Dropdown
                             className="w-full"
-                            options={['compra', 'venta']}
+                            options={['Compra', 'Venta']}
                             placeholder="Selecciona el tipo de transacción"
                             value={newTransaction.type}
-                            onChange={(e) => onTypeChange(e.value as 'compra' | 'venta')}
+                            onChange={(e) => onTypeChange(e.value as 'Compra' | 'Venta')}
                         />
                     </div>
 

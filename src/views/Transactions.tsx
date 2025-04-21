@@ -77,7 +77,7 @@ import { Crypto as CryptoType } from '../types/wallets';
 
                 <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
                     <Card>
-                        <DataTable emptyMessage="No hay transacciones">
+                        <DataTable emptyMessage="No hay transacciones pendientes">
                             <Column field="date" header="Fecha"></Column>
                             <Column field="type" header="Tipo"></Column>
                             <Column field="crypto" header="Criptomoneda"></Column>

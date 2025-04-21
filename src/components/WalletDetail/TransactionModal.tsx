@@ -30,10 +30,10 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <Dropdown
                         className="col-span-2"
-                        options={['compra', 'venta']}
+                        options={['Compra', 'Venta']}
                         placeholder="Selecciona el tipo de transacción"
                         value={newTransaction.type}
-                        onChange={(e) => handleNewTransaction({ ...newTransaction, type: e.value as 'compra' | 'venta' })}
+                        onChange={(e) => handleNewTransaction({ ...newTransaction, type: e.value as 'Compra' | 'Venta' })}
                     />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="crypto">Criptomoneda</label>
