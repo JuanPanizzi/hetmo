@@ -7,7 +7,7 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 
 type Props = {
-    title: string
+    title?: string
     wallet: Wallet
     confirmDelete?: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
     handleEditTransaction?: (transaction: any) => void

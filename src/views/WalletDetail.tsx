@@ -44,7 +44,8 @@ export const WalletDetail = () => {
             <section className="">
                 <HeaderCard
                     title={wallet?.name || ''}
-                    buttonLabel="Nueva Transacción"
+                    buttonLabel="Transacciones"
+                    buttonIcon="pi pi-arrow-right"
                     onButtonClick={() => navigate(`/wallet/${wallet.id}/transactions`)}
                 />
 

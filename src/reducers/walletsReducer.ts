@@ -69,8 +69,9 @@ export const walletsReducer = (state: any, action: any) => {
                 status: payload.transaction.status
             });
 
-            
-            newState[walletIndex].cryptocurrencies = calculateWalletCryptocurrencies(newState[walletIndex].transactions);
+            if(payload.transaction.status === 'confirmada'){
+                newState[walletIndex].cryptocurrencies = calculateWalletCryptocurrencies(newState[walletIndex].transactions);
+            }
           
             return newState;
 
