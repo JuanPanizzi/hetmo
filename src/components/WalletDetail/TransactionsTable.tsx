@@ -10,12 +10,14 @@ type Props = {
     wallet: Wallet
     confirmDelete?: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
     handleEditTransaction?: (transaction: any) => void
+    handleConfirmTransaction?: (id: string) => void
+    handleDeleteTransaction?: (id: string) => void
 }
 
 
 
 
-export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction }: Props) => {
+export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction, handleConfirmTransaction, handleDeleteTransaction }: Props) => {
 
     const statusBodyTemplate = (transaction: Transaction) => {
         return <Tag value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>;
@@ -66,12 +68,17 @@ export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction
                     <Column field='status' header='Estado' body={statusBodyTemplate} />
                     <Column body={(rowData) => {
                         return (
-                            <div className="flex items-center gap-2">
-                                {confirmDelete && <Button icon="pi pi-trash"  severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
-                                {handleEditTransaction && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}    
+                            <div className="flex justify-end gap-2">
+                                {confirmDelete && <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
+                                {handleConfirmTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleConfirmTransaction(rowData.id)} />}
+                                {handleDeleteTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-trash" label="Eliminar" severity="danger" onClick={() => handleDeleteTransaction(rowData.id)} />}
+                                {handleEditTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
                             </div>
                         )
+
                     }} />
+
+
                 </DataTable>
             </Card>
         </>

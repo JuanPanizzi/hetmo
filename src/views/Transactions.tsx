@@ -64,6 +64,14 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
     
       }, [])
 
+      const handleConfirmTransaction = (id: string) => {
+        console.log('Confirmar transacción', id);
+      }
+
+      const handleDeleteTransaction = (id: string) => {
+        console.log('Eliminar transacción', id);
+      }
+
     return (
         <>
             <section className="">
@@ -79,7 +87,7 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
 
                 <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
                     <Card>
-                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} />
+                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} handleConfirmTransaction={handleConfirmTransaction} handleDeleteTransaction={handleDeleteTransaction} handleEditTransaction={handleEditTransaction}/>
                     </Card>
                 </div>
             </section>
