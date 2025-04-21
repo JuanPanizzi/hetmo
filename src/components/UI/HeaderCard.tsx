@@ -6,6 +6,9 @@ interface HeaderCardProps {
   buttonLabel?: string;
   buttonIcon?: string;
   onButtonClick?: () => void;
+  secondaryButtonLabel?: string;
+  secondaryButtonIcon?: string;
+  onSecondaryButtonClick?: () => void;
 }
 
 export const HeaderCard = ({ 
@@ -13,7 +16,10 @@ export const HeaderCard = ({
   subtitle, 
   buttonLabel, 
   buttonIcon = "pi pi-plus",
-  onButtonClick 
+  onButtonClick,
+  secondaryButtonLabel,
+  secondaryButtonIcon = "pi pi-arrow-left",
+  onSecondaryButtonClick
 }: HeaderCardProps) => {
   return (
     <div className="bg-[#282936] rounded-lg mx-5 p-4 flex flex-col sm:flex-row justify-between items-center shadow-lg">
@@ -21,14 +27,25 @@ export const HeaderCard = ({
         <h1 className="text-2xl font-semibold">{title}</h1>
         {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
       </div>
-      {buttonLabel && onButtonClick && (
-        <Button 
-          label={buttonLabel} 
-          icon={buttonIcon} 
-          onClick={onButtonClick}
-          className="w-full sm:w-auto" 
-        />
-      )}
+      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        {secondaryButtonLabel && onSecondaryButtonClick && (
+          <Button
+            label={secondaryButtonLabel}
+            icon={secondaryButtonIcon}
+            onClick={onSecondaryButtonClick}
+            className="w-full sm:w-auto"
+            severity="secondary"
+            />
+        )}
+        {buttonLabel && onButtonClick && (
+          <Button 
+            label={buttonLabel} 
+            icon={buttonIcon} 
+            onClick={onButtonClick}
+            className="w-full sm:w-auto" 
+          />
+        )}
+      </div>
     </div>
   )
 }

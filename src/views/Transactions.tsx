@@ -8,7 +8,10 @@ import { Column } from 'primereact/column';
 import { TransactionModal } from '../components/WalletDetail/TransactionModal';
 import { useParams } from 'react-router-dom';
 import { useTransactions } from '../hooks/useTransactions';
-export const Transactions = () => {
+import { useNavigate } from 'react-router-dom';
+
+    export const Transactions = () => {
+    const navigate = useNavigate();
     const toast = useRef<Toast>(null);
 
 
@@ -27,6 +30,9 @@ export const Transactions = () => {
                     buttonLabel="Crear"
 
                     onButtonClick={() => { }}
+                    secondaryButtonLabel="Regresar"
+                    secondaryButtonIcon="pi pi-arrow-left"
+                    onSecondaryButtonClick={() => { navigate('/wallet/' + wallet.id) }}
                 />
 
                 <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
