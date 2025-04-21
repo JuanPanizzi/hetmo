@@ -8,7 +8,7 @@ import { Button } from 'primereact/button';
 type Props = {
     wallet: Wallet
     confirmDelete: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
-    handleEditTransaction: (transaction: any) => void
+    handleEditTransaction?: (transaction: any) => void
 }
 
 export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction }: Props) => {
@@ -41,8 +41,8 @@ export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction
                     <Column body={(rowData) => {
                         return (
                             <div className="flex items-center gap-2">
-                                <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
-                                <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />    
+                                <Button icon="pi pi-trash"  severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
+                                {handleEditTransaction && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}    
                             </div>
                         )
                     }} />

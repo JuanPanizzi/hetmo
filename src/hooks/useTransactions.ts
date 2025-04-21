@@ -18,7 +18,7 @@ export const useTransactions = () => {
     const { id } = useParams();
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-
+    const [loading, setLoading] = useState<boolean>(false);
     const wallet = wallets.find(w => w.id === id);
 
     const handleNewTransaction = (transaction: Transaction | any) => setNewTransaction(prev => ({ ...prev, ...transaction }));
@@ -91,6 +91,8 @@ export const useTransactions = () => {
         return { severity: "success", message: "Transacción realizada correctamente" };
     }
 
+    const handleLoading = (loading: boolean) => setLoading(loading);
+
     return {
         wallets,
         addTransaction,
@@ -106,6 +108,8 @@ export const useTransactions = () => {
         cryptos,
         handleSetCryptos,
         handleEditTransaction,
-        isEditing
+        isEditing,
+        loading,
+        handleLoading
     }
 }

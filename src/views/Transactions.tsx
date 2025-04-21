@@ -17,7 +17,7 @@ import { Crypto as CryptoType } from '../types/wallets';
     const toast = useRef<Toast>(null);
 
 
-    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing } = useTransactions();
+    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing, loading, handleLoading } = useTransactions();
 
 
     if (!wallet) {
@@ -40,19 +40,27 @@ import { Crypto as CryptoType } from '../types/wallets';
     }, [newTransaction.crypto, newTransaction.amount]);
 
     useEffect(() => {
-        const cryptos = sessionStorage.getItem('cryptos');
-        if (cryptos) {
-            handleSetCryptos(JSON.parse(cryptos));
-        } else {
-            const fetchCryptos = async () => {
-                const response = await getCryptos();
-                handleSetCryptos(response.data);
-                sessionStorage.setItem('cryptos', JSON.stringify(response.data));
-            }
-            fetchCryptos();
-        }
 
-    }, [])
+        (async()=>{
+          try {
+            const cryptos = sessionStorage.getItem('cryptos');
+            if(cryptos){
+              handleSetCryptos(JSON.parse(cryptos));
+              return;
+            }
+            handleLoading(true);
+            const response = await getCryptos();
+            if (response.success) {
+              handleSetCryptos(response.data);
+              sessionStorage.setItem('cryptos', JSON.stringify(response.data));
+            }
+          } catch (error) {
+            console.log('Error al obtener criptomonedas');
+          } finally{
+            handleLoading(false);
+          }})();
+    
+      }, [])
 
     return (
         <>

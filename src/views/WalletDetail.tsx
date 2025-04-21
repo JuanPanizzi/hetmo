@@ -65,7 +65,7 @@ export const WalletDetail = () => {
             <section className="">
                 <HeaderCard
                     title={wallet?.name || ''}
-                    buttonLabel="Ver Transacciones"
+                    buttonLabel="Nueva Transacción"
                     onButtonClick={() => navigate(`/wallet/${wallet.id}/transactions`)}
                 />
 
@@ -74,7 +74,7 @@ export const WalletDetail = () => {
                     <TransactionsTable 
                         wallet={wallet} 
                         confirmDelete={confirmDelete} 
-                        handleEditTransaction={handleEditTransaction} 
+                        // handleEditTransaction={handleEditTransaction} 
                     />
                 </div>
             </section>
