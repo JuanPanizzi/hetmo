@@ -81,7 +81,7 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                     </div>
                     <Button
                         label="Cancelar"
-                        severity="secondary"
+                        severity="contrast"
                         icon="pi pi-times"
                         onClick={handleCancel}
                     />

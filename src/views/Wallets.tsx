@@ -8,7 +8,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { useWallet } from "../hooks/useWallet";
 import { WalletModal } from "../components/Wallet/WalletModal";
 import { HeaderCard } from "../components/UI/HeaderCard";
-import { EmpyWallets } from "../components/Wallet/EmpyWallets";
+import { EmptyWallets } from "../components/Wallet/EmpyWallets";
 
 export const Wallets = () => {
 
@@ -38,25 +38,31 @@ export const Wallets = () => {
 
   }
 
+ 
+
   useEffect(() => {
-    const cryptos = sessionStorage.getItem('cryptos');
-    if (cryptos) {
-      handleCryptos(JSON.parse(cryptos));
-    } else {
-      const fetchCryptos = async () => {
+
+    (async()=>{
+      try {
+        const cryptos = sessionStorage.getItem('cryptos');
+        if(cryptos){
+          handleCryptos(JSON.parse(cryptos));
+          return;
+        }
         handleLoading(true);
         const response = await getCryptos();
         if (response.success) {
           handleCryptos(response.data);
           sessionStorage.setItem('cryptos', JSON.stringify(response.data));
         }
+      } catch (error) {
+        console.log('Error al obtener las criptomonedas en el inicio');
+      } finally{
         handleLoading(false);
-      }
-      fetchCryptos();
-    }
+      }})();
+
   }, [])
-
-
+  
   return (
 
     <>
@@ -88,7 +94,7 @@ export const Wallets = () => {
         </div>
       </section>}
       {!loading && wallets.length === 0 && 
-        <EmpyWallets />
+        <EmptyWallets />
       }
 
     </>
