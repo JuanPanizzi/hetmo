@@ -52,7 +52,8 @@ export const WalletDetail = () => {
                     <CryptoTable wallet={wallet} />
                     <TransactionsTable 
                         wallet={wallet} 
-                        confirmDelete={confirmDelete} 
+                        confirmDelete={confirmDelete}
+                        title="Historial de Transacciones"
                         // handleEditTransaction={handleEditTransaction} 
                     />
                 </div>

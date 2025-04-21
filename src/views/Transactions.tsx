@@ -87,7 +87,7 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
 
                 <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
                     <Card>
-                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} handleConfirmTransaction={handleConfirmTransaction} handleDeleteTransaction={handleDeleteTransaction} handleEditTransaction={handleEditTransaction}/>
+                        <TransactionsTable wallet={{...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente')}} handleConfirmTransaction={handleConfirmTransaction} handleDeleteTransaction={handleDeleteTransaction} handleEditTransaction={handleEditTransaction} />
                     </Card>
                 </div>
             </section>

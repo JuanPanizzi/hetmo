@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 
 type Props = {
+    title: string
     wallet: Wallet
     confirmDelete?: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void
     handleEditTransaction?: (transaction: any) => void
@@ -17,7 +18,7 @@ type Props = {
 
 
 
-export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction, handleConfirmTransaction, handleDeleteTransaction }: Props) => {
+export const TransactionsTable = ({ title, wallet, confirmDelete, handleEditTransaction, handleConfirmTransaction, handleDeleteTransaction }: Props) => {
 
     const statusBodyTemplate = (transaction: Transaction) => {
         return <Tag value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>;
@@ -41,7 +42,7 @@ export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction
 
     return (
         <>
-            <Card title="Historial de Transacciones" className="shadow-lg">
+            <Card title={title} className="shadow-lg">
                 <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
                     <Column
                         field="date"
@@ -69,10 +70,10 @@ export const TransactionsTable = ({ wallet, confirmDelete, handleEditTransaction
                     <Column body={(rowData) => {
                         return (
                             <div className="flex justify-end gap-2">
+                                {handleEditTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
                                 {confirmDelete && <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
                                 {handleConfirmTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleConfirmTransaction(rowData.id)} />}
                                 {handleDeleteTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-trash" label="Eliminar" severity="danger" onClick={() => handleDeleteTransaction(rowData.id)} />}
-                                {handleEditTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
                             </div>
                         )
 
