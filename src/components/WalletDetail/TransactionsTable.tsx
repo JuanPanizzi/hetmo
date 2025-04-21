@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { WalletContext } from '../../context/walletContext';
 import { Toast } from 'primereact/toast';
+import { getSeverity } from '../../utils/utils';
 
 type Props = {
     title?: string
@@ -30,25 +31,9 @@ const toast = useRef<Toast>(null);
         return <Tag value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>;
     };
 
-    const getSeverity = (transaction: Transaction) => {
-        switch (transaction.status) {
-            case 'confirmada':
-                return 'success';
-
-            case 'pendiente':
-                return 'warning';
-
-            case 'cancelada':
-                return 'danger';
-
-            default:
-                return null;
-        }
-    };
-
     const handleConfirmTransaction = (transaction: Transaction | any, newStatus: string) => {
         updateTransaction(wallet.id, { ...transaction, status: newStatus });
-        toast.current?.show({ severity: 'success', summary: 'Transacción confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
+        toast.current?.show({ severity: 'success', summary: 'Transacción Confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
     }
 
     return (
@@ -77,14 +62,14 @@ const toast = useRef<Toast>(null);
                             currency: 'USD'
                         });
                     }} />
-                    <Column field='status' header='Estado' body={statusBodyTemplate} />
+                    <Column field='status' header='Estado' body={statusBodyTemplate} sortable  />
                     <Column body={(rowData) => {
                         return (
                             <div className="flex justify-end gap-2">
-                                {handleEditTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
-                                {confirmDelete && <Button icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
-                                {handleConfirmTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleConfirmTransaction(rowData, 'confirmada')} />}
-                                {handleDeleteTransaction && rowData.status === 'pendiente' && <Button icon="pi pi-trash" label="Eliminar" severity="danger" onClick={() => handleDeleteTransaction(rowData.id)} />}
+                                {handleEditTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
+                                {confirmDelete && <Button size='small' icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
+                                {handleConfirmTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleConfirmTransaction(rowData, 'confirmada')} />}
+                                {handleDeleteTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-trash" label="Eliminar" severity="danger" onClick={() => handleDeleteTransaction(rowData.id)} />}
                             </div>
                         )
 
