@@ -1,7 +1,4 @@
-import { useEffect, useRef } from "react";
-import { Crypto } from "../types/wallets";
 import { Toast } from "primereact/toast";
-import { getCryptos } from "../services/API";
 import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 import { useTransactions } from "../hooks/useTransactions";
 import { Error } from "./Error";
@@ -9,10 +6,12 @@ import { CryptoTable } from "../components/WalletDetail/CryptoTable";
 import { TransactionsTable } from "../components/WalletDetail/TransactionsTable";
 import { HeaderCard } from "../components/UI/HeaderCard";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 export const WalletDetail = () => {
+
     const navigate = useNavigate();
-    const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing } = useTransactions();
+    const { wallet, deleteTransaction } = useTransactions();
 
     if (!wallet) {
         return <Error message="Cartera no encontrada" />;
@@ -39,26 +38,6 @@ export const WalletDetail = () => {
         });
     };
 
-    // useEffect(() => {
-    //     const cryptos = sessionStorage.getItem('cryptos');
-    //     if (cryptos) {
-    //         handleSetCryptos(JSON.parse(cryptos));
-    //     } else {
-    //         const fetchCryptos = async () => {
-    //             const response = await getCryptos();
-    //             handleSetCryptos(response.data);
-    //             sessionStorage.setItem('cryptos', JSON.stringify(response.data));
-    //         }
-    //         fetchCryptos();
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (newTransaction.crypto && newTransaction.amount >= 0) {
-    //         const derivedPrice = (newTransaction.crypto as Crypto).current_price * newTransaction.amount;
-    //         handleNewTransaction({ price: derivedPrice });
-    //     }
-    // }, [newTransaction.crypto, newTransaction.amount]);
 
     return (
         <>
