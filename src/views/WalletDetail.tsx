@@ -9,6 +9,7 @@ import { Error } from "./Error";
 import { TransactionModal } from "../components/WalletDetail/TransactionModal";
 import { CryptoTable } from "../components/WalletDetail/CryptoTable";
 import { TransactionsTable } from "../components/WalletDetail/TransactionsTable";
+import { HeaderCard } from "../components/UI/HeaderCard";
 
 
 export const WalletDetail = () => {
@@ -89,15 +90,14 @@ export const WalletDetail = () => {
                 isEditing={isEditing}
             />
 
-            <section className="p-4">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-4xl">{wallet?.name}</h1>
-                    <div>
-                        <Button label="Nueva Transacción" icon="pi pi-plus" onClick={() => handleSetVisible(true)} />
-                    </div>
-                </div>
+            <section className="">
+                <HeaderCard 
+                    title={wallet?.name || ''}
+                    buttonLabel="Nueva Transacción"
+                    onButtonClick={() => handleSetVisible(true)}
+                />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-5 mt-5">
                     <CryptoTable wallet={wallet} />
                     <TransactionsTable wallet={wallet} confirmDelete={confirmDelete} handleEditTransaction={handleEditTransaction} />
                 </div>
