@@ -34,7 +34,17 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
     };
 
     const handleUpdateTransactionStatus = (transaction: Transaction | any, newStatus: string) => {
-        updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
+        const result = updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
+
+        if (!result.success) {
+            toast.current?.show({ 
+                severity: 'error', 
+                summary: 'Error', 
+                detail: result.error || 'Error al actualizar la transacción', 
+                life: 3000 
+            });
+            return;
+        }
 
         if (newStatus === 'confirmada') {
             toast.current?.show({ severity: 'success', summary: 'Transacción Confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
