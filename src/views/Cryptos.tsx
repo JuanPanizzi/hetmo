@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getCryptos } from '../services/API';
 import { Toast } from 'primereact/toast';
 import { Crypto } from '../types/wallets';
+import { Card } from 'primereact/card';
 
 
 
@@ -53,21 +54,26 @@ export const Cryptos = () => {
 
     <>
       <Toast ref={toast} />
-      <div className='flex justify-center items-center w-full'>
+      {/* <div className='flex justify-center items-center w-full'> */}
+      <Card title="Listado de criptomonedas" className="shadow-lg sm:m-4">
+
         <DataTable
           value={coins ?? []}
           paginator
-          rows={8}
-          tableStyle={{ minWidth: '80vw' }}
+          scrollable
+          rows={6}
           loading={loading}
           loadingIcon="pi pi-spinner pi-spin"
           emptyMessage="Sin resultados"
+          className="text-xs sm:text-sm md:text-base "
+          tableStyle={{ minWidth: '30rem', maxWidth: '100%' }}
+
         >
           <Column
             header="Criptomoneda"
             body={(row) => (
               <div className="flex items-center gap-2">
-                <img src={row.image} alt={row.name} className='w-10 h-10 rounded-full' />
+                <img src={row.image} alt={row.name} className='w-6 h-6 sm:w-10 sm:h-10 rounded-full' />
                 <span>{row.name}</span>
               </div>
             )}
@@ -77,7 +83,8 @@ export const Cryptos = () => {
 
 
         </DataTable>
-      </div>
+          </Card>
+      {/* </div> */}
     </>
   )
 }
