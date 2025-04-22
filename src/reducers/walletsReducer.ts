@@ -139,38 +139,24 @@ export const walletsReducer = (state: any, action: any) => {
 
             return updateState;
 
-        case 'EDIT_TRANSACTION':
-            const editState = [...state];
-            const editWalletIndex = editState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+        case 'EDIT_TRANSACTION': {
+
+            const newState = [...state];
+            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
-            if (editWalletIndex === -1) {
+            if (walletIndex === -1) {
                 return state;
             }
-
-            const { id: editId, symbol: editSymbol, name: editName, image: editImage, current_price: editCurrentPrice } = payload.transaction.crypto;
-
-            const editTransactionIndex = editState[editWalletIndex].transactions.findIndex(
+            const transactionIndex = newState[walletIndex].transactions.findIndex(
                 (transaction: Transaction) => transaction.id === payload.transaction.id
             );
 
-            if (editTransactionIndex === -1) {
-                return state;
-            }
+            newState[walletIndex].transactions.splice(newState[walletIndex].transactions[transactionIndex], 1, payload.transaction);
 
-            editState[editWalletIndex].transactions[editTransactionIndex] = {
-                id: payload.transaction.id,
-                type: payload.transaction.type,
-                crypto: { id: editId, symbol: editSymbol, name: editName, image: editImage, current_price: editCurrentPrice },
-                amount: payload.transaction.amount,
-                price: payload.transaction.price,
-                date: payload.transaction.date,
-                symbol: payload.transaction.crypto.symbol
-            };
-
-            editState[editWalletIndex].cryptocurrencies = calculateWalletCryptocurrencies(editState[editWalletIndex].transactions);
-
-            return editState;
-
+            return newState;
+           
+        }
+            
         case 'DELETE_TRANSACTION': {
 
             const newState = [...state];

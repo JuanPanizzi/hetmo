@@ -45,9 +45,8 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
           </div>
         }
       >
-        <div className="p-fluid">
-          <div className="field">
-            <label htmlFor="name">Nombre de la Cartera</label>
+          <div className="flex flex-col">
+            <label htmlFor="name" className='mb-2'>Nombre de la Cartera</label>
             <InputText
               id="name"
               value={isEditing ? selectedWallet?.name : newWallet.name}
@@ -55,7 +54,6 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
               placeholder="Ingresa el nombre de la cartera"
             />
           </div>
-        </div>
       </Dialog>
     </>
   )
