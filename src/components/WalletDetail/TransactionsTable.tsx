@@ -67,7 +67,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                 }
 
 
-                deleteTransaction(wallet.id, transaction.id);
+                deleteTransaction(wallet.id, transaction);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
                 return;
             }
@@ -113,7 +113,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
 
                                         :
 
-                                        confirmDelete && <Button size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
+                                        confirmDelete && <Button size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
 
                                 }
 

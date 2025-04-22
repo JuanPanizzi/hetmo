@@ -135,17 +135,19 @@ export const walletsReducer = (state: any, action: any) => {
         }
             
         case 'DELETE_TRANSACTION': {
+            
+            const {walletId, transaction: transactionToDelete} = payload;
 
             const newState = [...state];
 
-            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === walletId);
             
             if (walletIndex === -1) {
                 return state;
             }
 
             newState[walletIndex].transactions = newState[walletIndex].transactions.filter(
-                (transaction: Transaction) => transaction.id !== payload.id
+                (transaction: Transaction) => transaction.id !== transactionToDelete.id
             );
 
             return newState;

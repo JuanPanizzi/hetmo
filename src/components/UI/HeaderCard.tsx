@@ -34,7 +34,7 @@ export const HeaderCard = ({
             icon={secondaryButtonIcon}
             onClick={onSecondaryButtonClick}
             className="w-full sm:w-auto"
-            severity="secondary"
+            severity="contrast"
             />
         )}
         {buttonLabel && onButtonClick && (
