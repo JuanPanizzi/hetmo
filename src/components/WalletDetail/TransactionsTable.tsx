@@ -37,11 +37,11 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
         const result = updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
 
         if (!result.success) {
-            toast.current?.show({ 
-                severity: 'error', 
-                summary: 'Error', 
-                detail: result.error || 'Error al actualizar la transacción', 
-                life: 3000 
+            toast.current?.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: result.error || 'Error al actualizar la transacción',
+                life: 3000
             });
             return;
         }
@@ -72,7 +72,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                 }
                 if (isOperating || !isOperating && transaction.status === 'pendiente') {
                     handleUpdateTransactionStatus(transaction, 'cancelada');
-                    
+
                     return;
                 }
 
@@ -117,14 +117,30 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                     <Column body={(rowData) => {
                         return (
                             <div className="flex justify-end gap-2">
-                                {handleEditTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
-                                {handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />}
                                 {
-                                    isOperating || !isOperating && rowData.status === 'pendiente' ? <Button size='small' label='Cancelar' icon="pi pi-times" severity='danger' onClick={(e) => confirmDelete(e, rowData)} />
+                                    handleEditTransaction && rowData.status === 'pendiente' &&
+                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2' size='small'
+                                        icon="pi pi-pencil"
+                                        severity="warning"
+                                        onClick={() => handleEditTransaction(rowData)} />
+                                }
 
-                                        :
 
-                                        confirmDelete && <Button size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
+                                {
+                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2' size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
+                                }
+
+                                {
+                                    isOperating || !isOperating && rowData.status === 'pendiente' ?
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2'
+                                            size='small'
+                                            label='Cancelar'
+                                            icon="pi pi-times"
+                                            severity='danger'
+                                            onClick={(e) => confirmDelete(e, rowData)}
+                                        /> :
+                                        confirmDelete &&
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2' size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
 
                                 }
 
