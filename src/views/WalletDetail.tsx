@@ -19,19 +19,16 @@ export const WalletDetail = () => {
             <section >
                 <HeaderCard
                     title={wallet?.name || ''}
-                    buttonLabel="Transacciones"
+                    buttonLabel="Operar Transacciones"
                     buttonIcon="pi pi-arrow-right"
-                    secondaryButtonLabel="Ver Historial"
-                    secondaryButtonIcon="pi pi-history"
+                    secondaryButtonLabel="Historial de Transacciones"
+                    secondaryButtonIcon="pi pi-list-check"
                     onButtonClick={() => navigate(`/wallet/${wallet.id}/transactions`)}
-                    onSecondaryButtonClick={() => {
-                        const transactionsTable = document.getElementById('transactions-history');
-                        if (transactionsTable) {
-                            transactionsTable.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
+                    onSecondaryButtonClick={() => { const transactionsTable = document.getElementById('transactions-history');
+                        transactionsTable?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-3 sm:mx-5 mt-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mx-3 sm:mx-5 mt-5">
                     <CryptoTable wallet={wallet} />
                     <TransactionsTable wallet={wallet} title="Historial de Transacciones" id="transactions-history" />
                 </div>

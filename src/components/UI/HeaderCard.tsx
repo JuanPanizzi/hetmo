@@ -30,11 +30,13 @@ export const HeaderCard = ({
       </div>
       <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
         {secondaryButtonLabel && onSecondaryButtonClick && (
-          <Button
+          <Button 
             label={secondaryButtonLabel}
             icon={secondaryButtonIcon}
             onClick={onSecondaryButtonClick}
-            className="w-full sm:w-auto"
+            className={  `w-full sm:w-auto max-sm:p-2 max-sm:text-xs ${secondaryButtonLabel && secondaryButtonLabel === 'Historial de Transacciones' ? 'sm:hidden' : ''}`}
+            
+            outlined
             severity="contrast"
             />
         )}
