@@ -17,16 +17,16 @@ type Props = {
 }
 
 export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: Props) => {
-  
-  const getCryptoName = () => { 
-    if(newTransaction.crypto && typeof newTransaction.crypto === 'object') {
-        return cryptos.find(crypto => crypto.name === (newTransaction.crypto as Crypto).name)
+
+    const getCryptoName = () => {
+        if (newTransaction.crypto && typeof newTransaction.crypto === 'object') {
+            return cryptos.find(crypto => crypto.name === (newTransaction.crypto as Crypto).name)
+        }
     }
-  }
     return (
-    <>
-    <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
-    {/* {JSON.stringify(getCryptoName())} */}
+        <>
+            <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
+                {/* {JSON.stringify(getCryptoName())} */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <Dropdown
                         className="col-span-2"
@@ -92,6 +92,6 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                     />
                 </div>
             </Dialog>
-    </>
-  )
+        </>
+    )
 }

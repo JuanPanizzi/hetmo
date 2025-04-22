@@ -6,36 +6,36 @@ export const initialWallets = JSON.parse(
 ) as Wallet[];
 
 
-const calculateWalletCryptocurrencies = (transactions: any[]) => {
-    const cryptos: { [key: string]: { name: string; amount: number; image: string; current_price: number; symbol: string } } = {};
+// const calculateWalletCryptocurrencies = (transactions: any[]) => {
+//     const cryptos: { [key: string]: { name: string; amount: number; image: string; current_price: number; symbol: string } } = {};
     
-    transactions?.forEach((transaction) => {
-        const crypto = transaction.crypto;
-        if (!cryptos[crypto.name]) {
-            cryptos[crypto.name] = {
-                name: crypto.name,
-                amount: 0,
-                image: crypto.image || '',
-                current_price: crypto.current_price,
-                symbol: crypto.symbol
-            };
-        }
+//     transactions?.forEach((transaction) => {
+//         const crypto = transaction.crypto;
+//         if (!cryptos[crypto.name]) {
+//             cryptos[crypto.name] = {
+//                 name: crypto.name,
+//                 amount: 0,
+//                 image: crypto.image || '',
+//                 current_price: crypto.current_price,
+//                 symbol: crypto.symbol
+//             };
+//         }
         
-        cryptos[crypto.name].amount += transaction.type === 'Compra' 
-            ? transaction.amount 
-            : -transaction.amount;
-    });
+//         cryptos[crypto.name].amount += transaction.type === 'Compra' 
+//             ? transaction.amount 
+//             : -transaction.amount;
+//     });
 
-    return Object.values(cryptos)
-        .filter(crypto => crypto.amount > 0)
-        .map(crypto => ({
-            name: crypto.name,
-            amount: crypto.amount,
-            image: crypto.image,
-            current_price: crypto.current_price,
-            symbol: crypto.symbol
-        }));
-};
+//     return Object.values(cryptos)
+//         .filter(crypto => crypto.amount > 0)
+//         .map(crypto => ({
+//             name: crypto.name,
+//             amount: crypto.amount,
+//             image: crypto.image,
+//             current_price: crypto.current_price,
+//             symbol: crypto.symbol
+//         }));
+// };
 
 export const walletsReducer = (state: any, action: any) => {
     const { type, payload } = action;
@@ -49,6 +49,7 @@ export const walletsReducer = (state: any, action: any) => {
                 wallet.id === payload.id ? payload : wallet
             );
         case 'ADD_TRANSACTION':
+            console.log('chau')
             const newState = [...state];
             const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
@@ -69,13 +70,16 @@ export const walletsReducer = (state: any, action: any) => {
                 status: payload.transaction.status
             });
 
-            if(payload.transaction.status === 'confirmada'){
-                newState[walletIndex].cryptocurrencies = calculateWalletCryptocurrencies(newState[walletIndex].transactions);
-            }
+            // if(payload.transaction.status === 'confirmada'){
+
+            //     newState[walletIndex].cryptocurrencies = calculateWalletCryptocurrencies(newState[walletIndex].transactions);
+            
+            // }
           
             return newState;
 
-        case 'CONFIRM_TRANSACTION':
+        case 'CONFIRM_TRANSACTION': {
+            console.log('hola')
             const updateState = [...state];
             const updateWalletIndex = updateState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
@@ -130,14 +134,15 @@ export const walletsReducer = (state: any, action: any) => {
                         symbol: transaction.crypto.symbol
                     });
                 }
-
-             
+                
+                
                 updateState[updateWalletIndex].cryptocurrencies = updateState[updateWalletIndex].cryptocurrencies.filter(
                     (crypto: any) => crypto.amount > 0
                 );
             }
-
+            
             return updateState;
+        }
 
         case 'EDIT_TRANSACTION': {
 

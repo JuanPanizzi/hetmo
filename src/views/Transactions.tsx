@@ -30,6 +30,13 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
     const saveNewTransaction = () => {
         const result = handleAddTransaction();
         if (result.message) {
+
+          if(isEditing && result.message == "Transacción añadida correctamente"){
+            
+            toast.current?.show({ severity: result.severity as 'error' | 'success', summary: 'Operación Exitosa', detail: "Transacción editada correctamente", life: 3000 });
+            return;
+          }
+
             toast.current?.show({ severity: result.severity as 'error' | 'success', summary: result.severity === 'error' ? 'Error' : 'Operación Exitosa', detail: result.message, life: 3000 });
         }
     }

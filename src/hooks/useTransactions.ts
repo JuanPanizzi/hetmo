@@ -90,7 +90,7 @@ export const useTransactions = () => {
             date: '',
             id: ''
         });
-        return { severity: "success", message: "Transacción realizada correctamente" };
+        return { severity: "success", message: "Transacción añadida correctamente" };
     }
 
     const handleLoading = (loading: boolean) => setLoading(loading);
