@@ -27,10 +27,12 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
     const confirmDelete = () => {
         confirmDialog({
             message: '¿Está seguro de eliminar esta cartera?',
-            header: 'Eliminar Cartera',
+            header: 'Eliminar Cartera ',
             icon: 'pi pi-info-circle',
             defaultFocus: 'reject',
-            acceptClassName: 'p-button-danger',
+            acceptClassName: 'p-button-danger text-xs sm:text-sm md:text-base',
+            rejectClassName: 'p-button-text text-xs sm:text-sm md:text-base',
+            className: 'text-xs sm:text-sm md:text-base',
             accept
 
         });
