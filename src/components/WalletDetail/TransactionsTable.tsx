@@ -16,13 +16,13 @@ type Props = {
     isOperating?: boolean,
     handleEditTransaction?: (transaction: any) => void
     handleUpdateTransactionStatus?: (transaction: Transaction, newStatus: string) => void
-
+    id?: string
 }
 
 
 
 
-export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOperating }: Props) => {
+export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOperating, id }: Props) => {
 
 
     const { updateTransactionStatus, deleteTransaction } = useContext(WalletContext);
@@ -90,7 +90,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
     return (
         <>
             <Card title={title} className="shadow-lg">
-                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones" className='text-xs sm:text-sm md:text-base'>
+                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones" className='text-xs sm:text-sm md:text-base' id={id}  >
                     <Column
                         field="date"
                         header="Fecha"

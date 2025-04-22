@@ -21,12 +21,19 @@ export const WalletDetail = () => {
                     title={wallet?.name || ''}
                     buttonLabel="Transacciones"
                     buttonIcon="pi pi-arrow-right"
+                    secondaryButtonLabel="Ver Historial"
+                    secondaryButtonIcon="pi pi-history"
                     onButtonClick={() => navigate(`/wallet/${wallet.id}/transactions`)}
+                    onSecondaryButtonClick={() => {
+                        const transactionsTable = document.getElementById('transactions-history');
+                        if (transactionsTable) {
+                            transactionsTable.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }}
                 />
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-3 sm:mx-5 mt-5">
                     <CryptoTable wallet={wallet} />
-                    <TransactionsTable wallet={wallet} title="Historial de Transacciones"/>
+                    <TransactionsTable wallet={wallet} title="Historial de Transacciones" id="transactions-history" />
                 </div>
             </section>
            
