@@ -49,7 +49,7 @@ export const walletsReducer = (state: any, action: any) => {
                 wallet.id === payload.id ? payload : wallet
             );
         case 'ADD_TRANSACTION':
-            console.log('chau')
+            
             const newState = [...state];
             const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
@@ -78,8 +78,8 @@ export const walletsReducer = (state: any, action: any) => {
           
             return newState;
 
-        case 'CONFIRM_TRANSACTION': {
-            console.log('hola')
+        case 'UPDATE_TRANSACTION_STATUS': {
+            
             const updateState = [...state];
             const updateWalletIndex = updateState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
@@ -140,7 +140,13 @@ export const walletsReducer = (state: any, action: any) => {
                     (crypto: any) => crypto.amount > 0
                 );
             }
-            
+
+            if(payload.transaction.status === 'cancelada'){
+                const transaction = updateState[updateWalletIndex].transactions[transactionIndex];
+                transaction.status = 'cancelada';
+                updateState[updateWalletIndex].transactions[transactionIndex] = transaction;
+            }
+
             return updateState;
         }
 

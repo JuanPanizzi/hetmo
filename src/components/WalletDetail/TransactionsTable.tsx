@@ -12,19 +12,20 @@ import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 
 type Props = {
     title?: string
-    wallet: Wallet
+    wallet: Wallet,
+    isOperating?: boolean,
     handleEditTransaction?: (transaction: any) => void
-    handleConfirmTransaction?: (transaction: Transaction, newStatus: string) => void
+    handleUpdateTransactionStatus?: (transaction: Transaction, newStatus: string) => void
 
 }
 
 
 
 
-export const TransactionsTable = ({ title, wallet, handleEditTransaction }: Props) => {
+export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOperating }: Props) => {
 
 
-    const { confirmTransaction, deleteTransaction } = useContext(WalletContext);
+    const { updateTransactionStatus, deleteTransaction } = useContext(WalletContext);
 
     const toast = useRef<Toast>(null);
 
@@ -32,27 +33,43 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction }: Prop
         return <Tag className='' value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>
     };
 
-    const handleConfirmTransaction = (transaction: Transaction | any, newStatus: string) => {
-        confirmTransaction(wallet.id, { ...transaction, status: newStatus });
-        toast.current?.show({ severity: 'success', summary: 'Transacción Confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
+    const handleUpdateTransactionStatus = (transaction: Transaction | any, newStatus: string) => {
+        updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
+
+        if (newStatus === 'confirmada') {
+            toast.current?.show({ severity: 'success', summary: 'Transacción Confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
+            return;
+        } else {
+            toast.current?.show({ severity: 'warn', summary: 'Transacción Cancelada', detail: 'La transacción ha sido cancelada', life: 3000 });
+            return;
+        }
     }
 
 
-    const confirmDelete = (event: any, id: string) => {
+
+    const confirmDelete = (event: any, transaction: Transaction) => {
         confirmPopup({
             target: event.currentTarget,
-            message: '¿Está seguro de que desea eliminar esta transacción?',
+            message: '¿Está seguro que desea cancelar esta transacción?',
             icon: 'pi pi-exclamation-triangle',
             defaultFocus: 'accept',
-            acceptLabel: 'Eliminar',
-            rejectLabel: 'Cancelar',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
             acceptClassName: 'p-button-danger',
             accept: () => {
                 if (!wallet) {
                     return;
                 }
-                deleteTransaction(wallet.id, id);
+                if (isOperating) {
+                    handleUpdateTransactionStatus(transaction, 'cancelada');
+                    
+                    return;
+                }
+
+
+                deleteTransaction(wallet.id, transaction.id);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
+                return;
             }
         });
     };
@@ -91,8 +108,17 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction }: Prop
                         return (
                             <div className="flex justify-end gap-2">
                                 {handleEditTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
-                                {confirmDelete && <Button size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />}
-                                {handleConfirmTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleConfirmTransaction(rowData, 'confirmada')} />}
+                                {
+                                    isOperating ? <Button size='small' label='Cancelar' icon="pi pi-times" severity='danger' onClick={(e) => confirmDelete(e, rowData)} />
+
+                                        :
+
+                                        confirmDelete && <Button size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData.id)} />
+
+                                }
+
+
+                                {handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />}
 
                             </div>
                         )
