@@ -48,9 +48,9 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
     const footer = (
         <>
             <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} className="text-xs sm:text-sm md:text-base" />
-            <Button icon="pi pi-pencil" className='mx-2 text-xs sm:text-sm md:text-base' onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: { ...wallet } })}
+            <Button icon="pi pi-pencil" className="text-xs sm:text-sm md:text-base mx-2 " onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: { ...wallet } })}
             />
-            <Button severity="danger" icon="pi pi-trash" className='text-xs sm:text-sm md:text-base' onClick={confirmDelete} />
+            <Button severity="danger" icon="pi pi-trash" className="text-xs sm:text-sm md:text-base" onClick={confirmDelete} />
         </>
     );
 
@@ -58,13 +58,20 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
         <>
 
 
-            <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg ">
+            <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg" pt={{
+                footer: {
+                    className: 'max-sm:pt-2'
+                },
+                content: {
+                    className: 'max-sm:pt-1'
+                }
+            }}>
                 {
                     !wallet.cryptocurrencies?.length ? (
                         <p>No hay criptomonedas en esta cartera</p>
                     ) : (
                         <div className="flex flex-col">
-                            <div className="max-h-[250px] overflow-y-auto space-y-4 sm:pr-2 text-xs sm:text-sm md:text-base">
+                            <div className="max-h-[140px] sm:max-h-[250px] overflow-y-auto space-y-4 sm:pr-2 text-xs sm:text-sm md:text-base">
                                 {
                                     wallet.cryptocurrencies.map((crypto, index) => (
                                         <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
