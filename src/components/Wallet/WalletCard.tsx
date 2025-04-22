@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 interface WalletModalOptions {
     isEditing: boolean;
     selectedWallet?: Wallet;
-  }
+}
 
 type Props = {
     wallet: Wallet;
@@ -18,12 +18,12 @@ type Props = {
 
 export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: Props) {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const accept = () => {
         handleDeleteWallet(wallet.id)
     }
-   
+
     const confirmDelete = () => {
         confirmDialog({
             message: '¿Está seguro de eliminar esta cartera?',
@@ -32,7 +32,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
             defaultFocus: 'reject',
             acceptClassName: 'p-button-danger',
             accept
-          
+
         });
     };
 
@@ -45,53 +45,53 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
     );
     const footer = (
         <>
-            <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} />
-            <Button icon="pi pi-pencil" className='mx-2 h-full' onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: {...wallet} })} />
-            <Button severity="danger"  icon="pi pi-trash" className='!h-full' style={{height: '100%'}}  onClick={confirmDelete} />
-
+            <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} className="text-xs sm:text-sm md:text-base" />
+            <Button icon="pi pi-pencil" className='mx-2 text-xs sm:text-sm md:text-base' onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: { ...wallet } })}
+            />
+            <Button severity="danger" icon="pi pi-trash" className='text-xs sm:text-sm md:text-base' onClick={confirmDelete} />
         </>
     );
 
     return (
         <>
-        
-     
-                <Card  footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg ">
-                    {
-                        !wallet.cryptocurrencies?.length ? (
-                            <p>No hay criptomonedas en esta cartera</p>
-                        ) : (
-                            <div className="flex flex-col">
-                                <div className="max-h-[250px] overflow-y-auto space-y-4 sm:pr-2 text-xs sm:text-sm md:text-base">
-                                    {
-                                        wallet.cryptocurrencies.map((crypto, index) => (
-                                            <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
-                                                <div className="flex items-center gap-2">
-                                                    <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
-                                                    <span className="text-gray-200">{crypto.symbol?.toUpperCase()}</span>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="text-gray-200">{crypto.amount} {crypto.symbol?.toUpperCase()}</p>
-                                                    <p className="text-gray-400">US$ {(crypto.current_price * crypto.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-                                                </div>
+
+
+            <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg ">
+                {
+                    !wallet.cryptocurrencies?.length ? (
+                        <p>No hay criptomonedas en esta cartera</p>
+                    ) : (
+                        <div className="flex flex-col">
+                            <div className="max-h-[250px] overflow-y-auto space-y-4 sm:pr-2 text-xs sm:text-sm md:text-base">
+                                {
+                                    wallet.cryptocurrencies.map((crypto, index) => (
+                                        <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
+                                            <div className="flex items-center gap-2">
+                                                <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
+                                                <span className="text-gray-200">{crypto.symbol?.toUpperCase()}</span>
                                             </div>
-                                        ))
-                                    }
-                                </div>
-                                <div className="pt-4 mt-4 border-t border-gray-700 ">
-                                    <div className="flex justify-between items-center text-sm sm:text-base md:text-lg">
-                                        <span className="text-gray-200">Total</span>
-                                        <span className="text-purple-500 sm:text-xl font-semibold">
-                                            US$ {wallet.cryptocurrencies.reduce((total, crypto) => total + (crypto.current_price * crypto.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                                        </span>
-                                    </div>
+                                            <div className="text-right">
+                                                <p className="text-gray-200">{crypto.amount} {crypto.symbol?.toUpperCase()}</p>
+                                                <p className="text-gray-400">US$ {(crypto.current_price * crypto.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                            <div className="pt-4 mt-4 border-t border-gray-700 ">
+                                <div className="flex justify-between items-center text-sm sm:text-base md:text-lg">
+                                    <span className="text-gray-200">Total</span>
+                                    <span className="text-purple-500 sm:text-xl font-semibold">
+                                        US$ {wallet.cryptocurrencies.reduce((total, crypto) => total + (crypto.current_price * crypto.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                    </span>
                                 </div>
                             </div>
-                        )
-                    }
-                    
-                </Card>
-           {/* {JSON.stringify(wallet)} */}
+                        </div>
+                    )
+                }
+
+            </Card>
+            {/* {JSON.stringify(wallet)} */}
         </>
     )
 }
