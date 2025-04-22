@@ -24,7 +24,7 @@ export const WalletDetail = () => {
                     onButtonClick={() => navigate(`/wallet/${wallet.id}/transactions`)}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-5 mt-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-3 sm:mx-5 mt-5">
                     <CryptoTable wallet={wallet} />
                     <TransactionsTable wallet={wallet} title="Historial de Transacciones"/>
                 </div>

@@ -90,7 +90,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
     return (
         <>
             <Card title={title} className="shadow-lg">
-                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones">
+                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones" className='text-xs sm:text-sm md:text-base'>
                     <Column
                         field="date"
                         header="Fecha"
