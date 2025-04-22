@@ -35,7 +35,7 @@ export const Layout = () => {
           className: 'hover:bg-[#282936] rounded-sm'
         }
       }} />
-        <main className=" flex-1 p-4  m-4 h-full min-h-[calc(100vh-7rem)] rounded-lg bg-[#14151B] border-[1px] border-[#3E4053]">
+        <main className=" flex-1 max-sm:py-4 sm:p-4 max-sm:mt-5   sm:m-4 h-full min-h-[calc(100vh-7rem)] rounded-lg bg-[#14151B] border-[1px] border-[#3E4053]">
           <Outlet />
         </main>
     </div>
