@@ -28,13 +28,13 @@ export const HeaderCard = ({
         <h1 className=" text-base sm:text-2xl font-semibold">{title}</h1>
         {subtitle && <p className="text-xs text-gray-400">{subtitle}</p>}
       </div>
-      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+      <div className="flex flex-col sm:flex-row gap-2 w-full sm:max-w-[340px] md:max-w-[400px] ">
         {secondaryButtonLabel && onSecondaryButtonClick && (
           <Button 
             label={secondaryButtonLabel}
             icon={secondaryButtonIcon}
             onClick={onSecondaryButtonClick}
-            className={  `w-full sm:w-auto max-sm:p-2 max-sm:text-xs ${secondaryButtonLabel && secondaryButtonLabel === 'Historial de Transacciones' ? 'sm:hidden' : ''}`}
+            className={  `w-full p-2 sm:p-3  max-sm:text-xs sm:text-sm md:text-base  ${secondaryButtonLabel && secondaryButtonLabel === 'Historial de Transacciones' ? 'sm:hidden' : ''}`}
             
             outlined
             severity="contrast"
@@ -45,7 +45,7 @@ export const HeaderCard = ({
             label={buttonLabel} 
             icon={buttonIcon} 
             onClick={onButtonClick}
-            className="max-sm:p-2 max-sm:text-xs  sm:w-full sm:w-auto " 
+              className="p-2 sm:p-3  max-sm:text-xs sm:text-sm md:text-base  sm:w-full sm:w-auto " 
           />
         )}
       </div>

@@ -79,8 +79,8 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
             <section className="">
                 <HeaderCard
                     title={'Transacciones'}
-                    buttonLabel="Crear"
-
+                    buttonLabel="Nueva Transacción"
+                    buttonIcon="pi pi-plus"
                     onButtonClick={() => { handleSetVisible(true) }}
                     secondaryButtonLabel="Regresar"
                     secondaryButtonIcon="pi pi-arrow-left"
