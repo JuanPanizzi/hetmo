@@ -50,11 +50,11 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
     const confirmDelete = (event: any, transaction: Transaction) => {
         confirmPopup({
             target: event.currentTarget,
-            message: '¿Está seguro que desea cancelar esta transacción?',
+            message: isOperating ? '¿Está seguro de cancelar esta transacción?' : '¿Está seguro de eliminar esta transacción?',
             icon: 'pi pi-exclamation-triangle',
             defaultFocus: 'accept',
-            acceptLabel: 'Sí',
-            rejectLabel: 'No',
+            acceptLabel: isOperating ? 'Sí' : 'Eliminar',
+            rejectLabel: isOperating ? 'No' : 'Cancelar',
             acceptClassName: 'p-button-danger',
             accept: () => {
                 if (!wallet) {

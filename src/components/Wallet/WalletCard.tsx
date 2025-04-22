@@ -26,7 +26,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
    
     const confirmDelete = () => {
         confirmDialog({
-            message: '¿Está seguro que desea eliminar esta cartera?',
+            message: '¿Está seguro de eliminar esta cartera?',
             header: 'Eliminar Cartera',
             icon: 'pi pi-info-circle',
             defaultFocus: 'reject',

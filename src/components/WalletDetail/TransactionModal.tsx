@@ -73,6 +73,7 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                         <Calendar
                             id="fecha"
                             placeholder="DD/MM/YYYY"
+                            dateFormat="dd/mm/yy"
                             disabled={!newTransaction.type}
                             value={newTransaction.date ? new Date(newTransaction.date) : null}
                             onChange={(e) => handleNewTransaction({ ...newTransaction, date: e.value?.toISOString() || '' })}

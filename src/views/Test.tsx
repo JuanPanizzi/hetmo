@@ -63,7 +63,7 @@ export const WalletDetail = () => {
     const confirmDelete = (event: any, id: string) => {
         confirmPopup({
             target: event.currentTarget,
-            message: '¿Está seguro de que desea eliminar esta transacción?',
+            message: '¿Está seguro de eliminar esta transacción?',
             icon: 'pi pi-exclamation-triangle',
             defaultFocus: 'accept',
             acceptLabel: 'Eliminar',
