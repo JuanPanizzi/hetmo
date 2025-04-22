@@ -60,17 +60,17 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
     const confirmDelete = (event: any, transaction: Transaction) => {
         confirmPopup({
             target: event.currentTarget,
-            message: isOperating ? '¿Está seguro de cancelar esta transacción?' : '¿Está seguro de eliminar esta transacción?',
+            message: isOperating || !isOperating && transaction.status === 'pendiente' ? '¿Está seguro de cancelar esta transacción?' : '¿Está seguro de eliminar esta transacción?',
             icon: 'pi pi-exclamation-triangle',
             defaultFocus: 'accept',
-            acceptLabel: isOperating ? 'Sí' : 'Eliminar',
-            rejectLabel: isOperating ? 'No' : 'Cancelar',
+            acceptLabel: isOperating || !isOperating && transaction.status === 'pendiente' ? 'Sí' : 'Eliminar',
+            rejectLabel: isOperating || !isOperating && transaction.status === 'pendiente' ? 'No' : 'Cancelar',
             acceptClassName: 'p-button-danger',
             accept: () => {
                 if (!wallet) {
                     return;
                 }
-                if (isOperating) {
+                if (isOperating || !isOperating && transaction.status === 'pendiente') {
                     handleUpdateTransactionStatus(transaction, 'cancelada');
                     
                     return;
@@ -118,8 +118,9 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                         return (
                             <div className="flex justify-end gap-2">
                                 {handleEditTransaction && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-pencil" severity="warning" onClick={() => handleEditTransaction(rowData)} />}
+                                {handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />}
                                 {
-                                    isOperating ? <Button size='small' label='Cancelar' icon="pi pi-times" severity='danger' onClick={(e) => confirmDelete(e, rowData)} />
+                                    isOperating || !isOperating && rowData.status === 'pendiente' ? <Button size='small' label='Cancelar' icon="pi pi-times" severity='danger' onClick={(e) => confirmDelete(e, rowData)} />
 
                                         :
 
@@ -127,8 +128,6 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
 
                                 }
 
-
-                                {handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />}
 
                             </div>
                         )
