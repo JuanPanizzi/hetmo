@@ -24,12 +24,8 @@ export const Layout = () => {
   
   return (
     <>
-    <div className="min-h-screen flex flex-col "> 
-      {/* <Menubar model={items} className="shadow-lg mx-4 bg-[#14151B]" breakpoint="960px"  pt={{
-        menuitem: {
-          className: 'hover:bg-[#282936] rounded-sm'
-        }
-      }} /> */}
+    <div className="min-h-screen flex flex-col max-w-[2500px] mx-auto"> 
+      
        <MegaMenu model={items} className="shadow-lg sm:mx-4  bg-[#14151B]" breakpoint="640px"  pt={{
         menuitem: {
           className: 'hover:bg-[#282936] rounded-sm'

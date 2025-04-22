@@ -87,7 +87,7 @@ export const Wallets = () => {
           onButtonClick={() => handleWalletModal(true, { isEditing: false })}
         />
 
-        <div className="flex flex-wrap gap-10 items-start mt-10 mx-3 sm:mx-5 place-items-center max-sm:h-[calc(100vh-200px)] overflow-y-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 items-start mt-5 mx-3 sm:mx-5 place-items-center max-sm:h-[calc(100vh-200px)] overflow-y-auto">
           {wallets.map((wallet) => (
             <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} handleWalletModal={handleWalletModal} />
           ))}

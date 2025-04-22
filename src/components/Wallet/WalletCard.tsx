@@ -38,9 +38,9 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
 
 
     const header = (
-        <div className='p-4'>
+        <div className='px-4 pt-4 sm:p-4'>
 
-            <h1 className='text-2xl font-bold'>{wallet.name}</h1>
+            <h1 className='sm:text-2xl font-bold'>{wallet.name}</h1>
         </div>
     );
     const footer = (
@@ -56,30 +56,32 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
         <>
         
      
-                <Card title="" subTitle="" footer={footer} header={header} className="p-2 sm:p-4 w-full xl:max-w-xl shadow-lg">
+                <Card  footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg ">
                     {
                         !wallet.cryptocurrencies?.length ? (
                             <p>No hay criptomonedas en esta cartera</p>
                         ) : (
-                            <div className="space-y-4 ">
-                                {
-                                    wallet.cryptocurrencies.map((crypto, index) => (
-                                        <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
-                                            <div className="flex items-center gap-2">
-                                                <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
-                                                <span className="text-gray-200">{crypto.symbol?.toUpperCase()}</span>
+                            <div className="flex flex-col">
+                                <div className="max-h-[250px] overflow-y-auto space-y-4 sm:pr-2 text-xs sm:text-sm md:text-base">
+                                    {
+                                        wallet.cryptocurrencies.map((crypto, index) => (
+                                            <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
+                                                <div className="flex items-center gap-2">
+                                                    <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
+                                                    <span className="text-gray-200">{crypto.symbol?.toUpperCase()}</span>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-gray-200">{crypto.amount} {crypto.symbol?.toUpperCase()}</p>
+                                                    <p className="text-gray-400">US$ {(crypto.current_price * crypto.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                                                </div>
                                             </div>
-                                            <div className="text-right">
-                                                <p className="text-gray-200">{crypto.amount} {crypto.symbol?.toUpperCase()}</p>
-                                                <p className="text-gray-400">US$ {(crypto.current_price * crypto.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                                <div className="pt-4 mt-4 border-t border-gray-700">
-                                    <div className="flex justify-between items-center">
+                                        ))
+                                    }
+                                </div>
+                                <div className="pt-4 mt-4 border-t border-gray-700 ">
+                                    <div className="flex justify-between items-center text-sm sm:text-base md:text-lg">
                                         <span className="text-gray-200">Total</span>
-                                        <span className="text-purple-500 text-xl font-semibold">
+                                        <span className="text-purple-500 sm:text-xl font-semibold">
                                             US$ {wallet.cryptocurrencies.reduce((total, crypto) => total + (crypto.current_price * crypto.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                         </span>
                                     </div>
