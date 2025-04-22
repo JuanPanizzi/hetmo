@@ -1,4 +1,5 @@
-import { Menubar } from "primereact/menubar"
+import { MegaMenu } from "primereact/megamenu";
+// import { Menubar } from "primereact/menubar"
 import { MenuItem } from "primereact/menuitem";
 import { Outlet, useNavigate } from "react-router-dom"
 
@@ -24,7 +25,12 @@ export const Layout = () => {
   return (
     <>
     <div className="min-h-screen flex flex-col "> 
-      <Menubar model={items} className="shadow-lg mx-4 bg-[#14151B]" pt={{
+      {/* <Menubar model={items} className="shadow-lg mx-4 bg-[#14151B]" breakpoint="960px"  pt={{
+        menuitem: {
+          className: 'hover:bg-[#282936] rounded-sm'
+        }
+      }} /> */}
+       <MegaMenu model={items} className="shadow-lg sm:mx-4  bg-[#14151B]" breakpoint="640px"  pt={{
         menuitem: {
           className: 'hover:bg-[#282936] rounded-sm'
         }
