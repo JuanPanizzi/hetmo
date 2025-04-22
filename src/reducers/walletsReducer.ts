@@ -75,7 +75,7 @@ export const walletsReducer = (state: any, action: any) => {
           
             return newState;
 
-        case 'UPDATE_TRANSACTION':
+        case 'CONFIRM_TRANSACTION':
             const updateState = [...state];
             const updateWalletIndex = updateState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             

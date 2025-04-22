@@ -24,7 +24,7 @@ type Props = {
 export const TransactionsTable = ({ title, wallet, handleEditTransaction }: Props) => {
 
 
-    const { updateTransaction, deleteTransaction } = useContext(WalletContext);
+    const { confirmTransaction, deleteTransaction } = useContext(WalletContext);
 
     const toast = useRef<Toast>(null);
 
@@ -33,7 +33,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction }: Prop
     };
 
     const handleConfirmTransaction = (transaction: Transaction | any, newStatus: string) => {
-        updateTransaction(wallet.id, { ...transaction, status: newStatus });
+        confirmTransaction(wallet.id, { ...transaction, status: newStatus });
         toast.current?.show({ severity: 'success', summary: 'Transacción Confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
     }
 
