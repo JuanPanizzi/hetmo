@@ -131,7 +131,7 @@ export const walletsReducer = (state: any, action: any) => {
                     });
                 }
 
-                // Filtrar criptomonedas con cantidad mayor a 0
+             
                 updateState[updateWalletIndex].cryptocurrencies = updateState[updateWalletIndex].cryptocurrencies.filter(
                     (crypto: any) => crypto.amount > 0
                 );
@@ -171,21 +171,22 @@ export const walletsReducer = (state: any, action: any) => {
 
             return editState;
 
-        case 'DELETE_TRANSACTION':
-            const deleteState = [...state];
-            const deleteWalletIndex = deleteState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+        case 'DELETE_TRANSACTION': {
+
+            const newState = [...state];
+
+            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
-            if (deleteWalletIndex === -1) {
+            if (walletIndex === -1) {
                 return state;
             }
 
-            deleteState[deleteWalletIndex].transactions = deleteState[deleteWalletIndex].transactions.filter(
+            newState[walletIndex].transactions = newState[walletIndex].transactions.filter(
                 (transaction: Transaction) => transaction.id !== payload.id
             );
 
-            deleteState[deleteWalletIndex].cryptocurrencies = calculateWalletCryptocurrencies(deleteState[deleteWalletIndex].transactions);
-
-            return deleteState;
+            return newState;
+        }
 
         default:
             return state;
