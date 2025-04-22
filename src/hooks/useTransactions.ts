@@ -76,21 +76,32 @@ export const useTransactions = () => {
         if (isEditing) {
             editTransaction(wallet?.id || '', newTransaction);
             setIsEditing(false);
+            setVisible(false);
+            setNewTransaction({
+                type: '',
+                crypto: '',
+                amount: 0,
+                price: 0,
+                date: '',
+                id: '',
+                status: 'pendiente'
+            });
+            return { severity: "success", message: "Transacción editada correctamente" };
         } else {
             newTransaction.id = crypto.randomUUID();
             addTransaction(wallet?.id || '', newTransaction);
+            setVisible(false);
+            setNewTransaction({
+                type: '',
+                crypto: '',
+                amount: 0,
+                price: 0,
+                date: '',
+                id: '',
+                status: 'pendiente'
+            });
+            return { severity: "success", message: "Transacción añadida correctamente" };
         }
-        
-        setVisible(false);
-        handleNewTransaction({
-            type: '',
-            crypto: '',
-            amount: 0,
-            price: 0,
-            date: '',
-            id: ''
-        });
-        return { severity: "success", message: "Transacción añadida correctamente" };
     }
 
     const handleLoading = (loading: boolean) => setLoading(loading);
