@@ -56,7 +56,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
         <>
         
      
-                <Card title="" subTitle="" footer={footer} header={header} className="p-4 w-full xl:max-w-xl shadow-lg">
+                <Card title="" subTitle="" footer={footer} header={header} className="p-2 sm:p-4 w-full xl:max-w-xl shadow-lg">
                     {
                         !wallet.cryptocurrencies?.length ? (
                             <p>No hay criptomonedas en esta cartera</p>

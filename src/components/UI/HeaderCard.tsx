@@ -22,10 +22,11 @@ export const HeaderCard = ({
   onSecondaryButtonClick
 }: HeaderCardProps) => {
   return (
-    <div className="bg-[#282936] rounded-lg mx-5 p-4 flex flex-col sm:flex-row justify-between items-center shadow-lg">
+    <div className="bg-[#282936] rounded-lg mx-3 sm:mx-5 p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center shadow-lg">
+      
       <div className="flex flex-col mb-4 sm:mb-0">
-        <h1 className="text-2xl font-semibold">{title}</h1>
-        {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
+        <h1 className=" text-sm sm:text-2xl font-semibold">{title}</h1>
+        {subtitle && <p className="text-xs text-gray-400">{subtitle}</p>}
       </div>
       <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
         {secondaryButtonLabel && onSecondaryButtonClick && (
@@ -42,7 +43,7 @@ export const HeaderCard = ({
             label={buttonLabel} 
             icon={buttonIcon} 
             onClick={onButtonClick}
-            className="w-full sm:w-auto" 
+            className="max-sm:p-1 max-sm:text-xs w-full sm:w-auto " 
           />
         )}
       </div>
