@@ -25,11 +25,10 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
     }
     return (
         <>
-            <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
-                {/* {JSON.stringify(getCryptoName())} */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} className="mx-3 w-full sm:max-w-[700px] text-xs sm:text-sm md:text-base" visible={visible}  onHide={() => { if (!visible) return; handleSetVisible(false); }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Dropdown
-                        className="col-span-2"
+                        className="md:col-span-2"
                         options={['Compra', 'Venta']}
                         placeholder="Selecciona el tipo de transacción"
                         value={newTransaction.type}
@@ -84,11 +83,13 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                         label="Cancelar"
                         severity="contrast"
                         icon="pi pi-times"
+                        className="text-xs sm:text-sm md:text-base p-2 sm:p-3  "
                         onClick={handleCancel}
                     />
                     <Button
                         label="Aceptar"
                         icon="pi pi-check"
+                        className="text-xs sm:text-sm md:text-base p-2 sm:p-3  "
                         onClick={saveNewTransaction}
                     />
                 </div>
