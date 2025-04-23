@@ -1,10 +1,13 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import { Wallet, WalletModalOptions } from '../../types/wallets';
+import { Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 
-
+export interface WalletModalOptions {
+    isEditing: boolean;
+    selectedWallet?: Wallet;
+}
 
 type Props = {
     wallet: Wallet;
