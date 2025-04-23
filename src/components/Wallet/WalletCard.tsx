@@ -9,14 +9,14 @@ export interface WalletModalOptions {
     selectedWallet?: Wallet;
 }
 
-type Props = {
+type WalletCardProps = {
     wallet: Wallet;
     handleDeleteWallet: (id: string) => void;
     cryptos: Crypto[];
     handleWalletModal: (showWalletModal: boolean, options?: WalletModalOptions) => void;
 }
 
-export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: Props) {
+export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: WalletCardProps) {
 
     const navigate = useNavigate();
 
@@ -53,8 +53,8 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
     );
 
     return (
+        
         <>
-
 
             <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg" pt={{
                 footer: {
@@ -98,7 +98,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
                 }
 
             </Card>
-            {/* {JSON.stringify(wallet)} */}
+          
         </>
     )
 }

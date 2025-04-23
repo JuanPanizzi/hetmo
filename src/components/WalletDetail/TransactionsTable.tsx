@@ -10,7 +10,7 @@ import { Toast } from 'primereact/toast';
 import { getSeverity } from '../../utils/utils';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 
-type Props = {
+type TransactionsTableProps = {
     title?: string
     wallet: Wallet,
     isOperating?: boolean,
@@ -22,7 +22,7 @@ type Props = {
 
 
 
-export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOperating, id }: Props) => {
+export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOperating, id }: TransactionsTableProps) => {
 
 
     const { updateTransactionStatus, deleteTransaction } = useContext(WalletContext);

@@ -3,11 +3,11 @@ import { Column } from 'primereact/column'
 import { Card } from 'primereact/card'
 import { Wallet } from '../../types/wallets'
 
-type Props = {
+type CryptoTableProps = {
     wallet: Wallet
 }
 
-export const CryptoTable = ({ wallet }: Props) => {
+export const CryptoTable = ({ wallet }: CryptoTableProps) => {
     return (
         <>
             <Card title="Criptomonedas" className="shadow-lg">

@@ -5,7 +5,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
 import { Transaction, Crypto } from "../../types/wallets";
 
-type Props = {
+type TransactionModalProps = {
     visible: boolean;
     handleSetVisible: (visible: boolean) => void;
     newTransaction: Transaction;
@@ -16,7 +16,7 @@ type Props = {
     isEditing?: boolean;
 }
 
-export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: Props) => {
+export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: TransactionModalProps) => {
 
     const getCryptoName = () => {
         if (newTransaction.crypto && typeof newTransaction.crypto === 'object') {

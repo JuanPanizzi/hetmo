@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Wallet } from '../../types/wallets';
 
-type Props = {
+type WalletModalProps = {
     isEditing?: boolean;
     showWalletModal: boolean;
     handleWalletModal: (showWalletModal: boolean, options?: { isEditing: boolean, selectedWallet?: Wallet }) => void;
@@ -14,7 +14,7 @@ type Props = {
     selectedWallet?: Wallet;
 }
 
-export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleSaveWallet, newWallet, handleNewWallet, selectedWallet }: Props) => {
+export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleSaveWallet, newWallet, handleNewWallet, selectedWallet }: WalletModalProps) => {
  
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
