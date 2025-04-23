@@ -1,26 +1,23 @@
-const API_KEY = 'CG-MX4Unb5kP7XqRvxDnBrRD2PA';
-const BASE_URL = "https://api.coingecko.com/api/v3";
+import axios from "axios";
+
+// const API_KEY = 'CG-MX4Unb5kP7XqRvxDnBrRD2PA';
+// const BASE_URL = "https://api.coingecko.com/api/v3";
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = import.meta.env.VITE_BASE_API_URL;
 
 export const getCryptos = async () => {
-  const url = `${BASE_URL}/coins/markets?vs_currency=usd&x_cg_demo_api_key=${API_KEY}`;
 
   try {
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-cg-demo-api-key": API_KEY
-      }
+    const response = await axios.get(`${BASE_URL}/coins/markets`, {
+      params: { vs_currency: 'usd' },
+      headers: { 'x-cg-demo-api-key': API_KEY }
     });
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error();
-    }
-    const data = await response.json();
-    return { success: true, data }
+    console.log('response', response.data);
+    return { success: true, data: response.data };
   } catch (error) {
+    console.log('error', error);
     return { success: false, data: null }
-
   }
 
 }
+
