@@ -92,7 +92,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                             <div className="flex justify-start gap-2">
                                 {
                                     handleEditTransaction && rowData.status === 'pendiente' &&
-                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8'
+                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8'
                                         size='small'
                                         icon="pi pi-pencil"
                                         severity="warning"
@@ -100,19 +100,19 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                                 }
                                 {
                                     isOperating || !isOperating && rowData.status === 'pendiente' ?
-                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8'
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8'
                                             size='small'
-                                            label=''
+                                            label='Cancelar'
                                             icon="pi pi-times"
                                             severity='danger'
                                             onClick={(e) => confirmDelete(e, rowData)}
                                         /> :
                                         confirmDelete &&
-                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8' size='small' label="" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
 
                                 }
                                 {
-                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8' size='small' icon="pi pi-check" label="" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
+                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
                                 }
                             </div>
                         )
