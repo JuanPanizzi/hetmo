@@ -41,7 +41,8 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
         footer={
           <div>
             <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text text-xs sm:text-sm md:text-base" />
-            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus className="text-xs sm:text-sm md:text-base" />
+            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus className="text-xs sm:text-sm md:text-base" 
+            data-testid="save-wallet-button"/>
           </div>
         }
       >
@@ -53,6 +54,7 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
               onChange={handleInputChange}
               placeholder="Ingresa el nombre de la cartera"
               className="text-xs sm:text-sm md:text-base"
+              data-testid="wallet-name-input"
             />
           </div>
       </Dialog>
