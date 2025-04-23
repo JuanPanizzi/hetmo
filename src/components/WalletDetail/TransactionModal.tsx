@@ -17,23 +17,22 @@ type Props = {
 }
 
 export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: Props) => {
-  
-  const getCryptoName = () => { 
-    if(newTransaction.crypto && typeof newTransaction.crypto === 'object') {
-        return cryptos.find(crypto => crypto.name === (newTransaction.crypto as Crypto).name)
+
+    const getCryptoName = () => {
+        if (newTransaction.crypto && typeof newTransaction.crypto === 'object') {
+            return cryptos.find(crypto => crypto.name === (newTransaction.crypto as Crypto).name)
+        }
     }
-  }
     return (
-    <>
-    <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; handleSetVisible(false); }}>
-    {/* {JSON.stringify(getCryptoName())} */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <>
+            <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} className="mx-3 w-full sm:max-w-[700px] text-xs sm:text-sm md:text-base" visible={visible}  onHide={() => { if (!visible) return; handleSetVisible(false); }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Dropdown
-                        className="col-span-2"
-                        options={['compra', 'venta']}
+                        className="md:col-span-2"
+                        options={['Compra', 'Venta']}
                         placeholder="Selecciona el tipo de transacción"
                         value={newTransaction.type}
-                        onChange={(e) => handleNewTransaction({ ...newTransaction, type: e.value as 'compra' | 'venta' })}
+                        onChange={(e) => handleNewTransaction({ ...newTransaction, type: e.value as 'Compra' | 'Venta' })}
                     />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="crypto">Criptomoneda</label>
@@ -44,6 +43,11 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                             value={isEditing ? getCryptoName() : newTransaction.crypto}
                             disabled={!isEditing ? !newTransaction.type : true}
                             onChange={(e) => handleNewTransaction({ ...newTransaction, crypto: e.value })}
+                            pt={{
+                                wrapper: {
+                                    className: 'max-sm:text-xs sm:text-sm md:text-base'
+                                }
+                            }}
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -73,6 +77,7 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                         <Calendar
                             id="fecha"
                             placeholder="DD/MM/YYYY"
+                            dateFormat="dd/mm/yy"
                             disabled={!newTransaction.type}
                             value={newTransaction.date ? new Date(newTransaction.date) : null}
                             onChange={(e) => handleNewTransaction({ ...newTransaction, date: e.value?.toISOString() || '' })}
@@ -81,17 +86,19 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                     </div>
                     <Button
                         label="Cancelar"
-                        severity="secondary"
+                        severity="contrast"
                         icon="pi pi-times"
+                        className="text-xs sm:text-sm md:text-base p-2 sm:p-3  "
                         onClick={handleCancel}
                     />
                     <Button
                         label="Aceptar"
                         icon="pi pi-check"
+                        className="text-xs sm:text-sm md:text-base p-2 sm:p-3  "
                         onClick={saveNewTransaction}
                     />
                 </div>
             </Dialog>
-    </>
-  )
+        </>
+    )
 }

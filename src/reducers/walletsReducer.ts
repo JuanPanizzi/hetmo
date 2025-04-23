@@ -6,36 +6,6 @@ export const initialWallets = JSON.parse(
 ) as Wallet[];
 
 
-const calculateWalletCryptocurrencies = (transactions: any[]) => {
-    const cryptos: { [key: string]: { name: string; amount: number; image: string; current_price: number; symbol: string } } = {};
-    
-    transactions?.forEach((transaction) => {
-        const crypto = transaction.crypto;
-        if (!cryptos[crypto.name]) {
-            cryptos[crypto.name] = {
-                name: crypto.name,
-                amount: 0,
-                image: crypto.image || '',
-                current_price: crypto.current_price,
-                symbol: crypto.symbol
-            };
-        }
-        
-        cryptos[crypto.name].amount += transaction.type === 'compra' 
-            ? transaction.amount 
-            : -transaction.amount;
-    });
-
-    return Object.values(cryptos)
-        .filter(crypto => crypto.amount > 0)
-        .map(crypto => ({
-            name: crypto.name,
-            amount: crypto.amount,
-            image: crypto.image,
-            current_price: crypto.current_price,
-            symbol: crypto.symbol
-        }));
-};
 
 export const walletsReducer = (state: any, action: any) => {
     const { type, payload } = action;
@@ -49,6 +19,7 @@ export const walletsReducer = (state: any, action: any) => {
                 wallet.id === payload.id ? payload : wallet
             );
         case 'ADD_TRANSACTION':
+            
             const newState = [...state];
             const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
@@ -65,26 +36,24 @@ export const walletsReducer = (state: any, action: any) => {
                 amount: payload.transaction.amount,
                 price: payload.transaction.price,
                 date: payload.transaction.date,
-                symbol: payload.transaction.crypto.symbol
+                symbol: payload.transaction.crypto.symbol,
+                status: payload.transaction.status
             });
 
-            
-            newState[walletIndex].cryptocurrencies = calculateWalletCryptocurrencies(newState[walletIndex].transactions);
+           
           
             return newState;
 
-        case 'EDIT_TRANSACTION':
-            const editState = [...state];
-            const editWalletIndex = editState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+        case 'UPDATE_TRANSACTION_STATUS': {
             
-            if (editWalletIndex === -1) {
+            const updateState = [...state];
+            const updateWalletIndex = updateState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+            
+            if (updateWalletIndex === -1) {
                 return state;
             }
 
-            const { id: editId, symbol: editSymbol, name: editName, image: editImage, current_price: editCurrentPrice } = payload.transaction.crypto;
-
-     
-            const transactionIndex = editState[editWalletIndex].transactions.findIndex(
+            const transactionIndex = updateState[updateWalletIndex].transactions.findIndex(
                 (transaction: Transaction) => transaction.id === payload.transaction.id
             );
 
@@ -92,37 +61,106 @@ export const walletsReducer = (state: any, action: any) => {
                 return state;
             }
 
-            editState[editWalletIndex].transactions[transactionIndex] = {
-                id: payload.transaction.id,
-                type: payload.transaction.type,
-                crypto: { id: editId, symbol: editSymbol, name: editName, image: editImage, current_price: editCurrentPrice },
-                amount: payload.transaction.amount,
-                price: payload.transaction.price,
-                date: payload.transaction.date,
-                symbol: payload.transaction.crypto.symbol
+            
+            updateState[updateWalletIndex].transactions[transactionIndex] = {
+                ...payload.transaction,
+                status: payload.transaction.status
             };
 
-            
-            editState[editWalletIndex].cryptocurrencies = calculateWalletCryptocurrencies(editState[editWalletIndex].transactions);
+           
+            if (payload.transaction.status === 'confirmada') {
+                const transaction = updateState[updateWalletIndex].transactions[transactionIndex];
+                const cryptoName = transaction.crypto.name;
+                
+                
+                const cryptoIndex = updateState[updateWalletIndex].cryptocurrencies.findIndex(
+                    (crypto: any) => crypto.name === cryptoName
+                );
 
-            return editState;
+                if (cryptoIndex !== -1) {
+                   
+                    if (transaction.type === 'Compra') {
+                        updateState[updateWalletIndex].cryptocurrencies[cryptoIndex].amount += transaction.amount;
+                    } else if (transaction.type === 'Venta') {
+                        
+                        if(updateState[updateWalletIndex].cryptocurrencies[cryptoIndex].amount > transaction.amount){
+                            updateState[updateWalletIndex].cryptocurrencies[cryptoIndex].amount -= transaction.amount;
+                        }else{
+                            updateState[updateWalletIndex].cryptocurrencies[cryptoIndex].amount = 0;
+                        }
 
-        case 'DELETE_TRANSACTION':
-            const deleteState = [...state];
-            const deleteWalletIndex = deleteState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+                    }
+                } else if (transaction.type === 'Compra') {
+                    
+                    updateState[updateWalletIndex].cryptocurrencies.push({
+                        name: cryptoName,
+                        amount: transaction.amount,
+                        image: transaction.crypto.image,
+                        current_price: transaction.crypto.current_price,
+                        symbol: transaction.crypto.symbol
+                    });
+                }
+                
+                
+                updateState[updateWalletIndex].cryptocurrencies = updateState[updateWalletIndex].cryptocurrencies.filter(
+                    (crypto: any) => crypto.amount > 0
+                );
+            }
+
+            if(payload.transaction.status === 'cancelada'){
+                const transaction = updateState[updateWalletIndex].transactions[transactionIndex];
+                transaction.status = 'cancelada';
+                updateState[updateWalletIndex].transactions[transactionIndex] = transaction;
+            }
+
+            return updateState;
+        }
+
+        case 'EDIT_TRANSACTION': {
+            const newState = [...state];
+            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
-            if (deleteWalletIndex === -1) {
+            if (walletIndex === -1) {
+                return state;
+            }
+            
+            const transactionIndex = newState[walletIndex].transactions.findIndex(
+                (transaction: Transaction) => transaction.id === payload.transaction.id
+            );
+
+            if (transactionIndex === -1) {
                 return state;
             }
 
+            // Actualizar la transacción existente
+            newState[walletIndex].transactions[transactionIndex] = {
+                ...payload.transaction,
+                status: newState[walletIndex].transactions[transactionIndex].status 
+            };
+
+            return newState;
+        }
             
-            deleteState[deleteWalletIndex].transactions = deleteState[deleteWalletIndex].transactions.filter(
-                (transaction: Transaction) => transaction.id !== payload.id
+        case 'DELETE_TRANSACTION': {
+            
+            const {walletId, transaction: transactionToDelete} = payload;
+
+            const newState = [...state];
+
+            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === walletId);
+            
+            if (walletIndex === -1) {
+                return state;
+            }
+
+            newState[walletIndex].transactions = newState[walletIndex].transactions.filter(
+                (transaction: Transaction) => transaction.id !== transactionToDelete.id
             );
 
-            
-            deleteState[deleteWalletIndex].cryptocurrencies = calculateWalletCryptocurrencies(deleteState[deleteWalletIndex].transactions);
+            return newState;
+        }
 
-            return deleteState;
+        default:
+            return state;
     }
 }

@@ -1,4 +1,4 @@
-import { Button } from "primereact/button"
+
 import WalletCard from "../components/Wallet/WalletCard"
 import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
@@ -7,6 +7,9 @@ import { getCryptos } from "../services/API";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useWallet } from "../hooks/useWallet";
 import { WalletModal } from "../components/Wallet/WalletModal";
+import { HeaderCard } from "../components/UI/HeaderCard";
+import { EmptyWallets } from "../components/Wallet/EmpyWallets";
+
 export const Wallets = () => {
 
 
@@ -29,62 +32,73 @@ export const Wallets = () => {
   };
 
   const handleDeleteWallet = (id: string) => {
-
     deleteWallet(id);
     toast.current?.show({ severity: "success", summary: "Operación exitosa", detail: "Cartera eliminada correctamente", life: 3000 });
-
   }
 
+ 
+
   useEffect(() => {
-    const cryptos = sessionStorage.getItem('cryptos');
-    if (cryptos) {
-      handleCryptos(JSON.parse(cryptos));
-    } else {
-      const fetchCryptos = async () => {
+
+    (async()=>{
+      try {
+        const cryptos = sessionStorage.getItem('cryptos');
+        if(cryptos){
+          handleCryptos(JSON.parse(cryptos));
+          return;
+        }
         handleLoading(true);
         const response = await getCryptos();
         if (response.success) {
           handleCryptos(response.data);
           sessionStorage.setItem('cryptos', JSON.stringify(response.data));
         }
+      } catch (error) {
+        console.log('Error al obtener las criptomonedas en el inicio');
+      } finally{
         handleLoading(false);
-      }
-      fetchCryptos();
-    }
+      }})();
+
   }, [])
-
-
+  
   return (
 
     <>
- 
-      <ConfirmDialog
-        acceptLabel="Eliminar"
-        rejectLabel="Cancelar"
-        pt={{ rejectButton: { className: 'mr-2' } }} />
-      <Toast ref={toast} />
 
-      <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleSaveWallet={handleSaveWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
-
-      {loading && <div className="flex justify-center items-center h-screen">
+      {loading && 
+      <div className="flex justify-center items-center h-screen">
         <ProgressSpinner />
       </div>}
-      {!loading && cryptos.length > 0 && <section>
-        <div className="flex w-full items-center justify-between p-2">
-          <h1 className="text-4xl ">Carteras</h1>
-          <Button label="Crear Cartera" icon="pi pi-plus" onClick={() => handleWalletModal(true, { isEditing: false })} />
-        </div>
 
-        <div className="flex flex-wrap gap-10 items-start xl:mt-10 mx-5 place-items-center ">
+      {!loading  && 
+      <div>
+        <HeaderCard 
+          title="Carteras"
+          subtitle="Administra tus carteras y criptomonedas"
+          buttonLabel="Crear Cartera"
+          onButtonClick={() => handleWalletModal(true, { isEditing: false })}
+          />
+        </div>}
+
+        {
+         !loading && wallets.length > 0 && 
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 items-start mt-5 mx-3 sm:mx-5 place-items-center max-sm:max-h-[70vh] overflow-y-auto">
           {wallets.map((wallet) => (
-            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} handleWalletModal={handleWalletModal} />
+            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} 
+            handleWalletModal={handleWalletModal} />
           ))}
         </div>
+        }
+        
+      {!loading && wallets.length === 0 && 
+        <EmptyWallets />
+      }
 
-      </section>}
-      {!loading && wallets.length === 0 && <div className="flex justify-center items-center h-screen">
-        <h1 className="text-4xl ">No se registran carteras en este momento, crea una para empezar a operar</h1>
-      </div>}
+      <ConfirmDialog acceptLabel="Eliminar" rejectLabel="Cancelar" pt={{ rejectButton: { className: 'mr-2' } }} /> 
+      <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
+
+      <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleSaveWallet={handleSaveWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
 
     </>
   )

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getCryptos } from '../services/API';
 import { Toast } from 'primereact/toast';
 import { Crypto } from '../types/wallets';
+import { Card } from 'primereact/card';
 
 
 
@@ -26,48 +27,56 @@ export const Cryptos = () => {
 
   useEffect(() => {
 
-    const cryptos = sessionStorage.getItem('cryptos');
-    if (cryptos) {
-      setCoins(JSON.parse(cryptos));
-    } else {
-    const fetchData = async () => {
+  (async()=>{
+
+    try {
+      const cryptos = sessionStorage.getItem('cryptos');
+      if(cryptos){
+        setCoins(JSON.parse(cryptos));
+        return;
+      }
       setLoading(true);
-
-      const response: { success: boolean, data: Crypto[] | null } = await getCryptos();
-
-      if (response.success) {
+      const response = await getCryptos();
+      if(response.success){
         setCoins(response.data);
         sessionStorage.setItem('cryptos', JSON.stringify(response.data));
       } else {
-      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
+        throw new Error('Error al obtener las criptomonedas');
       }
+    } catch (error) {
+      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
+    } finally {
       setLoading(false);
-    };
+    }
+  })();
 
-    fetchData();
-  }
   }, []);
 
 
   return (
 
     <>
-      <Toast ref={toast} />
-      <div className='flex justify-center items-center w-full'>
+      <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
+      {/* <div className='flex justify-center items-center w-full'> */}
+      <Card title="Listado de criptomonedas" className="shadow-lg sm:m-4 max-sm:mx-3">
+
         <DataTable
           value={coins ?? []}
           paginator
-          rows={8}
-          tableStyle={{ minWidth: '80vw' }}
+          scrollable
+          rows={6}
           loading={loading}
           loadingIcon="pi pi-spinner pi-spin"
           emptyMessage="Sin resultados"
+          className="text-xs sm:text-sm md:text-base "
+          tableStyle={{ minWidth: '20rem', maxWidth: '100%' }}
+
         >
           <Column
             header="Criptomoneda"
             body={(row) => (
               <div className="flex items-center gap-2">
-                <img src={row.image} alt={row.name} className='w-10 h-10 rounded-full' />
+                <img src={row.image} alt={row.name} className='w-6 h-6 sm:w-10 sm:h-10 rounded-full' />
                 <span>{row.name}</span>
               </div>
             )}
@@ -77,7 +86,8 @@ export const Cryptos = () => {
 
 
         </DataTable>
-      </div>
+          </Card>
+      {/* </div> */}
     </>
   )
 }

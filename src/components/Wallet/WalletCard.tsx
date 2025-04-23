@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 interface WalletModalOptions {
     isEditing: boolean;
     selectedWallet?: Wallet;
-  }
+}
 
 type Props = {
     wallet: Wallet;
@@ -18,50 +18,58 @@ type Props = {
 
 export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: Props) {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    const accept = () => {
-        handleDeleteWallet(wallet.id)
-    }
-   
+    
+
     const confirmDelete = () => {
         confirmDialog({
-            message: '¿Está seguro que desea eliminar esta cartera?',
-            header: 'Eliminar Cartera',
+            message: '¿Está seguro de eliminar esta cartera?',
+            header: 'Eliminar Cartera ',
             icon: 'pi pi-info-circle',
             defaultFocus: 'reject',
-            acceptClassName: 'p-button-danger',
-            accept
-          
+            acceptClassName: 'p-button-danger text-xs sm:text-sm md:text-base',
+            rejectClassName: 'p-button-text text-xs sm:text-sm md:text-base',
+            className: 'text-xs sm:text-sm md:text-base',
+            accept: () => handleDeleteWallet(wallet.id)
+
         });
     };
 
 
     const header = (
-        <div className='p-4'>
-
-            <h1 className='text-2xl font-bold'>{wallet.name}</h1>
+        <div className='px-4 pt-4 sm:p-4'>
+            <h1 className='sm:text-2xl font-bold'>{wallet.name}</h1>
         </div>
     );
+    
     const footer = (
         <>
-            <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} />
-            <Button icon="pi pi-pencil" className='mx-2 h-full' onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: {...wallet} })} />
-            <Button severity="danger"  icon="pi pi-trash" className='!h-full' style={{height: '100%'}}  onClick={confirmDelete} />
-
+            <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} className="text-xs sm:text-sm md:text-base" />
+            <Button icon="pi pi-pencil" className="text-xs sm:text-sm md:text-base mx-2 " onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: { ...wallet } })}
+            />
+            <Button severity="danger" icon="pi pi-trash" className="text-xs sm:text-sm md:text-base" onClick={confirmDelete} />
         </>
     );
 
     return (
         <>
-        
-     
-                <Card title="" subTitle="" footer={footer} header={header} className="p-4 w-full xl:max-w-xl">
-                    {
-                        !wallet.cryptocurrencies?.length ? (
-                            <p>No hay criptomonedas en esta cartera</p>
-                        ) : (
-                            <div className="space-y-4 ">
+
+
+            <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg" pt={{
+                footer: {
+                    className: 'max-sm:pt-2'
+                },
+                content: {
+                    className: 'max-sm:pt-1'
+                }
+            }}>
+                {
+                    !wallet.cryptocurrencies?.length ? (
+                        <p>No hay criptomonedas en esta cartera</p>
+                    ) : (
+                        <div className="flex flex-col">
+                            <div className="max-h-[140px] sm:max-h-[250px] overflow-y-auto space-y-4 sm:pr-2 text-xs sm:text-sm md:text-base">
                                 {
                                     wallet.cryptocurrencies.map((crypto, index) => (
                                         <div key={`${crypto.id}-${crypto.symbol}-${index}`} className="flex justify-between items-center">
@@ -76,20 +84,21 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
                                         </div>
                                     ))
                                 }
-                                <div className="pt-4 mt-4 border-t border-gray-700">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-gray-200">Total</span>
-                                        <span className="text-purple-500 text-xl font-semibold">
-                                            US$ {wallet.cryptocurrencies.reduce((total, crypto) => total + (crypto.current_price * crypto.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                                        </span>
-                                    </div>
+                            </div>
+                            <div className="pt-4 mt-4 border-t border-gray-700 ">
+                                <div className="flex justify-between items-center text-sm sm:text-base md:text-lg">
+                                    <span className="text-gray-200">Total</span>
+                                    <span className="text-purple-500 sm:text-xl font-semibold">
+                                        US$ {wallet.cryptocurrencies.reduce((total, crypto) => total + (crypto.current_price * crypto.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                    </span>
                                 </div>
                             </div>
-                        )
-                    }
-                    
-                </Card>
-           {/* {JSON.stringify(wallet)} */}
+                        </div>
+                    )
+                }
+
+            </Card>
+            {/* {JSON.stringify(wallet)} */}
         </>
     )
 }

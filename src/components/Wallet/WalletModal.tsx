@@ -40,22 +40,21 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
         onHide={() => handleWalletModal(false)}
         footer={
           <div>
-            <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text" />
-            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus />
+            <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text text-xs sm:text-sm md:text-base" />
+            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus className="text-xs sm:text-sm md:text-base" />
           </div>
         }
       >
-        <div className="p-fluid">
-          <div className="field">
-            <label htmlFor="name">Nombre de la Cartera</label>
+          <div className="flex flex-col">
+            <label htmlFor="name" className='mb-2 text-xs sm:text-sm md:text-base'>Nombre de la Cartera</label>
             <InputText
               id="name"
               value={isEditing ? selectedWallet?.name : newWallet.name}
               onChange={handleInputChange}
               placeholder="Ingresa el nombre de la cartera"
+              className="text-xs sm:text-sm md:text-base"
             />
           </div>
-        </div>
       </Dialog>
     </>
   )

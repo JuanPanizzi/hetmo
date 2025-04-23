@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { walletsReducer } from "../reducers/walletsReducer";
 import { initialWallets } from "../reducers/walletsReducer";
-import { Transaction, Wallet } from "../types/wallets";
+import { Transaction, Wallet, Crypto as CryptoType } from "../types/wallets";
 
 
 export function useWalletsReducer() { 
@@ -33,10 +33,35 @@ export function useWalletsReducer() {
         dispatch({ type: "EDIT_TRANSACTION", payload: { walletId, transaction } });
     }
 
-    const deleteTransaction = (walletId: string, id: string): void => {
-        dispatch({ type: "DELETE_TRANSACTION", payload: { walletId, id } });
+    const deleteTransaction = (walletId: string, transaction: Transaction): void => {
+        dispatch({ type: "DELETE_TRANSACTION", payload: { walletId, transaction } });
     }
 
-    return { wallets, addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction }
+    const updateTransactionStatus = (walletId: string, transaction: Transaction): { success: boolean; error?: string } => {
+        
+        const wallet = wallets.find((w: Wallet) => w.id === walletId);
+        if (!wallet) {
+            return { success: false, error: "Cartera no encontrada" };
+        }
+        if (transaction.type === 'Venta' && transaction.status === 'confirmada') {
+            const cryptoName = (transaction.crypto as CryptoType).name;
+            const existingCrypto = wallet.cryptocurrencies.find((c: CryptoType) => c.name === cryptoName);
+            
+            if (!existingCrypto) {
+                return { success: false, error: "Criptomoneda no encontrada en la cartera" };
+            }
+
+            
+            if (existingCrypto.amount < transaction.amount) {
+                return { success: false, error: "No hay suficientes criptomonedas para realizar la venta por la cantidad especificada" };
+            }
+        }
+
+        
+        dispatch({ type: "UPDATE_TRANSACTION_STATUS", payload: { walletId, transaction } });
+        return { success: true };
+    }
+
+    return { wallets, addWallet, deleteWallet, addTransaction, deleteTransaction, updateWallet, editTransaction, updateTransactionStatus }
 }
 

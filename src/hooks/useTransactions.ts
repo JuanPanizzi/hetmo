@@ -12,13 +12,14 @@ export const useTransactions = () => {
         amount: 0,
         price: 0,
         date: '',
-        id: ''
+        id: '',
+        status: 'pendiente'
     })
     const [visible, setVisible] = useState<boolean>(false)
     const { id } = useParams();
     const [cryptos, setCryptos] = useState<Crypto[]>([]);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-
+    const [loading, setLoading] = useState<boolean>(false);
     const wallet = wallets.find(w => w.id === id);
 
     const handleNewTransaction = (transaction: Transaction | any) => setNewTransaction(prev => ({ ...prev, ...transaction }));
@@ -36,7 +37,8 @@ export const useTransactions = () => {
             amount: 0,
             price: 0,
             date: '',
-            id: ''
+            id: '',
+            status: 'pendiente'
         })
     }
 
@@ -54,7 +56,7 @@ export const useTransactions = () => {
             return { severity: "error", message: "La cantidad debe ser mayor que 0" };
         }
 
-        if (newTransaction.type === 'venta') {
+        if (newTransaction.type === 'Venta') {
             if (!wallet) {
                 return { severity: "error", message: "Cartera no encontrada" };
             }
@@ -74,22 +76,35 @@ export const useTransactions = () => {
         if (isEditing) {
             editTransaction(wallet?.id || '', newTransaction);
             setIsEditing(false);
+            setVisible(false);
+            setNewTransaction({
+                type: '',
+                crypto: '',
+                amount: 0,
+                price: 0,
+                date: '',
+                id: '',
+                status: 'pendiente'
+            });
+            return { severity: "success", message: "Transacción editada correctamente" };
         } else {
             newTransaction.id = crypto.randomUUID();
             addTransaction(wallet?.id || '', newTransaction);
+            setVisible(false);
+            setNewTransaction({
+                type: '',
+                crypto: '',
+                amount: 0,
+                price: 0,
+                date: '',
+                id: '',
+                status: 'pendiente'
+            });
+            return { severity: "success", message: "Transacción añadida correctamente" };
         }
-        
-        setVisible(false);
-        handleNewTransaction({
-            type: '',
-            crypto: '',
-            amount: 0,
-            price: 0,
-            date: '',
-            id: ''
-        });
-        return { severity: "success", message: "Transacción realizada correctamente" };
     }
+
+    const handleLoading = (loading: boolean) => setLoading(loading);
 
     return {
         wallets,
@@ -106,6 +121,9 @@ export const useTransactions = () => {
         cryptos,
         handleSetCryptos,
         handleEditTransaction,
-        isEditing
+        isEditing,
+        loading,
+        handleLoading,
+        editTransaction
     }
 }
