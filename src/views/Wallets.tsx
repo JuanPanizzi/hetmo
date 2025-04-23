@@ -66,8 +66,8 @@ export const Wallets = () => {
     <>
 
       {loading && 
-      <div className="flex justify-center items-center h-screen">
-        <ProgressSpinner />
+      <div className="flex justify-center items-center h-screen" >
+        <ProgressSpinner  data-testid="spinner"/>
       </div>}
 
       {!loading  && 
