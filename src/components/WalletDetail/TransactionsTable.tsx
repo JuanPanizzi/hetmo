@@ -59,7 +59,9 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
             defaultFocus: 'accept',
             acceptLabel: isOperating || !isOperating && transaction.status === 'pendiente' ? 'Sí' : 'Eliminar',
             rejectLabel: isOperating || !isOperating && transaction.status === 'pendiente' ? 'No' : 'Cancelar',
-            acceptClassName: 'p-button-danger',
+            acceptClassName: 'p-button-danger text-xs sm:text-sm md:text-base',
+            rejectClassName: 'p-button-text text-xs sm:text-sm md:text-base',
+            className: 'text-xs sm:text-sm md:text-base',
             accept: () => {
                 if (!wallet) {
                     return;
@@ -84,7 +86,40 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
     return (
         <>
             <Card title={title} className="shadow-lg">
-                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin transacciones" className='text-xs sm:text-sm md:text-base' id={id}  >
+                <DataTable value={wallet?.transactions} paginator rows={5} tableStyle={{ minWidth: '30rem' }} emptyMessage="Sin transacciones" className='text-xs sm:text-sm md:text-base' id={id}  >
+                    <Column header="Acciones" body={(rowData) => {
+                        return (
+                            <div className="flex justify-start gap-2">
+                                {
+                                    handleEditTransaction && rowData.status === 'pendiente' &&
+                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8'
+                                        size='small'
+                                        icon="pi pi-pencil"
+                                        severity="warning"
+                                        onClick={() => handleEditTransaction(rowData)} />
+                                }
+                                {
+                                    isOperating || !isOperating && rowData.status === 'pendiente' ?
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8'
+                                            size='small'
+                                            label=''
+                                            icon="pi pi-times"
+                                            severity='danger'
+                                            onClick={(e) => confirmDelete(e, rowData)}
+                                        /> :
+                                        confirmDelete &&
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8' size='small' label="" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
+
+                                }
+                                {
+                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 max-sm:max-w-8' size='small' icon="pi pi-check" label="" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
+                                }
+                            </div>
+                        )
+
+                    }} />
+
+                    <Column field='status' header='Estado' body={statusBodyTemplate} sortable />
                     <Column
                         field="date"
                         header="Fecha"
@@ -106,42 +141,6 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                             style: 'currency',
                             currency: 'USD'
                         });
-                    }} />
-                    <Column field='status' header='Estado' body={statusBodyTemplate} sortable />
-                    <Column body={(rowData) => {
-                        return (
-                            <div className="flex justify-end gap-2">
-                                {
-                                    handleEditTransaction && rowData.status === 'pendiente' &&
-                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2' size='small'
-                                        icon="pi pi-pencil"
-                                        severity="warning"
-                                        onClick={() => handleEditTransaction(rowData)} />
-                                }
-
-
-                                {
-                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2' size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
-                                }
-
-                                {
-                                    isOperating || !isOperating && rowData.status === 'pendiente' ?
-                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2'
-                                            size='small'
-                                            label='Cancelar'
-                                            icon="pi pi-times"
-                                            severity='danger'
-                                            onClick={(e) => confirmDelete(e, rowData)}
-                                        /> :
-                                        confirmDelete &&
-                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2' size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
-
-                                }
-
-
-                            </div>
-                        )
-
                     }} />
 
 

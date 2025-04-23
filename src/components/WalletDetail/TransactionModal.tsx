@@ -87,6 +87,7 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                     <Button
                         label="Cancelar"
                         severity="contrast"
+                        outlined
                         icon="pi pi-times"
                         className="text-xs sm:text-sm md:text-base p-2 sm:p-3  "
                         onClick={handleCancel}
