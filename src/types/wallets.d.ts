@@ -53,3 +53,7 @@ export type Wallet = {
     transactions: Transaction[];
 }
 
+export interface WalletModalOptions {
+    isEditing: boolean;
+    selectedWallet?: Wallet;
+}

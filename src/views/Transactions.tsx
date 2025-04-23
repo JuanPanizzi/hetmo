@@ -1,16 +1,12 @@
-import { ConfirmPopup } from 'primereact/confirmpopup'
 import { HeaderCard } from '../components/UI/HeaderCard'
 import { Toast } from 'primereact/toast'
 import { useEffect, useRef } from 'react';
 import { Card } from 'primereact/card';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { TransactionModal } from '../components/WalletDetail/TransactionModal';
-import { useParams } from 'react-router-dom';
 import { useTransactions } from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
 import { getCryptos } from '../services/API';
-import { Crypto as CryptoType, Transaction } from '../types/wallets';
+import { Crypto as CryptoType } from '../types/wallets';
 import { TransactionsTable } from '../components/WalletDetail/TransactionsTable';
 
 
@@ -19,7 +15,7 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
     const toast = useRef<Toast>(null);
 
 
-      const { wallet, deleteTransaction, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing, loading, handleLoading} = useTransactions();
+      const { wallet, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing,  handleLoading} = useTransactions();
 
 
     if (!wallet) {
