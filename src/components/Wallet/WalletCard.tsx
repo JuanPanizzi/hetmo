@@ -20,9 +20,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
 
     const navigate = useNavigate();
 
-    const accept = () => {
-        handleDeleteWallet(wallet.id)
-    }
+    
 
     const confirmDelete = () => {
         confirmDialog({
@@ -33,7 +31,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
             acceptClassName: 'p-button-danger text-xs sm:text-sm md:text-base',
             rejectClassName: 'p-button-text text-xs sm:text-sm md:text-base',
             className: 'text-xs sm:text-sm md:text-base',
-            accept
+            accept: () => handleDeleteWallet(wallet.id)
 
         });
     };
@@ -41,10 +39,10 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
 
     const header = (
         <div className='px-4 pt-4 sm:p-4'>
-
             <h1 className='sm:text-2xl font-bold'>{wallet.name}</h1>
         </div>
     );
+    
     const footer = (
         <>
             <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} className="text-xs sm:text-sm md:text-base" />

@@ -100,7 +100,7 @@ export const Wallets = () => {
       }
 
       <ConfirmDialog acceptLabel="Eliminar" rejectLabel="Cancelar" pt={{ rejectButton: { className: 'mr-2' } }} /> 
-      <Toast ref={toast} />
+      <Toast ref={toast}  />
 
       <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleSaveWallet={handleSaveWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
 
