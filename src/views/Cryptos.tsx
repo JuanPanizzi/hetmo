@@ -27,26 +27,29 @@ export const Cryptos = () => {
 
   useEffect(() => {
 
-    const cryptos = sessionStorage.getItem('cryptos');
-    if (cryptos) {
-      setCoins(JSON.parse(cryptos));
-    } else {
-    const fetchData = async () => {
+  (async()=>{
+
+    try {
+      const cryptos = sessionStorage.getItem('cryptos');
+      if(cryptos){
+        setCoins(JSON.parse(cryptos));
+        return;
+      }
       setLoading(true);
-
-      const response: { success: boolean, data: Crypto[] | null } = await getCryptos();
-
-      if (response.success) {
+      const response = await getCryptos();
+      if(response.success){
         setCoins(response.data);
         sessionStorage.setItem('cryptos', JSON.stringify(response.data));
       } else {
-      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
+        throw new Error('Error al obtener las criptomonedas');
       }
+    } catch (error) {
+      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
+    } finally {
       setLoading(false);
-    };
+    }
+  })();
 
-    fetchData();
-  }
   }, []);
 
 

@@ -15,3 +15,4 @@ export  const getSeverity = (transaction: Transaction) => {
             return null;
     }
 };
+
