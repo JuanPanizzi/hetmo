@@ -1,7 +1,6 @@
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { Card } from 'primereact/card'
-import React from 'react'
 import { Wallet } from '../../types/wallets'
 
 type Props = {
