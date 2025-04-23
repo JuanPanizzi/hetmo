@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { WalletContext } from "../context/walletContext";
-import { Wallet } from "../types/wallets";
+import { Wallet, Crypto } from "../types/wallets";
 
 export const useWallet = () => { 
 
