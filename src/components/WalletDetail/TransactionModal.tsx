@@ -43,6 +43,11 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                             value={isEditing ? getCryptoName() : newTransaction.crypto}
                             disabled={!isEditing ? !newTransaction.type : true}
                             onChange={(e) => handleNewTransaction({ ...newTransaction, crypto: e.value })}
+                            pt={{
+                                wrapper: {
+                                    className: 'max-sm:text-xs sm:text-sm md:text-base'
+                                }
+                            }}
                         />
                     </div>
                     <div className="flex flex-col gap-2">

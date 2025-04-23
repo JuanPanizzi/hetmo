@@ -25,8 +25,8 @@ export const HeaderCard = ({
     <div className="bg-[#282936] rounded-lg mx-3 sm:mx-5 p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center shadow-lg">
       
       <div className="flex flex-col mb-4 sm:mb-0">
-        <h1 className=" text-base sm:text-2xl font-semibold">{title}</h1>
-        {subtitle && <p className="text-xs text-gray-400">{subtitle}</p>}
+        <h1 className=" text-lg sm:text-2xl md:text-3xl font-semibold">{title}</h1>
+        {subtitle && <p className="text-xs sm:text-sm text-gray-400 sm:py-1">{subtitle}</p>}
       </div>
       <div className="flex flex-col sm:flex-row gap-2 w-full sm:max-w-[340px] md:max-w-[400px] ">
         {secondaryButtonLabel && onSecondaryButtonClick && (
