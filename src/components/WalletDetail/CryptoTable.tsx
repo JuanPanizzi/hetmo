@@ -11,7 +11,7 @@ export const CryptoTable = ({ wallet }: Props) => {
     return (
         <>
             <Card title="Criptomonedas" className="shadow-lg">
-                <DataTable title="Criptomonedas" value={wallet?.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '50rem' }} emptyMessage="Sin criptomonedas" className='text-xs sm:text-sm md:text-base'>
+                <DataTable title="Criptomonedas" value={wallet?.cryptocurrencies} paginator rows={5} tableStyle={{ minWidth: '30rem' }} emptyMessage="Sin criptomonedas" className='text-xs sm:text-sm md:text-base'>
                     <Column field="name" header="Criptomoneda" body={(rowData) => {
                         return <div className="flex items-center gap-2">
                             <img src={rowData.image} alt={rowData.name} className="w-6 h-6 rounded-full" />
