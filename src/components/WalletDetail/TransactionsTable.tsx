@@ -37,15 +37,9 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
         const result = updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
 
         if (!result.success) {
-            toast.current?.show({
-                severity: 'error',
-                summary: 'Error',
-                detail: result.error || 'Error al actualizar la transacción',
-                life: 3000
-            });
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: result.error || 'Error al actualizar la transacción', life: 3000 });
             return;
         }
-
         if (newStatus === 'confirmada') {
             toast.current?.show({ severity: 'success', summary: 'Transacción Confirmada', detail: 'La transacción ha sido confirmada', life: 3000 });
             return;
@@ -153,7 +147,7 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
 
                 </DataTable>
             </Card>
-            <Toast ref={toast} />
+            <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
             <ConfirmPopup acceptLabel="Si" rejectLabel="No" />
         </>
     )

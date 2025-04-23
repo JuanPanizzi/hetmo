@@ -53,9 +53,9 @@ export const Cryptos = () => {
   return (
 
     <>
-      <Toast ref={toast} />
+      <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
       {/* <div className='flex justify-center items-center w-full'> */}
-      <Card title="Listado de criptomonedas" className="shadow-lg sm:m-4">
+      <Card title="Listado de criptomonedas" className="shadow-lg sm:m-4 max-sm:mx-3">
 
         <DataTable
           value={coins ?? []}
@@ -66,7 +66,7 @@ export const Cryptos = () => {
           loadingIcon="pi pi-spinner pi-spin"
           emptyMessage="Sin resultados"
           className="text-xs sm:text-sm md:text-base "
-          tableStyle={{ minWidth: '30rem', maxWidth: '100%' }}
+          tableStyle={{ minWidth: '20rem', maxWidth: '100%' }}
 
         >
           <Column

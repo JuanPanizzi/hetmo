@@ -1,4 +1,4 @@
-import { Button } from "primereact/button"
+
 import WalletCard from "../components/Wallet/WalletCard"
 import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
@@ -32,10 +32,8 @@ export const Wallets = () => {
   };
 
   const handleDeleteWallet = (id: string) => {
-
     deleteWallet(id);
     toast.current?.show({ severity: "success", summary: "Operación exitosa", detail: "Cartera eliminada correctamente", life: 3000 });
-
   }
 
  
@@ -66,7 +64,6 @@ export const Wallets = () => {
   return (
 
     <>
- 
 
       {loading && 
       <div className="flex justify-center items-center h-screen">
@@ -86,8 +83,7 @@ export const Wallets = () => {
         {
          !loading && wallets.length > 0 && 
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 items-start mt-5 mx-3 sm:mx-5 place-items-center 
-        max-sm:h-[calc(100vh-200px)] overflow-y-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 items-start mt-5 mx-3 sm:mx-5 place-items-center max-sm:max-h-[70vh] overflow-y-auto">
           {wallets.map((wallet) => (
             <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} 
             handleWalletModal={handleWalletModal} />
@@ -100,7 +96,7 @@ export const Wallets = () => {
       }
 
       <ConfirmDialog acceptLabel="Eliminar" rejectLabel="Cancelar" pt={{ rejectButton: { className: 'mr-2' } }} /> 
-      <Toast ref={toast}  />
+      <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
 
       <WalletModal isEditing={isEditing} showWalletModal={showWalletModal} handleWalletModal={handleWalletModal} handleCancel={handleCancel} handleSaveWallet={handleSaveWallet} newWallet={newWallet} handleNewWallet={handleNewWallet} selectedWallet={selectedWallet} />
 

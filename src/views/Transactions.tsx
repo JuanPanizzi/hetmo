@@ -93,8 +93,8 @@ import { TransactionsTable } from '../components/WalletDetail/TransactionsTable'
                     </Card>
                 </div>
             </section>
-            {/* <ConfirmPopup acceptLabel="Si" rejectLabel="No" /> */}
-            <Toast ref={toast} />
+           
+            <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
 
             <TransactionModal 
                     visible={visible} 
