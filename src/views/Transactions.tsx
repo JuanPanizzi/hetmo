@@ -86,10 +86,9 @@ export const Transactions = () => {
           onSecondaryButtonClick={() => { navigate('/wallet/' + wallet.id) }}
         />
 
-        <div className="grid grid-cols-1  gap-6 mx-5 mt-5">
-          <Card>
+        <div className="grid grid-cols-1  mx-3 sm:mx-5 mt-5">
+
             <TransactionsTable wallet={{ ...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente') }} handleEditTransaction={handleEditTransaction} isOperating={true} title="Transacciones pendientes" />
-          </Card>
         </div>
       </section>
 
