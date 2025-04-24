@@ -1,6 +1,6 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import { Wallet } from '../../types/wallets';
+import { Crypto as CryptoType, Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +11,8 @@ export interface WalletModalOptions {
 
 type WalletCardProps = {
     wallet: Wallet;
+    cryptos?: CryptoType[];
     handleDeleteWallet: (id: string) => void;
-    cryptos: Crypto[];
     handleWalletModal: (showWalletModal: boolean, options?: WalletModalOptions) => void;
 }
 

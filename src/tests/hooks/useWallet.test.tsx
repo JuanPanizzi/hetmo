@@ -4,7 +4,7 @@ import React from 'react'
 import { WalletContext } from '../../context/walletContext'
 import { useWallet } from '../../hooks/useWallet'
 import { vi, describe, it, expect} from 'vitest'
-import { Wallet, Crypto as CryptoType } from '../../types/wallets'
+import { Crypto as CryptoType } from '../../types/wallets'
 
 describe('useWallet hook', () => {
 

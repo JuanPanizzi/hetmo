@@ -1,7 +1,6 @@
 import { HeaderCard } from '../components/UI/HeaderCard'
 import { Toast } from 'primereact/toast'
 import { useEffect, useRef } from 'react';
-import { Card } from 'primereact/card';
 import { TransactionModal } from '../components/WalletDetail/TransactionModal';
 import { useTransactions } from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
