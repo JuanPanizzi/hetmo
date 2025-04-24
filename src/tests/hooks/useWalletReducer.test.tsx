@@ -38,6 +38,24 @@ describe('useWalletReducer', () => {
         expect(result.current.wallets).toContain(walletTest)
       
     })
-})
 
+    it('should delete wallet', () => {  
+        const { result } = renderHook(() => useWalletsReducer(), { wrapper })
+
+        const walletTest = { 
+            id: '1', 
+            name: 'New Wallet test', 
+            cryptocurrencies: [], 
+            transactions: [] 
+        }
+
+        act(() => {
+            result.current.deleteWallet(walletTest.id)
+        })
+
+        expect(result.current.wallets).not.toContain(walletTest)        
+    })
+
+
+})
 
