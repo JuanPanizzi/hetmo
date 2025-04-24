@@ -3,24 +3,24 @@ import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
-import { Transaction, Crypto } from "../../types/wallets";
+import { Transaction, CryptoType } from "../../types/wallets";
 
-type Props = {
+type TransactionModalProps = {
     visible: boolean;
     handleSetVisible: (visible: boolean) => void;
     newTransaction: Transaction;
     handleNewTransaction: (transaction: Transaction) => void;
-    cryptos: Crypto[];
+    cryptos: CryptoType[];
     handleCancel: () => void;
     saveNewTransaction: () => void;
     isEditing?: boolean;
 }
 
-export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: Props) => {
+export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: TransactionModalProps) => {
 
     const getCryptoName = () => {
         if (newTransaction.crypto && typeof newTransaction.crypto === 'object') {
-            return cryptos.find(crypto => crypto.name === (newTransaction.crypto as Crypto).name)
+            return cryptos.find(crypto => crypto.name === (newTransaction.crypto as CryptoType).name)
         }
     }
     return (
@@ -87,6 +87,7 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
                     <Button
                         label="Cancelar"
                         severity="contrast"
+                        outlined
                         icon="pi pi-times"
                         className="text-xs sm:text-sm md:text-base p-2 sm:p-3  "
                         onClick={handleCancel}

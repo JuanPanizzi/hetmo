@@ -66,8 +66,8 @@ export const Wallets = () => {
     <>
 
       {loading && 
-      <div className="flex justify-center items-center h-screen">
-        <ProgressSpinner />
+      <div className="flex justify-center items-center h-screen" >
+        <ProgressSpinner  data-testid="spinner"/>
       </div>}
 
       {!loading  && 
@@ -85,8 +85,9 @@ export const Wallets = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 items-start mt-5 mx-3 sm:mx-5 place-items-center max-sm:max-h-[70vh] overflow-y-auto">
           {wallets.map((wallet) => (
-            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet} cryptos={cryptos} 
-            handleWalletModal={handleWalletModal} />
+            <WalletCard key={wallet.id} wallet={wallet} handleDeleteWallet={handleDeleteWallet}
+             cryptos={cryptos} 
+            handleWalletModal={handleWalletModal} data-testid="wallet-card"/>
           ))}
         </div>
         }

@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { WalletContext } from "../context/walletContext";
-import { Wallet } from "../types/wallets";
+import { Wallet, CryptoType } from "../types/wallets";
 
 export const useWallet = () => { 
 
     const { wallets, addWallet, deleteWallet, updateWallet } = useContext(WalletContext);
     const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
-    const [cryptos, setCryptos] = useState<Crypto[]>([]);
+    const [cryptos, setCryptos] = useState<CryptoType[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [selectedWallet, setSelectedWallet] = useState<Wallet | undefined>(undefined);
@@ -27,7 +27,7 @@ const handleWalletModal = (showWalletModal: boolean, options?: { isEditing: bool
     }
 }
 
-const handleCryptos = (cryptos: Crypto[]) => setCryptos(cryptos);
+const handleCryptos = (cryptos: CryptoType[]) => setCryptos(cryptos);
 
 const handleNewWallet = (wallet: { name: string; id: string } | Wallet) => {
     if (isEditing && selectedWallet) {

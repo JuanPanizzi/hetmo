@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { WalletContext } from '../context/walletContext';
-import { Transaction, Crypto } from '../types/wallets';
+import { Transaction, CryptoType } from '../types/wallets';
 import { useParams } from 'react-router-dom';
 
 export const useTransactions = () => {
@@ -17,14 +17,14 @@ export const useTransactions = () => {
     })
     const [visible, setVisible] = useState<boolean>(false)
     const { id } = useParams();
-    const [cryptos, setCryptos] = useState<Crypto[]>([]);
+    const [cryptos, setCryptos] = useState<CryptoType[]>([]);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const wallet = wallets.find(w => w.id === id);
 
     const handleNewTransaction = (transaction: Transaction | any) => setNewTransaction(prev => ({ ...prev, ...transaction }));
 
-    const handleSetCryptos = (cryptos: Crypto[]) => setCryptos(cryptos);
+    const handleSetCryptos = (cryptos: CryptoType[]) => setCryptos(cryptos);
 
     const handleSetVisible = (visible: boolean) => setVisible(visible);
 
@@ -61,7 +61,7 @@ export const useTransactions = () => {
                 return { severity: "error", message: "Cartera no encontrada" };
             }
 
-            const crypto = newTransaction.crypto as unknown as Crypto;
+            const crypto = newTransaction.crypto as unknown as CryptoType;
             const existingCrypto = wallet.cryptocurrencies.find(c => c.name === crypto.name);
 
             if (!existingCrypto) {

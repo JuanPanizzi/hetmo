@@ -1,4 +1,4 @@
-export interface Crypto {
+export interface CryptoType {
     id:                               string;
     symbol:                           string;
     name:                             string;
@@ -28,7 +28,7 @@ export interface Crypto {
 }
 
 
-export interface Cryptocurrency extends Crypto {
+export interface Cryptocurrency extends CryptoType {
     id_crypto_currency?: string | number;
     amount: number;
     value?: number;
@@ -38,7 +38,7 @@ export interface Cryptocurrency extends Crypto {
 
 export type Transaction = {
     type: string;
-    crypto: string | Crypto | number;
+    crypto: string | CryptoType | number;
     amount: number;
     price: number;
     date: string;
@@ -53,7 +53,3 @@ export type Wallet = {
     transactions: Transaction[];
 }
 
-export interface WalletModalOptions {
-    isEditing: boolean;
-    selectedWallet?: Wallet;
-}

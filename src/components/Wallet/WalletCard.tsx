@@ -1,19 +1,22 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import { Wallet, WalletModalOptions } from '../../types/wallets';
+import { CryptoType, Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 
+export interface WalletModalOptions {
+    isEditing: boolean;
+    selectedWallet?: Wallet;
+}
 
-
-type Props = {
+type WalletCardProps = {
     wallet: Wallet;
+    cryptos?: CryptoType[];
     handleDeleteWallet: (id: string) => void;
-    cryptos: Crypto[];
     handleWalletModal: (showWalletModal: boolean, options?: WalletModalOptions) => void;
 }
 
-export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: Props) {
+export default function WalletCard({ wallet, handleDeleteWallet, handleWalletModal }: WalletCardProps) {
 
     const navigate = useNavigate();
 
@@ -50,8 +53,8 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
     );
 
     return (
+        
         <>
-
 
             <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg" pt={{
                 footer: {
@@ -95,7 +98,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
                 }
 
             </Card>
-            {/* {JSON.stringify(wallet)} */}
+          
         </>
     )
 }

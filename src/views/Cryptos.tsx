@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable'
 import { useEffect, useRef, useState } from 'react'
 import { getCryptos } from '../services/API';
 import { Toast } from 'primereact/toast';
-import { Crypto } from '../types/wallets';
+import { CryptoType } from '../types/wallets';
 import { Card } from 'primereact/card';
 
 
@@ -11,7 +11,7 @@ import { Card } from 'primereact/card';
 
 export const Cryptos = () => {
 
-  const [coins, setCoins] = useState<Crypto[] | null>(null);
+  const [coins, setCoins] = useState<CryptoType[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const toast = useRef<Toast>(null);
@@ -21,7 +21,7 @@ export const Cryptos = () => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
 
-  const priceBodyTemplate = (crypto: Crypto) => {
+  const priceBodyTemplate = (crypto: CryptoType) => {
       return formatCurrency(crypto.current_price);
 };
 

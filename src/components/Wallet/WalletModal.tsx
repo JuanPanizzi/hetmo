@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Wallet } from '../../types/wallets';
 
-type Props = {
+type WalletModalProps = {
     isEditing?: boolean;
     showWalletModal: boolean;
     handleWalletModal: (showWalletModal: boolean, options?: { isEditing: boolean, selectedWallet?: Wallet }) => void;
@@ -14,7 +14,7 @@ type Props = {
     selectedWallet?: Wallet;
 }
 
-export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleSaveWallet, newWallet, handleNewWallet, selectedWallet }: Props) => {
+export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, handleCancel, handleSaveWallet, newWallet, handleNewWallet, selectedWallet }: WalletModalProps) => {
  
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -41,7 +41,8 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
         footer={
           <div>
             <Button label="Cancelar" icon="pi pi-times" onClick={handleCancel} className="p-button-text text-xs sm:text-sm md:text-base" />
-            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus className="text-xs sm:text-sm md:text-base" />
+            <Button label={isEditing ? "Guardar" : "Crear"} icon="pi pi-check" onClick={handleSaveWallet} autoFocus className="text-xs sm:text-sm md:text-base" 
+            data-testid="save-wallet-button"/>
           </div>
         }
       >
@@ -53,6 +54,7 @@ export const WalletModal = ({ isEditing, showWalletModal, handleWalletModal, han
               onChange={handleInputChange}
               placeholder="Ingresa el nombre de la cartera"
               className="text-xs sm:text-sm md:text-base"
+              data-testid="wallet-name-input"
             />
           </div>
       </Dialog>
