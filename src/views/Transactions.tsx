@@ -101,6 +101,7 @@ export const Transactions = () => {
         handleCancel={handleCancel}
         saveNewTransaction={saveNewTransaction}
         isEditing={isEditing}
+        data-testid="transaction-modal"
       />
       <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
     </>
