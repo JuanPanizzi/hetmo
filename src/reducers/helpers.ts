@@ -126,3 +126,26 @@ export const addNewTransaction = (state: any, payload: any) => {
     return newState;
 
 }
+
+
+export const deleteExistingTransaction = (state: any, payload: any) => {
+
+    const {walletId, transaction: transactionToDelete} = payload;
+
+    const newState = [...state];
+
+    const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === walletId);
+    
+    if (walletIndex === -1) {
+        return state;
+    }
+
+    newState[walletIndex].transactions = newState[walletIndex].transactions.filter(
+        (transaction: Transaction) => transaction.id !== transactionToDelete.id
+    );
+
+    return newState;
+
+}
+    
+    

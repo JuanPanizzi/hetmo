@@ -1,5 +1,5 @@
 import {  Transaction, Wallet } from "../types/wallets";
-import { addNewTransaction, editTransaction, updateStatus } from "./helpers";
+import { addNewTransaction, deleteExistingTransaction, editTransaction, updateStatus } from "./helpers";
 
 //Estado global
 export const initialWallets = JSON.parse(
@@ -41,20 +41,7 @@ export const walletsReducer = (state: any, action: any) => {
             
         case 'DELETE_TRANSACTION': {
             
-            const {walletId, transaction: transactionToDelete} = payload;
-
-            const newState = [...state];
-
-            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === walletId);
-            
-            if (walletIndex === -1) {
-                return state;
-            }
-
-            newState[walletIndex].transactions = newState[walletIndex].transactions.filter(
-                (transaction: Transaction) => transaction.id !== transactionToDelete.id
-            );
-
+            const newState = deleteExistingTransaction(state, payload);
             return newState;
         }
 
