@@ -5,8 +5,6 @@ import { getCryptos } from '../services/API';
 import { Toast } from 'primereact/toast';
 import { CryptoType } from '../types/wallets';
 import { Card } from 'primereact/card';
-import { formatCurrency } from '../utils/utils';
-
 
 
 
