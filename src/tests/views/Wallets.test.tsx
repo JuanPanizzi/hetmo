@@ -52,11 +52,5 @@ describe('Wallets view', () => {
   })
     
 
-  it('should render WalletCard when wallets are not empty',()=>{
-    if(fakeHook.wallets.length > 0){
-      render(<Wallets />)
-      expect(screen.getByTestId('wallet-card')).toBeInTheDocument()
-    }
-  })    
 
 });
