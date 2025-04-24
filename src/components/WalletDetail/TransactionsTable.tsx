@@ -63,15 +63,13 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
             rejectClassName: 'p-button-text text-xs sm:text-sm md:text-base',
             className: 'text-xs sm:text-sm md:text-base',
             accept: () => {
-                if (!wallet) {
-                    return;
-                }
+
+                if (!wallet) return;
+                
                 if (isOperating || !isOperating && transaction.status === 'pendiente') {
                     handleUpdateTransactionStatus(transaction, 'cancelada');
-
                     return;
                 }
-
 
                 deleteTransaction(wallet.id, transaction);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
@@ -108,11 +106,22 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                                             onClick={(e) => confirmDelete(e, rowData)}
                                         /> :
                                         confirmDelete &&
-                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' 
+                                        size='small' 
+                                        label="Eliminar" 
+                                        icon="pi pi-trash" 
+                                        severity="danger" 
+                                        onClick={(e) => confirmDelete(e, rowData)} />
 
                                 }
                                 {
-                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
+                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && 
+                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' 
+                                    size='small' 
+                                    icon="pi pi-check" 
+                                    label="Confirmar" 
+                                    severity="success" 
+                                    onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
                                 }
                             </div>
                         )
