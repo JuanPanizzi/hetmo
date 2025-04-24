@@ -1,5 +1,5 @@
 import {  Transaction, Wallet } from "../types/wallets";
-import { updateStatus } from "./helpers";
+import { editTransaction, updateStatus } from "./helpers";
 
 //Estado global
 export const initialWallets = JSON.parse(
@@ -53,26 +53,8 @@ export const walletsReducer = (state: any, action: any) => {
         }
 
         case 'EDIT_TRANSACTION': {
-            const newState = [...state];
-            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
             
-            if (walletIndex === -1) {
-                return state;
-            }
-            
-            const transactionIndex = newState[walletIndex].transactions.findIndex(
-                (transaction: Transaction) => transaction.id === payload.transaction.id
-            );
-
-            if (transactionIndex === -1) {
-                return state;
-            }
-
-            
-            newState[walletIndex].transactions[transactionIndex] = {
-                ...payload.transaction,
-                status: newState[walletIndex].transactions[transactionIndex].status 
-            };
+            const newState = editTransaction(state, payload);
 
             return newState;
         }

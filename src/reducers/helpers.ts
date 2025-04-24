@@ -72,3 +72,30 @@ export const updateStatus = (state: any, payload: any) => {
 
 
 }
+
+
+export const editTransaction = (state: any, payload: any) => {
+    
+    const newState = [...state];
+    const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+    
+    if (walletIndex === -1) {
+        return state;
+    }
+    
+    const transactionIndex = newState[walletIndex].transactions.findIndex(
+        (transaction: Transaction) => transaction.id === payload.transaction.id
+    );
+
+    if (transactionIndex === -1) {
+        return state;
+    }
+
+    
+    newState[walletIndex].transactions[transactionIndex] = {
+        ...payload.transaction,
+        status: newState[walletIndex].transactions[transactionIndex].status 
+    };
+
+    return newState;
+}
