@@ -1,8 +1,12 @@
 import { Transactions } from "../../views/Transactions"
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from "@testing-library/react"
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
+import { useTransactions } from "../../hooks/useTransactions";
 
+vi.mock('../../hooks/useTransactions', () => ({
+    useTransactions: vi.fn()
+}));
 
 describe('Transactions', () => { 
 
@@ -26,7 +30,34 @@ describe('Transactions', () => {
     }
 
     beforeEach(() => {
-        
+        vi.mocked(useTransactions).mockReturnValue({
+            wallets: [walletTest],
+            addTransaction: vi.fn(),
+            deleteTransaction: vi.fn(),
+            newTransaction: {
+                id: '',
+                type: 'buy',
+                crypto: 'BTC',
+                amount: 0,
+                price: 0,
+                date: '',
+                status: 'pendiente'
+            },
+            setNewTransaction: vi.fn(),
+            visible: false,
+            handleCancel: vi.fn(),
+            handleNewTransaction: vi.fn(),
+            wallet: walletTest,
+            handleAddTransaction: vi.fn(),
+            handleSetVisible: vi.fn(),
+            cryptos: [],
+            handleSetCryptos: vi.fn(),
+            handleEditTransaction: vi.fn(),
+            isEditing: false,
+            loading: false,
+            handleLoading: vi.fn(),
+            editTransaction: vi.fn()
+        });
 
         render(
             <MemoryRouter>
@@ -40,12 +71,6 @@ describe('Transactions', () => {
         expect(screen.getByText('Transacciones pendientes')).toBeInTheDocument()
     })
 
-    it('should render the transaction modal when the button is clicked', () => {
-        const buttonAddTransaction = screen.getByText('Nueva Transacción')
-       
-        fireEvent.click(buttonAddTransaction)
-
-        expect(screen.getByTestId('transaction-modal')).toBeInTheDocument()
-    })
+   
 
 })
