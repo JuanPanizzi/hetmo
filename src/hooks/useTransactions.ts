@@ -4,6 +4,7 @@ import { Transaction, CryptoType } from '../types/wallets';
 import { useParams } from 'react-router-dom';
 
 export const useTransactions = () => {
+
     const { wallets, addTransaction, deleteTransaction, editTransaction } = useContext(WalletContext);
 
     const [newTransaction, setNewTransaction] = useState<Transaction>({
@@ -27,6 +28,9 @@ export const useTransactions = () => {
     const handleSetCryptos = (cryptos: CryptoType[]) => setCryptos(cryptos);
 
     const handleSetVisible = (visible: boolean) => setVisible(visible);
+
+    const handleLoading = (loading: boolean) => setLoading(loading);
+
 
     const handleCancel = () => {
         setVisible(false);
@@ -104,7 +108,6 @@ export const useTransactions = () => {
         }
     }
 
-    const handleLoading = (loading: boolean) => setLoading(loading);
 
     return {
         wallets,

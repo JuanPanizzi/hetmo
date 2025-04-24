@@ -1,4 +1,4 @@
-import {  Transaction, Wallet } from "../types/wallets";
+import {  Wallet } from "../types/wallets";
 import { addNewTransaction, deleteExistingTransaction, editTransaction, updateStatus } from "./helpers";
 
 //Estado global
