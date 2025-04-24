@@ -12,7 +12,6 @@ import { ErrorView } from './ErrorView';
 
 export const Transactions = () => {
 
-
   
   const { wallet, newTransaction, handleNewTransaction, handleCancel, handleAddTransaction, visible, handleSetVisible, cryptos, handleSetCryptos, handleEditTransaction, isEditing, handleLoading } = useTransactions();
   

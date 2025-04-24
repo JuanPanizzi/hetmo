@@ -8,7 +8,9 @@ export const initialWallets = JSON.parse(
 
 
 export const walletsReducer = (state: any, action: any) => {
+    
     const { type, payload } = action;
+
     switch (type) {
         case 'ADD_WALLET':
             return [...state, payload];
@@ -40,8 +42,6 @@ export const walletsReducer = (state: any, action: any) => {
                 status: payload.transaction.status
             });
 
-           
-          
             return newState;
 
         case 'UPDATE_TRANSACTION_STATUS': {
@@ -60,7 +60,6 @@ export const walletsReducer = (state: any, action: any) => {
             if (transactionIndex === -1) {
                 return state;
             }
-
             
             updateState[updateWalletIndex].transactions[transactionIndex] = {
                 ...payload.transaction,
@@ -132,7 +131,7 @@ export const walletsReducer = (state: any, action: any) => {
                 return state;
             }
 
-            // Actualizar la transacción existente
+            
             newState[walletIndex].transactions[transactionIndex] = {
                 ...payload.transaction,
                 status: newState[walletIndex].transactions[transactionIndex].status 
