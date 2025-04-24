@@ -41,13 +41,6 @@ npm run dev
 ```
 
 
-# Despliegue Provisional:
-
-También se utilizó un despliegue provisional de la app en vercel por si se desea probar la app directamente, para ello debe cliquear en el siguiente link: 
-
-https://ej-frontend-git-main-juanpanizzis-projects.vercel.app/
-
-
 🧪 Pruebas
 ´
 Para los tests se utilizó Vitest y React Testing Library.
@@ -59,3 +52,8 @@ npm test
 ```
 
 
+# Despliegue Provisional:
+
+También se utilizó un despliegue provisional de la app en vercel por si se desea probar la app directamente, para ello debe cliquear en el siguiente link: 
+
+https://ej-frontend-git-main-juanpanizzis-projects.vercel.app/
