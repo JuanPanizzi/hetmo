@@ -3,28 +3,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Wallets } from '../../views/Wallets';
 import * as useWalletHook from '../../hooks/useWallet';
-import { Wallet } from '../../types/wallets';
+import { fakeHook } from '../mocks/mocks';
 
 describe('Wallets view', () => {
 
-    const fakeHook = {
-    wallets: [] as Wallet[],                 
-    cryptos: [],                  
-    loading: false,               
-    showWalletModal: false,
-    isEditing: false,
-    newWallet: { id: '', name: '' },
-    selectedWallet: undefined,
-    //Funciones del mi hook useWallet
-    deleteWallet: vi.fn(),
-    handleWalletModal: vi.fn(),
-    handleCryptos: vi.fn(),
-    handleNewWallet: vi.fn(),
-    handleLoading: vi.fn(),
-    saveWallet: vi.fn(),
-    addWallet: vi.fn(),
-    handleIsEditing: vi.fn()
-  };
 
   beforeEach(() => {
       vi.spyOn(useWalletHook, 'useWallet').mockReturnValue(fakeHook);
@@ -52,11 +34,5 @@ describe('Wallets view', () => {
   })
     
 
-  it('should render WalletCard when wallets are not empty',()=>{
-    if(fakeHook.wallets.length > 0){
-      render(<Wallets />)
-      expect(screen.getByTestId('wallet-card')).toBeInTheDocument()
-    }
-  })    
 
 });

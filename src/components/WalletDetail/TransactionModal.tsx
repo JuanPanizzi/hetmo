@@ -4,6 +4,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
 import { Transaction, CryptoType } from "../../types/wallets";
+import { useEffect, useState } from "react";
 
 type TransactionModalProps = {
     visible: boolean;
@@ -23,9 +24,19 @@ export const TransactionModal = ({ visible, handleSetVisible, newTransaction, ha
             return cryptos.find(crypto => crypto.name === (newTransaction.crypto as CryptoType).name)
         }
     }
+
+
+    const [currentTitle, setCurrentTitle] = useState(isEditing ? "Editar Transacción" : "Nueva Transacción");
+
+    useEffect(() => {
+        if (visible) {
+            setCurrentTitle(isEditing ? "Editar Transacción" : "Nueva Transacción");
+        }
+    }, [visible, isEditing]);
+
     return (
         <>
-            <Dialog header={isEditing ? "Editar Transacción" : "Nueva Transacción"} className="mx-3 w-full sm:max-w-[700px] text-xs sm:text-sm md:text-base" visible={visible}  onHide={() => { if (!visible) return; handleSetVisible(false); }}>
+            <Dialog header={currentTitle} className="mx-3 w-full sm:max-w-[700px] text-xs sm:text-sm md:text-base" visible={visible}  onHide={() => { if (!visible) return; handleSetVisible(false); }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Dropdown
                         className="md:col-span-2"
