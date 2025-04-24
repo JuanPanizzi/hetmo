@@ -41,7 +41,7 @@ npm run dev
 ```
 
 
-🧪 Pruebas
+### 🧪 Pruebas
 ´
 Para los tests se utilizó Vitest y React Testing Library.
 Por una cuestión de tiempos, se incluyeron parcialmente los tests que se alcanzaron a implementar, quedando algunos pendientes. 
