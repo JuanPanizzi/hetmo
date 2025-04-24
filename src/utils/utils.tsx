@@ -17,5 +17,5 @@ export  const getSeverity = (transaction: Transaction) => {
 };
 
 export const formatCurrency = (value: number) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    return value.toLocaleString('es-ES', { style: 'currency', currency: 'USD' });
 };
