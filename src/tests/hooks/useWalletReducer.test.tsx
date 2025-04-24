@@ -29,6 +29,16 @@ describe('useWalletReducer', () => {
         transactions: [] 
     }
 
+    const transactionTest: Transaction = { 
+        id: '1', 
+        type: 'Compra', 
+        crypto: { id: '1', name: 'Bitcoin', symbol: 'BTC', image: '', current_price: 10000 }, 
+        amount: 1, 
+        price: 10000, 
+        date: new Date().toISOString(), 
+        status: 'pendiente'
+    }
+
     it('should add new wallet', () => {
         const { result } = renderHook(() => useWalletsReducer(), { wrapper })
 
@@ -53,15 +63,7 @@ describe('useWalletReducer', () => {
     it('should add transaction', () => {
         const { result } = renderHook(() => useWalletsReducer(), { wrapper })
 
-        const transactionTest: Transaction = { 
-            id: '1', 
-            type: 'Compra', 
-            crypto: { id: '1', name: 'Bitcoin', symbol: 'BTC', image: '', current_price: 10000 }, 
-            amount: 1, 
-            price: 10000, 
-            date: new Date().toISOString(), 
-            status: 'pendiente'
-        }
+        
 
         act(() => {
             result.current.addWallet(walletTest)
@@ -77,5 +79,16 @@ describe('useWalletReducer', () => {
           );
           
     })  
+
+    it('should delete transaction', () => {
+        const { result } = renderHook(() => useWalletsReducer(), { wrapper })
+
+        act(() => {
+            result.current.deleteTransaction(walletTest.id, transactionTest)
+        })
+        
+        expect(result.current.wallets.findIndex((w: Wallet) => w.id === walletTest.id)).toBe(-1)  
+    })
+
 })
 
