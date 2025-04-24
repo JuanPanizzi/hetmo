@@ -29,13 +29,11 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
 
     const toast = useRef<Toast>(null);
 
-    const statusBodyTemplate = (transaction: Transaction) => {
-        return <Tag className='' value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>
-    };
 
     const handleUpdateTransactionStatus = (transaction: Transaction | any, newStatus: string) => {
+      
         const result = updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
-
+        
         if (!result.success) {
             toast.current?.show({ severity: 'error', summary: 'Error', detail: result.error || 'Error al actualizar la transacción', life: 3000 });
             return;
@@ -128,7 +126,13 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
 
                     }} />
 
-                    <Column field='status' header='Estado' body={statusBodyTemplate} sortable />
+                    <Column 
+                    field='status' 
+                    header='Estado' 
+                    sortable 
+                    body={(rowData) => {
+                        return <Tag className='' value={rowData.status?.charAt(0).toUpperCase() + rowData.status?.slice(1)} severity={getSeverity(rowData)}></Tag>
+                    }} />
                     <Column
                         field="date"
                         header="Fecha"

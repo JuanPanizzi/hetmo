@@ -10,9 +10,8 @@ export const WalletDetail = () => {
     const navigate = useNavigate();
     const { wallet } = useTransactions();
 
-    if (!wallet) {
-        return <Error message="Cartera no encontrada" />;
-    }
+    if (!wallet) return <Error message="Cartera no encontrada" />;
+    
 
     return (
         <>
