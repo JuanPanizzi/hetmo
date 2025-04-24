@@ -99,3 +99,30 @@ export const editTransaction = (state: any, payload: any) => {
 
     return newState;
 }
+
+
+export const addNewTransaction = (state: any, payload: any) => {
+
+    const newState = [...state];
+    const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
+    
+    if (walletIndex === -1) {
+        return state;
+    }
+
+    const { id, symbol, name, image, current_price } = payload.transaction.crypto;
+    
+    newState[walletIndex].transactions.push({
+        id: payload.transaction.id,
+        type: payload.transaction.type,
+        crypto: { id, symbol, name, image, current_price },
+        amount: payload.transaction.amount,
+        price: payload.transaction.price,
+        date: payload.transaction.date,
+        symbol: payload.transaction.crypto.symbol,
+        status: payload.transaction.status
+    });
+
+    return newState;
+
+}

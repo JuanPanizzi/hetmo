@@ -1,5 +1,5 @@
 import {  Transaction, Wallet } from "../types/wallets";
-import { editTransaction, updateStatus } from "./helpers";
+import { addNewTransaction, editTransaction, updateStatus } from "./helpers";
 
 //Estado global
 export const initialWallets = JSON.parse(
@@ -21,41 +21,21 @@ export const walletsReducer = (state: any, action: any) => {
             return state.map((wallet: Wallet) => 
                 wallet.id === payload.id ? payload : wallet
             );
-        case 'ADD_TRANSACTION':
-            
-            const newState = [...state];
-            const walletIndex = newState.findIndex((wallet: Wallet) => wallet.id === payload.walletId);
-            
-            if (walletIndex === -1) {
-                return state;
-            }
+        case 'ADD_TRANSACTION': {
 
-            const { id, symbol, name, image, current_price } = payload.transaction.crypto;
-            
-            newState[walletIndex].transactions.push({
-                id: payload.transaction.id,
-                type: payload.transaction.type,
-                crypto: { id, symbol, name, image, current_price },
-                amount: payload.transaction.amount,
-                price: payload.transaction.price,
-                date: payload.transaction.date,
-                symbol: payload.transaction.crypto.symbol,
-                status: payload.transaction.status
-            });
-
+            const newState = addNewTransaction(state, payload);
             return newState;
+        }
 
         case 'UPDATE_TRANSACTION_STATUS': {
             
            const newState = updateStatus(state, payload);
-
            return newState;
         }
 
         case 'EDIT_TRANSACTION': {
             
             const newState = editTransaction(state, payload);
-
             return newState;
         }
             
