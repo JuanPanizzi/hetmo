@@ -20,8 +20,6 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
 
     const navigate = useNavigate();
 
-    
-
     const confirmDelete = () => {
         confirmDialog({
             message: '¿Está seguro de eliminar esta cartera?',
@@ -42,18 +40,17 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
             <h1 className='sm:text-2xl font-bold'>{wallet.name}</h1>
         </div>
     );
-    
+
     const footer = (
         <>
             <Button icon="pi pi-sign-in" label='Ingresar' onClick={() => navigate(`/wallet/${wallet.id}`)} className="text-xs sm:text-sm md:text-base" />
-            <Button icon="pi pi-pencil" className="text-xs sm:text-sm md:text-base mx-2 " onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: { ...wallet } })}
-            />
+            <Button icon="pi pi-pencil"  className="text-xs sm:text-sm md:text-base mx-2" onClick={() => handleWalletModal(true, { isEditing: true, selectedWallet: { ...wallet } })}/>
             <Button severity="danger" icon="pi pi-trash" className="text-xs sm:text-sm md:text-base" onClick={confirmDelete} />
         </>
     );
 
     return (
-        
+
         <>
 
             <Card footer={footer} header={header} className=" sm:p-4 w-full  shadow-lg" pt={{
@@ -98,7 +95,7 @@ export default function WalletCard({ wallet, handleDeleteWallet, handleWalletMod
                 }
 
             </Card>
-          
+
         </>
     )
 }

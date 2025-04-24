@@ -29,13 +29,11 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
 
     const toast = useRef<Toast>(null);
 
-    const statusBodyTemplate = (transaction: Transaction) => {
-        return <Tag className='' value={transaction.status?.charAt(0).toUpperCase() + transaction.status?.slice(1)} severity={getSeverity(transaction)}></Tag>
-    };
 
     const handleUpdateTransactionStatus = (transaction: Transaction | any, newStatus: string) => {
+      
         const result = updateTransactionStatus(wallet.id, { ...transaction, status: newStatus });
-
+        
         if (!result.success) {
             toast.current?.show({ severity: 'error', summary: 'Error', detail: result.error || 'Error al actualizar la transacción', life: 3000 });
             return;
@@ -63,15 +61,13 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
             rejectClassName: 'p-button-text text-xs sm:text-sm md:text-base',
             className: 'text-xs sm:text-sm md:text-base',
             accept: () => {
-                if (!wallet) {
-                    return;
-                }
+
+                if (!wallet) return;
+                
                 if (isOperating || !isOperating && transaction.status === 'pendiente') {
                     handleUpdateTransactionStatus(transaction, 'cancelada');
-
                     return;
                 }
-
 
                 deleteTransaction(wallet.id, transaction);
                 toast.current?.show({ severity: "success", summary: "Operación Exitosa", detail: "Transacción eliminada correctamente", life: 3000 });
@@ -108,18 +104,35 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                                             onClick={(e) => confirmDelete(e, rowData)}
                                         /> :
                                         confirmDelete &&
-                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' size='small' label="Eliminar" icon="pi pi-trash" severity="danger" onClick={(e) => confirmDelete(e, rowData)} />
+                                        <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' 
+                                        size='small' 
+                                        label="Eliminar" 
+                                        icon="pi pi-trash" 
+                                        severity="danger" 
+                                        onClick={(e) => confirmDelete(e, rowData)} />
 
                                 }
                                 {
-                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' size='small' icon="pi pi-check" label="Confirmar" severity="success" onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
+                                    handleUpdateTransactionStatus && rowData.status === 'pendiente' && 
+                                    <Button className='text-xs sm:text-sm md:text-base max-sm:p-2 sm:p-1 sm:px-2  max-sm:max-w-8' 
+                                    size='small' 
+                                    icon="pi pi-check" 
+                                    label="Confirmar" 
+                                    severity="success" 
+                                    onClick={() => handleUpdateTransactionStatus(rowData, 'confirmada')} />
                                 }
                             </div>
                         )
 
                     }} />
 
-                    <Column field='status' header='Estado' body={statusBodyTemplate} sortable />
+                    <Column 
+                    field='status' 
+                    header='Estado' 
+                    sortable 
+                    body={(rowData) => {
+                        return <Tag className='' value={rowData.status?.charAt(0).toUpperCase() + rowData.status?.slice(1)} severity={getSeverity(rowData)}></Tag>
+                    }} />
                     <Column
                         field="date"
                         header="Fecha"
@@ -137,7 +150,8 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                     <Column field="crypto.name" header="Criptomoneda" sortable />
                     <Column field="amount" header="Cantidad" sortable />
                     <Column field="price" header="Precio" sortable body={(rowData) => {
-                        return parseInt(rowData.price).toLocaleString('es-ES', {
+
+                        return rowData.price.toLocaleString('es-ES', {
                             style: 'currency',
                             currency: 'USD'
                         });

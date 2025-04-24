@@ -1,7 +1,7 @@
 import { Button } from 'primereact/button'
 import { useNavigate } from 'react-router-dom'
 
-export const Error = ({ message }: { message: string }) => {
+export const ErrorView = ({ message }: { message: string }) => {
     const navigate = useNavigate();
     return (
         <>

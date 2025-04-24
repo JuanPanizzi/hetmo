@@ -51,12 +51,10 @@ export function useWalletsReducer() {
                 return { success: false, error: "Criptomoneda no encontrada en la cartera" };
             }
 
-            
             if (existingCrypto.amount < transaction.amount) {
                 return { success: false, error: "No hay suficientes criptomonedas para realizar la venta por la cantidad especificada" };
             }
         }
-
         
         dispatch({ type: "UPDATE_TRANSACTION_STATUS", payload: { walletId, transaction } });
         return { success: true };

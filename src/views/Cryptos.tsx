@@ -5,6 +5,7 @@ import { getCryptos } from '../services/API';
 import { Toast } from 'primereact/toast';
 import { CryptoType } from '../types/wallets';
 import { Card } from 'primereact/card';
+import { formatCurrency } from '../utils/utils';
 
 
 
@@ -13,42 +14,33 @@ export const Cryptos = () => {
 
   const [coins, setCoins] = useState<CryptoType[] | null>(null);
   const [loading, setLoading] = useState(false);
-
   const toast = useRef<Toast>(null);
 
-  
-  const formatCurrency = (value: number) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-};
-
-  const priceBodyTemplate = (crypto: CryptoType) => {
-      return formatCurrency(crypto.current_price);
-};
 
   useEffect(() => {
 
-  (async()=>{
+    (async () => {
 
-    try {
-      const cryptos = sessionStorage.getItem('cryptos');
-      if(cryptos){
-        setCoins(JSON.parse(cryptos));
-        return;
+      try {
+        const cryptos = sessionStorage.getItem('cryptos');
+        if (cryptos) {
+          setCoins(JSON.parse(cryptos));
+          return;
+        }
+        setLoading(true);
+        const response = await getCryptos();
+        if (response.success) {
+          setCoins(response.data);
+          sessionStorage.setItem('cryptos', JSON.stringify(response.data));
+        } else {
+          throw new Error('Error al obtener las criptomonedas');
+        }
+      } catch (error) {
+        toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
+      } finally {
+        setLoading(false);
       }
-      setLoading(true);
-      const response = await getCryptos();
-      if(response.success){
-        setCoins(response.data);
-        sessionStorage.setItem('cryptos', JSON.stringify(response.data));
-      } else {
-        throw new Error('Error al obtener las criptomonedas');
-      }
-    } catch (error) {
-      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener las criptomonedas, intente nuevamente', life: 3000 });
-    } finally {
-      setLoading(false);
-    }
-  })();
+    })();
 
   }, []);
 
@@ -56,8 +48,7 @@ export const Cryptos = () => {
   return (
 
     <>
-      <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
-      {/* <div className='flex justify-center items-center w-full'> */}
+
       <Card title="Listado de criptomonedas" className="shadow-lg sm:m-4 max-sm:mx-3">
 
         <DataTable
@@ -70,7 +61,6 @@ export const Cryptos = () => {
           emptyMessage="Sin resultados"
           className="text-xs sm:text-sm md:text-base "
           tableStyle={{ minWidth: '20rem', maxWidth: '100%' }}
-
         >
           <Column
             header="Criptomoneda"
@@ -82,12 +72,13 @@ export const Cryptos = () => {
             )}
           />
           <Column field="symbol" header="Símbolo" />
-          <Column field="current_price" header="Precio (USD)" body={priceBodyTemplate} />
-
+          <Column field="current_price" header="Precio (USD)" body={(row) => formatCurrency(row.current_price)} />
 
         </DataTable>
-          </Card>
-      {/* </div> */}
+
+      </Card>
+      <Toast ref={toast} className="text-xs sm:text-sm md:text-base max-sm:max-w-[90%]" />
+
     </>
   )
 }

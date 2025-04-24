@@ -1,5 +1,5 @@
 import { useTransactions } from "../hooks/useTransactions";
-import { Error } from "./Error";
+import { ErrorView } from "./ErrorView";
 import { CryptoTable } from "../components/WalletDetail/CryptoTable";
 import { TransactionsTable } from "../components/WalletDetail/TransactionsTable";
 import { HeaderCard } from "../components/UI/HeaderCard";
@@ -10,9 +10,8 @@ export const WalletDetail = () => {
     const navigate = useNavigate();
     const { wallet } = useTransactions();
 
-    if (!wallet) {
-        return <Error message="Cartera no encontrada" />;
-    }
+    if (!wallet) return <ErrorView message="Cartera no encontrada" />;
+    
 
     return (
         <>

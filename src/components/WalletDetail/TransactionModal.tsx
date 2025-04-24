@@ -19,15 +19,15 @@ type TransactionModalProps = {
 
 export const TransactionModal = ({ visible, handleSetVisible, newTransaction, handleNewTransaction, cryptos, handleCancel, saveNewTransaction, isEditing = false }: TransactionModalProps) => {
 
+    
+    const [currentTitle, setCurrentTitle] = useState(isEditing ? "Editar Transacción" : "Nueva Transacción");
+    
     const getCryptoName = () => {
         if (newTransaction.crypto && typeof newTransaction.crypto === 'object') {
             return cryptos.find(crypto => crypto.name === (newTransaction.crypto as CryptoType).name)
         }
     }
-
-
-    const [currentTitle, setCurrentTitle] = useState(isEditing ? "Editar Transacción" : "Nueva Transacción");
-
+    
     useEffect(() => {
         if (visible) {
             setCurrentTitle(isEditing ? "Editar Transacción" : "Nueva Transacción");
