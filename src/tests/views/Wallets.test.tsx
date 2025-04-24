@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Wallets } from '../../views/Wallets';
 import * as useWalletHook from '../../hooks/useWallet';
-import { fakeHook } from '../mocks/walletMocks';
+import { fakeHook } from '../mocks/mocks';
 
 describe('Wallets view', () => {
 

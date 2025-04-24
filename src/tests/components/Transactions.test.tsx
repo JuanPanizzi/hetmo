@@ -6,8 +6,8 @@ import { useTransactions } from "../../hooks/useTransactions";
 import { TransactionModal } from "../../components/WalletDetail/TransactionModal";
 import { PrimeReactProvider } from 'primereact/api';
 import '../../i18n/primeReactLocale';
-import { mockWallet } from "../mocks/walletMocks";
-import { mockUseTransactions } from "../mocks/walletMocks";
+import { mockWallet } from "../mocks/mocks";
+import { mockUseTransactions } from "../mocks/mocks";
 
 vi.mock('../../hooks/useTransactions', () => ({
     useTransactions: vi.fn()

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { CryptoTable } from '../../components/WalletDetail/CryptoTable'
 import { describe, it, expect,  } from 'vitest';
-import { mockWalletCrypto } from '../mocks/walletMocks';
+import { mockWalletCrypto } from '../mocks/mocks';
 
 
 describe('CryptoTable', () => {

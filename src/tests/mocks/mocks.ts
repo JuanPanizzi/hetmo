@@ -1,13 +1,13 @@
 import { vi } from 'vitest';
-import { Wallet } from '../../types/wallets';
+import { Transaction, Wallet } from '../../types/wallets';
 
 export const mockWallet: Wallet = {
     id: '1',
     name: 'Wallet 1',
     transactions: [
-        { 
-            id: '1', 
-            amount: 100, 
+        {
+            id: '1',
+            amount: 100,
             status: 'pendiente',
             type: 'buy',
             crypto: 'BTC',
@@ -50,9 +50,9 @@ export const mockUseTransactions = {
 };
 
 export const fakeHook = {
-    wallets: [] as Wallet[],                 
-    cryptos: [],                  
-    loading: false,               
+    wallets: [] as Wallet[],
+    cryptos: [],
+    loading: false,
     showWalletModal: false,
     isEditing: false,
     newWallet: { id: '', name: '' },
@@ -66,10 +66,10 @@ export const fakeHook = {
     saveWallet: vi.fn(),
     addWallet: vi.fn(),
     handleIsEditing: vi.fn()
-  };
+};
 
 
-  export const mockWalletCrypto: Wallet = {
+export const mockWalletCrypto: Wallet = {
     id: '1',
     name: 'Test Wallet',
     transactions: [],
@@ -91,4 +91,20 @@ export const fakeHook = {
             current_price: 3000
         }
     ]
+}
+
+export const walletReducerTest = {
+    id: '1',
+    name: 'New Wallet test',
+    cryptocurrencies: [],
+    transactions: []
+}
+export const transactionReducerTest: Transaction = {
+    id: '1',
+    type: 'Compra',
+    crypto: { id: '1', name: 'Bitcoin', symbol: 'BTC', image: '', current_price: 10000 },
+    amount: 1,
+    price: 10000,
+    date: new Date().toISOString(),
+    status: 'pendiente'
 }
