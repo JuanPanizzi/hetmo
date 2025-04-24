@@ -8,6 +8,8 @@
 - Vite
 - PrimeReact
 - Tailwind CSS
+- Vitest
+- React Testing Library
 - LocalStorage para persistencia de datos
 - API pública de [CoinGecko](https://www.coingecko.com/en/api)
 
@@ -44,3 +46,16 @@ npm run dev
 También se utilizó un despliegue provisional de la app en vercel por si se desea probar la app directamente, para ello debe cliquear en el siguiente link: 
 
 https://ej-frontend-git-main-juanpanizzis-projects.vercel.app/
+
+
+🧪 Pruebas
+´
+Para los tests se utilizó Vitest y React Testing Library.
+Por una cuestión de tiempos, se incluyeron parcialmente los tests que se alcanzaron a implementar, quedando algunos pendientes. 
+Para ejecutarlos, debe ejecutar el siguiente comando:
+
+```bash
+npm test
+```
+
+
