@@ -22,15 +22,15 @@ describe('useWalletReducer', () => {
         </WalletContext.Provider>
     )                                       
 
+    const walletTest = { 
+        id: '1', 
+        name: 'New Wallet test', 
+        cryptocurrencies: [], 
+        transactions: [] 
+    }
+
     it('should add new wallet', () => {
         const { result } = renderHook(() => useWalletsReducer(), { wrapper })
-
-        const walletTest = { 
-            id: '1', 
-            name: 'New Wallet test', 
-            cryptocurrencies: [], 
-            transactions: [] 
-        }
 
         act(() => {
             result.current.addWallet(walletTest)
@@ -43,13 +43,6 @@ describe('useWalletReducer', () => {
     it('should delete wallet', () => {  
         const { result } = renderHook(() => useWalletsReducer(), { wrapper })
 
-        const walletTest = { 
-            id: '1', 
-            name: 'New Wallet test', 
-            cryptocurrencies: [], 
-            transactions: [] 
-        }
-
         act(() => {
             result.current.deleteWallet(walletTest.id)
         })
@@ -60,13 +53,6 @@ describe('useWalletReducer', () => {
     it('should add transaction', () => {
         const { result } = renderHook(() => useWalletsReducer(), { wrapper })
 
-        const walletTest = { 
-            id: '1', 
-            name: 'New Wallet test', 
-            cryptocurrencies: [], 
-            transactions: [] 
-        }
-
         const transactionTest: Transaction = { 
             id: '1', 
             type: 'Compra', 
@@ -75,7 +61,6 @@ describe('useWalletReducer', () => {
             price: 10000, 
             date: new Date().toISOString(), 
             status: 'pendiente'
-           
         }
 
         act(() => {
