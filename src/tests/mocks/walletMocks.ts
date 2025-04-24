@@ -48,3 +48,22 @@ export const mockUseTransactions = {
     handleLoading: vi.fn(),
     editTransaction: vi.fn()
 };
+
+export const fakeHook = {
+    wallets: [] as Wallet[],                 
+    cryptos: [],                  
+    loading: false,               
+    showWalletModal: false,
+    isEditing: false,
+    newWallet: { id: '', name: '' },
+    selectedWallet: undefined,
+    //Funciones del mi hook useWallet
+    deleteWallet: vi.fn(),
+    handleWalletModal: vi.fn(),
+    handleCryptos: vi.fn(),
+    handleNewWallet: vi.fn(),
+    handleLoading: vi.fn(),
+    saveWallet: vi.fn(),
+    addWallet: vi.fn(),
+    handleIsEditing: vi.fn()
+  };
