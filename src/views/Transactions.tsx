@@ -5,7 +5,7 @@ import { TransactionModal } from '../components/WalletDetail/TransactionModal';
 import { useTransactions } from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
 import { getCryptos } from '../services/API';
-import { Crypto as CryptoType } from '../types/wallets';
+import {  CryptoType } from '../types/wallets';
 import { TransactionsTable } from '../components/WalletDetail/TransactionsTable';
 
 

@@ -1,6 +1,6 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import { Crypto as CryptoType, Wallet } from '../../types/wallets';
+import { CryptoType, Wallet } from '../../types/wallets';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 

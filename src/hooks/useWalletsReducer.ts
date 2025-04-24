@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { walletsReducer } from "../reducers/walletsReducer";
 import { initialWallets } from "../reducers/walletsReducer";
-import { Transaction, Wallet, Crypto as CryptoType } from "../types/wallets";
+import { Transaction, Wallet,  CryptoType } from "../types/wallets";
 
 
 export function useWalletsReducer() { 
