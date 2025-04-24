@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCryptos } from '../services/API';
 import {  CryptoType } from '../types/wallets';
 import { TransactionsTable } from '../components/WalletDetail/TransactionsTable';
+import { ErrorView } from './ErrorView';
 
 
 export const Transactions = () => {
@@ -19,9 +20,8 @@ export const Transactions = () => {
   const toast = useRef<Toast>(null);
 
   
-  if (!wallet) {
-    return <h1>Cartera no encontrada</h1>
-  }
+  if (!wallet) return <ErrorView message="Error al cargar la cartera" />
+  
 
 
   const saveNewTransaction = () => {
@@ -29,7 +29,6 @@ export const Transactions = () => {
     if (result.message) {
 
       if (isEditing && result.message == "Transacción añadida correctamente") {
-
         toast.current?.show({ severity: result.severity as 'error' | 'success', summary: 'Operación Exitosa', detail: "Transacción editada correctamente", life: 3000 });
         return;
       }
@@ -61,7 +60,8 @@ export const Transactions = () => {
           sessionStorage.setItem('cryptos', JSON.stringify(response.data));
         }
       } catch (error) {
-        console.log('Error al obtener criptomonedas');
+        
+        toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Error al obtener criptomonedas, intente nuevamente', life: 3000 });
       } finally {
         handleLoading(false);
       }
@@ -86,8 +86,11 @@ export const Transactions = () => {
         />
 
         <div className="grid grid-cols-1  mx-3 sm:mx-5 mt-5">
-
-            <TransactionsTable wallet={{ ...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente') }} handleEditTransaction={handleEditTransaction} isOperating={true} title="Transacciones pendientes" />
+            <TransactionsTable 
+            wallet={{ ...wallet, transactions: wallet.transactions.filter(t => t.status === 'pendiente') }} 
+            handleEditTransaction={handleEditTransaction} 
+            isOperating={true} 
+            title="Transacciones pendientes" />
         </div>
       </section>
 
