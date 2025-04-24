@@ -67,3 +67,28 @@ export const fakeHook = {
     addWallet: vi.fn(),
     handleIsEditing: vi.fn()
   };
+
+
+  export const mockWalletCrypto: Wallet = {
+    id: '1',
+    name: 'Test Wallet',
+    transactions: [],
+    cryptocurrencies: [
+        {
+            id: 'bitcoin',
+            name: 'Bitcoin',
+            symbol: 'BTC',
+            image: 'lorem',
+            amount: 0.5,
+            current_price: 50000
+        },
+        {
+            id: 'ethereum',
+            name: 'Ethereum',
+            symbol: 'ETH',
+            image: 'lorem',
+            amount: 2,
+            current_price: 3000
+        }
+    ]
+}
