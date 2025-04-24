@@ -8,7 +8,6 @@ import { Card } from 'primereact/card';
 
 
 
-
 export const Cryptos = () => {
 
   const [coins, setCoins] = useState<CryptoType[] | null>(null);
