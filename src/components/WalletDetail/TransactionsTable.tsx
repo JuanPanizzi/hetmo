@@ -150,7 +150,8 @@ export const TransactionsTable = ({ title, wallet, handleEditTransaction, isOper
                     <Column field="crypto.name" header="Criptomoneda" sortable />
                     <Column field="amount" header="Cantidad" sortable />
                     <Column field="price" header="Precio" sortable body={(rowData) => {
-                        return parseInt(rowData.price).toLocaleString('es-ES', {
+
+                        return rowData.price.toLocaleString('es-ES', {
                             style: 'currency',
                             currency: 'USD'
                         });
