@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 import { useTransactions } from "../../hooks/useTransactions";
+import userEvent from "@testing-library/user-event";
 
 vi.mock('../../hooks/useTransactions', () => ({
     useTransactions: vi.fn()
@@ -67,8 +68,11 @@ describe('Transactions', () => {
     })  
 
     it('should render the pending transactions component when wallet exists', () => {
-        expect(screen.getByText('Transacciones')).toBeInTheDocument()
+
+        const wallet = walletTest
+        wallet.transactions[0].status = 'confirmada'
         expect(screen.getByText('Transacciones pendientes')).toBeInTheDocument()
+        expect(screen.getByText('Confirmar')).toBeInTheDocument()
     })
 
    
