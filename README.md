@@ -39,8 +39,8 @@ npm run dev
 ```
 
 
-##Notas Adicionales:
+# Despliegue Provisional:
 
-También se utilizó un despliegue provisional de la app en vercel por si se desea testear la app directamente, para ello debe cliquear en el siguiente link: 
+También se utilizó un despliegue provisional de la app en vercel por si se desea probar la app directamente, para ello debe cliquear en el siguiente link: 
 
 https://ej-frontend-git-main-juanpanizzis-projects.vercel.app/
