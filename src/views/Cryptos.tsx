@@ -72,7 +72,9 @@ export const Cryptos = () => {
             )}
           />
           <Column field="symbol" header="Símbolo" />
-          <Column field="current_price" header="Precio (USD)" body={(row) => formatCurrency(row.current_price)} />
+          <Column field="current_price" header="Precio" body={(row) => {
+            return <span> US$ {row.current_price}</span>
+          }} />
 
         </DataTable>
 
